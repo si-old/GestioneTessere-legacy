@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Area Protetta"
+AuthUserFile /web/htdocs/www.studentingegneria.it/home/orariprotected/.htpasswd
+require valid-user
