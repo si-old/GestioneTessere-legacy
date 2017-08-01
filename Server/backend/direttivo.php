@@ -18,7 +18,7 @@
 			}
 		}
 		
-		protected function do_get(){
+		protected function do_get($data){
 			$id = isset($_GET['id']) ? $_GET['id'] : -1;
 			if($id > 0){
 				echo json_encode($this->get_data($id));
@@ -36,8 +36,7 @@
 			}
 		}
 		
-		protected function do_post(){
-			$new_data = $this->get_body();
+		protected function do_post($new_data){
 			//validation dell'input, o c'è un id e almeno uno degli altri campi 
 			//o ci sono tutti e tre gli altri campi
 			$flag_id = isset($new_data['id']);
@@ -64,8 +63,7 @@
 			}
 		}
 		
-		protected function do_del(){
-			$data = $this->get_body();
+		protected function do_del($data){
 			if(isset($data['id'])){
 				$stmt = $this->db->prepare('DELETE FROM Direttivo WHERE ID=?');
 				$stmt->bind_param('i', $data['id']);
