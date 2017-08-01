@@ -4,7 +4,7 @@
 	
 	class CdL extends RESTItem{
 		
-		protected function do_get(){
+		protected function do_get($data){
 			$flag_id = isset($_GET['id']);
 			if($flag_id){
 				$stmt = $this->db->prepare('SELECT * FROM CdL WHERE ID=?');
@@ -28,8 +28,7 @@
 			}
 		}
 		
-		protected function do_post(){
-			$data = $this->get_body();
+		protected function do_post($data){
 			$valid = isset($data['nome']);
 			if($valid){
 				//dovremmo controllare se il nome c'è già?
@@ -41,8 +40,7 @@
 			}
 		}
 		
-		protected function do_del(){
-			$data = $this->get_body();
+		protected function do_del($data){
 			if(isset($data['id'])){
 				$stmt = $this->db->prepare('DELETE FROM CdL WHERE ID=?');
 				$stmt->bind_param('i', $data['id']);
