@@ -5,7 +5,7 @@
 	
 	class Socio extends RESTItem{
 		
-		protected function do_get(){
+		protected function do_get($data){
 			$flag_id = isset($_GET['id']);
       $query = 'SELECT s.id as id, s.nome as nome, s.cognome as cognome, s.email as email, s.cellulare as cellulare
                        s.studente as studente, s.professione as professione, s.facebook as facebook,
@@ -38,7 +38,7 @@
 			}
 		}
 		
-		protected function do_post(){
+		protected function do_post($data){
       //TODO inserimento utenti, controlli su integrità vincoli
 			//$data = $this->get_body();
 			//$valid = isset($data['nome']);
@@ -52,8 +52,7 @@
 			//}
 		}
 		
-		protected function do_del(){
-			$data = $this->get_body();
+		protected function do_del($data){
 			if(isset($data['id'])){
         $this->db->begin_transaction();
 				$stmt = $this->db->prepare('DELETE FROM Socio WHERE ID=?');
