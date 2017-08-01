@@ -18,6 +18,7 @@
 			$i = 0;
 			while($stmt->fetch()){
 				$res[$i] = array('id' => $id, 'nome' => $nome);
+				$i++;
 			}
 			//se abbiamo id, c'è un solo elemento, mandiamo solo quello
 			if($flag_id){
