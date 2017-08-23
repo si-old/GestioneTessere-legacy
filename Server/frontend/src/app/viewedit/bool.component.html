@@ -1,0 +1,9 @@
+<ng-container *ngIf="!flag" [@flyInOut]>
+    <md-icon *ngIf="content">thumb_up</md-icon>
+    <md-icon *ngIf="!content">thumb_down</md-icon>    
+</ng-container>
+<ng-container *ngIf="flag">
+        <md-slide-toggle [@flyInOut] [(ngModel)]="content" 
+                        name="content" color="primary">
+        </md-slide-toggle>
+</ng-container>

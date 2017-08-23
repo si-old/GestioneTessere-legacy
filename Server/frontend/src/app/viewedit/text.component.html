@@ -1,0 +1,7 @@
+<md-input-container *ngIf="flag" floatPlaceholder="never">
+    <input [@flyInOut]="'in'" type="text"  [(ngModel)]="content" 
+            name="content" class="full_cell" mdInput />
+</md-input-container>
+<p [@flyInOut]="'in'" *ngIf="!flag"  class="full_cell" >
+    {{content}}
+</p>
