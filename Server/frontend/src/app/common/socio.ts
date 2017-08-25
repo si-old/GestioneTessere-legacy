@@ -26,14 +26,14 @@ export class Socio{
            this.email.toLowerCase().indexOf(needle) != -1 ||
            this.cellulare.toLowerCase().indexOf(needle) != -1 ||
            this.facebook.toLowerCase().indexOf(needle) != -1 ||
-           (this.professione && this.professione.toLowerCase().indexOf(needle) != -1 ) ||
-           (this.matricola && this.matricola.toLowerCase().indexOf(needle) != -1 ) ||
-           (this.cdl && this.cdl.nome.toLowerCase().indexOf(needle) != -1 )
+           (!this.studente && this.professione && this.professione.toLowerCase().indexOf(needle) != -1 ) ||
+           (this.studente && this.matricola && this.matricola.toLowerCase().indexOf(needle) != -1 ) ||
+           (this.studente && this.cdl && this.cdl.nome.toLowerCase().indexOf(needle) != -1 )
   }
 
   compare(other: Socio, prop: string, order: string): number{
-    let propertyA: boolean|string = '';
-    let propertyB: boolean|string = '';
+    let propertyA: number|boolean|string = '';
+    let propertyB: number|boolean|string = '';
     
 
     switch (prop) {
@@ -63,6 +63,9 @@ export class Socio{
         break;
       case 'facebook': 
         [propertyA, propertyB] = [this.facebook, other.facebook]; 
+        break;
+      case 'id': 
+        [propertyA, propertyB] = [this.id, other.id]; 
         break;
     }
 

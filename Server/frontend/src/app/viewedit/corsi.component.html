@@ -1,0 +1,10 @@
+<ng-container *ngIf="!flag" [@flyInOut]>
+    {{_content.nome}}
+</ng-container>
+<ng-container *ngIf="flag">
+        <md-select [@flyInOut] placeholder="Corsi di Laurea" [(ngModel)]="content" selected="content">
+            <md-option *ngFor="let corso of allCdL" [value]="corso">
+                {{corso.nome}}
+            </md-option>
+        </md-select>
+</ng-container>

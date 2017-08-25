@@ -2,19 +2,20 @@ import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { FormsModule } from '@angular/forms'
 
-import { MdInputModule, MdIconModule, MdSlideToggleModule } from '@angular/material'
+import { MdInputModule, MdIconModule, MdSlideToggleModule, MdSelectModule } from '@angular/material'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { TextVieweditComponent } from './text.component'
 import { BoolVieweditComponent } from './bool.component'
-
+import { CorsiVieweditComponent } from './corsi.component'
 
 @NgModule({
     declarations:[
         TextVieweditComponent,
-        BoolVieweditComponent
+        BoolVieweditComponent,
+        CorsiVieweditComponent
     ],
     imports: [
         FormsModule,
@@ -22,14 +23,15 @@ import { BoolVieweditComponent } from './bool.component'
         MdInputModule,
         MdIconModule,
         MdSlideToggleModule,
+        MdSelectModule,
         BrowserAnimationsModule
     ],
     exports: [
         TextVieweditComponent,
-        BoolVieweditComponent
+        BoolVieweditComponent,
+        CorsiVieweditComponent
     ],
     providers: [
-
     ]
 })
 export class VieweditModule{

@@ -1,16 +1,24 @@
-<h2> Soci </h2>
 <div class="example-container mat-elevation-z8">
+    <h2> Soci </h2>
+    
   <div class="example-header">
     <md-input-container floatPlaceholder="never">
-      <input mdInput #filter placeholder="Filter users">
+      <input mdInput #filter placeholder="Ricerca soci">
     </md-input-container>
+    <md-icon (click)="addSocio()">add</md-icon>    
   </div>
+  
   
   <md-table #table [dataSource]="sociSource" mdSort>
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
+    <ng-container cdkColumnDef="id">
+      <md-header-cell *cdkHeaderCellDef md-sort-header> Id  </md-header-cell>
+      <md-cell *cdkCellDef="let row"> {{row.id}} </md-cell>
+    </ng-container>
+          
     <ng-container cdkColumnDef="nome">
       <md-header-cell *cdkHeaderCellDef md-sort-header> Nome </md-header-cell>
       <md-cell *cdkCellDef="let row"> 
@@ -52,7 +60,9 @@
     <ng-container cdkColumnDef="cdl">
       <md-header-cell *cdkHeaderCellDef md-sort-header> CdL </md-header-cell>
       <md-cell *cdkCellDef="let row"> 
-        <ng-container *ngIf="row.studente"> {{row.cdl.nome}} </ng-container>
+        <ng-container *ngIf="row.studente"> 
+          <corsi-viewedit [flag]="row.editing" [(content)]="row.cdl"></corsi-viewedit>
+        </ng-container>
         <ng-container *ngIf="!row.studente"> - </ng-container>
       </md-cell>
     </ng-container>

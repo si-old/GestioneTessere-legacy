@@ -1,1 +1,38 @@
 <h2> Corsi </h2>
+<div class="example-container">
+    <div class="example-header">
+      <md-input-container floatPlaceholder="never">
+        <input mdInput #filter placeholder="Ricerca corsi">
+      </md-input-container>
+    </div>
+    
+    <md-table #table [dataSource]="corsiSource" mdSort>
+  
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+  
+      <ng-container cdkColumnDef="id">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Id  </md-header-cell>
+        <md-cell *cdkCellDef="let row"> {{row.id}} </md-cell>
+      </ng-container>
+            
+      <ng-container cdkColumnDef="nome">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Nome </md-header-cell>
+        <md-cell *cdkCellDef="let row"> 
+          <text-viewedit [flag]="row.editing" [(content)]="row.nome" placeholder="Nome" ></text-viewedit>
+        </md-cell>
+      </ng-container>
+  
+      <ng-container cdkColumnDef="azioni">
+          <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
+          <md-cell *cdkCellDef="let row">
+            <md-icon (click)="row.editing=true" *ngIf="!row.editing">mode_edit</md-icon>
+            <md-icon (click)="row.editing=false" *ngIf="row.editing" (click)="updateCorso(row)">done</md-icon>          
+          </md-cell>
+        </ng-container>
+      
+      <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+      <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+    </md-table>
+  </div>
+  
