@@ -1,17 +1,13 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 
-import {
-    trigger,
-    state,
-    style,
-    animate,
-    transition,
-    group
-  } from '@angular/animations';
+import { trigger, state, style, animate, transition, group } from '@angular/animations';
+
+import { CdL } from '../common/CdL'
+import {CorsiService } from '../corsi/service'
 
 @Component({
-    selector: 'bool-viewedit',
-    templateUrl: './bool.component.html',
+    selector: 'corsi-viewedit',
+    templateUrl: './corsi.component.html',
     styleUrls: ['./common.component.css'],
     animations: [
         trigger('flyInOut', [
@@ -38,20 +34,30 @@ import {
           ])
       ]
 })
-export class BoolVieweditComponent{
+export class CorsiVieweditComponent implements OnInit{
 
     @Input() flag: boolean;
 
-    @Output() contentChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() contentChange: EventEmitter<CdL> = new EventEmitter<CdL>();
 
-    _content: boolean;
+    _content: CdL;
+    allCdL: CdL[];
+
     @Input()
-    set content(in_content: boolean){
+    set content(in_content: CdL){
         this._content = in_content;
         this.contentChange.next(this._content);
     }
 
     get content(){
         return this._content;
+    }
+
+    constructor(private _corsisrv: CorsiService){}
+
+    ngOnInit(){
+        this._corsisrv.getCorsi().then(
+            (corsi: CdL[]) => { this.allCdL = corsi } 
+        )
     }
 }

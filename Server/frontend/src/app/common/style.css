@@ -11,7 +11,7 @@
   align-items: center;
   padding-left: 24px;
   font-size: 20px;
-}
+}/**/
 
 .example-header {
   min-height: 64px;
@@ -20,14 +20,9 @@
   padding: 8px 24px 0;
   font-size: 20px;
   justify-content: space-between;
-}
+}/**/
 
 .mat-input-container {
   font-size: 14px;
-  flex-grow: 1;
-  margin-left: 32px;
-}
-
-.mat-table {
-  overflow: auto;
+  margin-left: 80%;
 }
