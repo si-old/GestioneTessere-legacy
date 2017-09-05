@@ -1,77 +1,80 @@
 <div md-dialog-title style="text-align:center">
     Aggiungi nuovo socio
 </div>
-<form #form="ngForm" (ngSubmit)="afterSubmit(form)">
-    <div>
-        <label for="nome">Nome:</label>
-        <md-input-container>
-            <input type="text" name="nome" [(ngModel)]="model.nome" mdInput required/>
-        </md-input-container>
-    </div>
+<ng-container>
+    <form #form="ngForm">
+        <div md-dialog-content>
+            <div>
+                <label for="numero">Numero Tessera:</label>
+                <md-input-container>
+                    <input type="text" name="numero" [(ngModel)]="model.tessere[0].numero" mdInput required/>
+                </md-input-container>
+                <label for="anno">Anno: {{ model.tessere[0].anno }} </label>
 
-    <div>
-        <label for="cognome">Cognome:</label>
-        <md-input-container>
-            <input type="text" name="cognome" [(ngModel)]="model.cognome" mdInput required/>
-        </md-input-container>
-    </div>
+            </div>
 
-    <div>
-        <label for="email">E-Mail:</label>
-        <md-input-container>
-            <input type="text" name="email" [(ngModel)]="model.email" mdInput required/>
-        </md-input-container>
-    </div>
+            <div>
+                <label for="nome">Nome:</label>
+                <md-input-container>
+                    <input type="text" name="nome" [(ngModel)]="model.nome" mdInput required/>
+                </md-input-container>
+                <label for="cognome">Cognome:</label>
+                <md-input-container>
+                    <input type="text" name="cognome" [(ngModel)]="model.cognome" mdInput required/>
+                </md-input-container>
+            </div>
 
-    <div>
-        <label for="cellulare">Cellulare:</label>
-        <md-input-container>
-            <input type="text" name="cellulare" [(ngModel)]="model.cellulare" mdInput required/>
-        </md-input-container>
-    </div>
+            <div>
+                <label for="email">E-Mail:</label>
+                <md-input-container>
+                    <input type="text" name="email" [(ngModel)]="model.email" mdInput required/>
+                </md-input-container>
+                <label for="cellulare">Cellulare:</label>
+                <md-input-container>
+                    <input type="text" name="cellulare" [(ngModel)]="model.cellulare" mdInput required/>
+                </md-input-container>
+            </div>
 
-    <div>
-        <label for="facebook">Facebook:</label>
-        <md-input-container>
-            <input type="text" name="facebook" [(ngModel)]="model.facebook" mdInput required/>
-        </md-input-container>
-    </div>
+            <div>
+                <label for="facebook">Facebook:</label>
+                <md-input-container>
+                    <input type="text" name="facebook" [(ngModel)]="model.facebook" mdInput required/>
+                </md-input-container>
+                <label for="studente">Studente:</label>
+                <md-slide-toggle [(ngModel)]="model.carriere[0].studente" name="studente" color="primary" required></md-slide-toggle>
+            </div>
 
-    <div>
-        <label for="studente">Studente:</label>
-        <md-slide-toggle [(ngModel)]="model.studente" name="studente" color="primary" required></md-slide-toggle>
-    </div>
+            <ng-container *ngIf="model.carriere[0].studente">
+                <div>
+                    <label for="matricola">Matricola:</label>
+                    <md-input-container>
+                        <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" mdInput [required]="model.carriere[0].studente"/>
+                    </md-input-container>
+                    <label for="cdl">Corso di laurea:</label>
+                    <md-select [(ngModel)]="model.carriere[0].corso" selected="model.carriere[0].corso" name="cdl" required>
+                        <md-option *ngFor="let corso of allCdL" [value]="corso">
+                            {{corso.nome}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </ng-container>
 
-    <ng-container *ngIf="model.studente">
-        <div>
-            <label for="matricola">Matricola:</label>
-            <md-input-container>
-                <input type="text" name="matricola" [(ngModel)]="model.matricola" mdInput required/>
-            </md-input-container>
+            <ng-container *ngIf="!model.carriere[0].studente">
+                <div>
+                    <label for="professione">Professione:</label>
+                    <md-input-container>
+                        <input type="text" name="professione" [(ngModel)]="model.carriere[0].professione" mdInput [required]="!model.carriere[0].studente"/>
+                    </md-input-container>
+                </div>
+            </ng-container>
         </div>
-        <div>
-            <label for="cdl">Corso di laurea:</label>
-            <md-select [(ngModel)]="model.cdl" selected="model.cdl" name="cdl" required>
-                <md-option *ngFor="let corso of allCdL" [value]="corso">
-                    {{corso.nome}}
-                </md-option>
-            </md-select>
+        <div md-dialog-actions style="display: block">
+            <button type="submit" class="to_left" md-icon-button (click)="submitForm(form)">
+                <md-icon mdTooltip="Conferma" mdTooltipPosition="right">check</md-icon>
+            </button>
+            <button class="to_left" md-dialog-close md-icon-button (click)="revertForm(form)">
+                <md-icon mdTooltip="Annulla" mdTooltipPosition="right">close</md-icon>
+            </button>
         </div>
-    </ng-container>
-
-    <ng-container *ngIf="!model.studente">
-        <div>
-            <label for="professione">Professione:</label>
-            <md-input-container>
-                <input type="text" name="professione" [(ngModel)]="model.professione" mdInput required/>
-            </md-input-container>
-        </div>
-    </ng-container>
-
-    <button type="submit" class="to_left" md-icon-button>
-        <md-icon>check</md-icon>
-    </button>
-    <button class="to_left" md-dialog-close md-icon-button>
-        <md-icon>close</md-icon>
-    </button>
-</form>
+    </form>
+</ng-container>

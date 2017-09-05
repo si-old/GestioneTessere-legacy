@@ -1,0 +1,76 @@
+<div class="example-container mat-elevation-z8">
+    <h2> Soci </h2>
+    
+  <div class="example-header">
+    <md-input-container floatPlaceholder="never">
+      <input mdInput #filter placeholder="Ricerca soci">
+    </md-input-container>
+    <button md-icon-button (click)="addSocio()">
+      <md-icon mdTooltip="Nuovo" mdTooltipPosition="above">add</md-icon>    
+    </button>
+  </div>
+  
+  <div style="overflow-x: auto">
+    <md-table #table [dataSource]="sociSource" mdSort>
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <ng-container cdkColumnDef="id">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Id  </md-header-cell>
+        <md-cell *cdkCellDef="let row"> {{row.id}} </md-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="tessera">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Tessera  </md-header-cell>
+        <md-cell *cdkCellDef="let row"> {{row.getTessera().numero }} </md-cell>
+      </ng-container>
+            
+      <ng-container cdkColumnDef="nome">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Nome </md-header-cell>
+        <md-cell *cdkCellDef="let row"> {{row.nome}} </md-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="cognome">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Cognome </md-header-cell>
+        <md-cell *cdkCellDef="let row">{{row.cognome}}</md-cell>
+      </ng-container>
+      
+      <ng-container cdkColumnDef="email">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Email </md-header-cell>
+        <md-cell *cdkCellDef="let row">  {{row.email}} </md-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="carriera">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Carriera </md-header-cell>
+        <md-cell *cdkCellDef="let row"> {{ row.getCarrieraAttiva() }} </md-cell>
+      </ng-container>
+      
+      <ng-container cdkColumnDef="facebook">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Facebook </md-header-cell>
+        <md-cell *cdkCellDef="let row">{{row.facebook}}</md-cell>
+      </ng-container>
+      
+      <ng-container cdkColumnDef="cellulare">
+        <md-header-cell *cdkHeaderCellDef md-sort-header> Cellulare </md-header-cell>
+        <md-cell *cdkCellDef="let row"> {{row.cellulare}}</md-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="azioni">
+          <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
+          <md-cell *cdkCellDef="let row">
+            <button md-icon-button (click)="editSocio(row)">
+              <md-icon mdTooltip="Dettagli" mdTooltipPosition="left">info_outline</md-icon>
+            </button>
+            <a md-icon-button routerLink="{{row.id}}">
+              <md-icon mdTooltip="Dettagli" mdTooltipPosition="right">link</md-icon>
+            </a>
+          </md-cell>
+        </ng-container>
+      
+      <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+      <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+    </md-table>
+  </div>
+</div>
+

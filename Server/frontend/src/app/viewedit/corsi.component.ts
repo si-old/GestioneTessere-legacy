@@ -2,8 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 
 import { trigger, state, style, animate, transition, group } from '@angular/animations';
 
-import { CdL } from '../common/CdL'
-import {CorsiService } from '../corsi/service'
+import { CdL } from '../common/all'
+import {CorsiService } from '../corsi/main.service'
 
 @Component({
     selector: 'corsi-viewedit',

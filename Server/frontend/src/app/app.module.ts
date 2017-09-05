@@ -10,7 +10,8 @@ import { MdButtonModule,
          MdSnackBarModule,
          MdDialogModule,
          MdSlideToggleModule,
-         MdSelectModule
+         MdSelectModule,
+         MdTooltipModule
        } from '@angular/material';
 
 import { FormsModule } from '@angular/forms'
@@ -21,14 +22,22 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { VieweditModule } from './viewedit/viewedit.module'
 
-import { SociComponent } from './soci/component'
+import { SociComponent } from './soci/main.component'
 import { AggiuntaSocioComponent } from './soci/aggiunta.component'
-import { SociService } from './soci/service'
+import { SociService } from './soci/main.service'
+import { DettagliSocioComponent } from './soci/dettagli.component'
 
 import { DirettivoComponent } from './direttivo/component'
 
-import { CorsiComponent } from './corsi/component'
-import { CorsiService } from './corsi/service'
+import { CorsiComponent } from './corsi/main.component'
+import { CorsiService } from './corsi/main.service'
+
+import { TesseramentiService } from './tesseramenti/main.service'
+import { TesseramentiComponent } from './tesseramenti/main.component'
+
+import { ConfirmDialogComponent } from './tesseramenti/confirm-dialog.component'
+import { InputDialogComponent } from './tesseramenti/input-dialog.component'
+
 
 @NgModule({
   declarations: [
@@ -36,7 +45,11 @@ import { CorsiService } from './corsi/service'
     SociComponent,
     DirettivoComponent,
     CorsiComponent,
-    AggiuntaSocioComponent
+    AggiuntaSocioComponent,
+    DettagliSocioComponent,
+    TesseramentiComponent,
+    ConfirmDialogComponent,
+    InputDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -54,14 +67,19 @@ import { CorsiService } from './corsi/service'
     MdSelectModule,
     FormsModule,
     VieweditModule,
+    MdTooltipModule,
     AppRoutingModule
   ],
   providers: [
     SociService,
-    CorsiService
+    CorsiService,
+    TesseramentiService
   ],
   entryComponents:[
-    AggiuntaSocioComponent
+    AggiuntaSocioComponent,
+    DettagliSocioComponent,
+    ConfirmDialogComponent,
+    InputDialogComponent
   ],
   bootstrap: [AppComponent]
 })

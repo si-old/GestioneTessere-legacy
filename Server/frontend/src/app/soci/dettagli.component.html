@@ -1,0 +1,96 @@
+<div md-dialog-title style="text-align:center">
+    <button class="to_left" md-icon-button (click)="exit()">
+        <md-icon mdTooltip="Esci" mdTooltipPosition="right">keyboard_arrow_left</md-icon>
+    </button>
+    Modifica dati {{model.nome}}
+</div>
+<form #form="ngForm" [ngClass]="form_style">
+    <div md-dialog-content>
+        <div class="form_group">
+            <span class="label">Nome:</span>
+            <text-viewedit [(ngModel)]="model.nome" name="nome" [flag]="editing" required></text-viewedit>
+        </div>
+        
+        <div class="form_group">
+            <span class="label">Cognome:</span>
+            <text-viewedit [(ngModel)]="model.cognome" name="cognome" [flag]="editing" required></text-viewedit>
+        </div>
+
+        <div class="form_group">
+            <span class="label">E-Mail:</span>
+            <text-viewedit [(ngModel)]="model.email" name="email" [flag]="editing" required></text-viewedit>
+        </div>
+
+        <div class="form_group">
+            <span class="label">Cellulare:</span>
+            <text-viewedit [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" required></text-viewedit>
+        </div>
+
+        <div class="form_group">
+            <span class="label">Facebook:</span>
+            <text-viewedit [(ngModel)]="model.facebook" name="facebook" [flag]="editing" required></text-viewedit>
+        </div>
+
+        <div class="table-container">
+            <span class="label">Carriere:</span>
+            <md-table [dataSource]="carriereSource">
+                <ng-container cdkColumnDef="studente">
+                    <md-header-cell *cdkHeaderCellDef> Studente  </md-header-cell>
+                    <md-cell *cdkCellDef="let row">
+                        <bool-viewedit [(content)]="row.studente" (flag)="false"></bool-viewedit>
+                    </md-cell>
+                </ng-container>
+
+                <ng-container cdkColumnDef="dettagli">
+                    <md-header-cell *cdkHeaderCellDef> Professione/Corso di laurea  </md-header-cell>
+                    <md-cell *cdkCellDef="let row"> {{row}} </md-cell>
+                </ng-container>
+
+                <ng-container cdkColumnDef="attiva">
+                        <md-header-cell *cdkHeaderCellDef> Attiva  </md-header-cell>
+                        <md-cell *cdkCellDef="let row">
+                            <md-icon *ngIf="row.attiva" mdTooltip="Attiva" mdTooltipPosition="right">check</md-icon>
+                            <md-icon *ngIf="!row.attiva" mdTooltip="Chiusa" mdTooltipPosition="right">close</md-icon>
+                        </md-cell>
+                    </ng-container>
+
+                <md-header-row *cdkHeaderRowDef="carriereColumns"></md-header-row>
+                <md-row *cdkRowDef="let row; columns: carriereColumns;"></md-row>
+            </md-table>
+        </div>
+
+        <div class="table-container">
+            <span class="label">Tessere:</span>
+            <md-table [dataSource]="tessereSource">
+                
+                    <ng-container cdkColumnDef="numero">
+                        <md-header-cell *cdkHeaderCellDef> Numero  </md-header-cell>
+                        <md-cell *cdkCellDef="let row"> {{row.numero}} </md-cell>
+                    </ng-container>
+        
+                    <ng-container cdkColumnDef="anno">
+                        <md-header-cell *cdkHeaderCellDef> Anno  </md-header-cell>
+                        <md-cell *cdkCellDef="let row"> {{row.anno}} </md-cell>
+                    </ng-container>
+        
+                    <md-header-row *cdkHeaderRowDef="tessereColumns"></md-header-row>
+                    <md-row *cdkRowDef="let row; columns: tessereColumns;"></md-row>
+                </md-table>
+        </div>
+    </div>
+    <div md-dialog-actions style="display: block">
+        <ng-container *ngIf="editing">
+            <button type="submit" class="to_right" md-icon-button (click)="confirm(form)">
+                <md-icon mdTooltip="Conferma" mdTooltipPosition="above">done</md-icon>
+            </button>
+            <button class="to_right" md-icon-button (click)="revert(form)">
+                <md-icon mdTooltip="Annulla" mdTooltipPosition="above">close</md-icon>
+            </button>
+        </ng-container>
+        <ng-container *ngIf="!editing">
+            <button class="to_right" md-icon-button (click)="editing=true">
+                <md-icon mdTooltip="Modifica" mdTooltipPosition="above">edit</md-icon>
+            </button>
+        </ng-container>
+    </div>
+</form>

@@ -1,5 +1,8 @@
 .full_cell{
-    width: 80%;
-    text-align: center;
-    align-self: center;
+    display: inline-block;
+    min-width: 21%;
+}
+
+div.form_group{
+    display: inline-block;
 }
