@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 
-import { CdL } from '../common/CdL'
+import { CdL } from '../common/all'
 
 const CORSI: CdL[] = [
     new CdL({ id: 1, nome: "Ing. Informatica" }),

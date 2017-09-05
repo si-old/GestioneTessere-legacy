@@ -1,71 +1,68 @@
 import { CdL } from './CdL'
+import { Carriera } from './carriera'
+import { Tessera } from './tessera'
 
-export class Socio{
+export class Socio {
   id: number;
   nome: string;
   cognome: string;
   email: string;
   cellulare: string;
   facebook: string;
-  studente: boolean;
 
-  professione ?: string;
+  carriere: Carriera[];
 
-  matricola ?: string;
-  cdl ?: CdL;
-  
-  editing: boolean = false;
+  tessere: Tessera[];
 
-  constructor(fields ?: Partial<Socio>){
-                  if (fields) Object.assign(this, fields);
+  constructor(fields?: Partial<Socio>) {
+    if (fields) Object.assign(this, fields);
   }
-  
-  contains(needle: string): boolean{
+
+  contains(needle: string): boolean {
     return this.nome.toLowerCase().indexOf(needle) != -1 ||
-           this.cognome.toLowerCase().indexOf(needle) != -1 ||
-           this.email.toLowerCase().indexOf(needle) != -1 ||
-           this.cellulare.toLowerCase().indexOf(needle) != -1 ||
-           this.facebook.toLowerCase().indexOf(needle) != -1 ||
-           (!this.studente && this.professione && this.professione.toLowerCase().indexOf(needle) != -1 ) ||
-           (this.studente && this.matricola && this.matricola.toLowerCase().indexOf(needle) != -1 ) ||
-           (this.studente && this.cdl && this.cdl.nome.toLowerCase().indexOf(needle) != -1 )
+      this.cognome.toLowerCase().indexOf(needle) != -1 ||
+      this.email.toLowerCase().indexOf(needle) != -1 ||
+      this.cellulare.toLowerCase().indexOf(needle) != -1 ||
+      this.facebook.toLowerCase().indexOf(needle) != -1 ||
+      (this.carriere[0].contains(needle)) || //TODO ricerca in tutte le carriere
+      (this.tessere[0].contains(needle) );
   }
 
-  compare(other: Socio, prop: string, order: string): number{
-    let propertyA: number|boolean|string = '';
-    let propertyB: number|boolean|string = '';
-    
+  compare(other: Socio, prop: string, order: string): number {
+    let propertyA: any;
+    let propertyB: any;
+
 
     switch (prop) {
-      case 'nome': 
-        [propertyA, propertyB] = [this.nome, other.nome]; 
+      case 'nome':
+        [propertyA, propertyB] = [this.nome, other.nome];
         break;
-      case 'cognome': 
-        [propertyA, propertyB] = [this.cognome, other.cognome]; 
+      case 'cognome':
+        [propertyA, propertyB] = [this.cognome, other.cognome];
         break;
-      case 'email': 
-        [propertyA, propertyB] = [this.email, other.email]; 
+      case 'email':
+        [propertyA, propertyB] = [this.email, other.email];
         break;
-      case 'studente': 
-        [propertyA, propertyB] = [this.studente, other.studente]; 
+      case 'studente':
+        [propertyA, propertyB] = [this.getCarrieraAttiva().studente, other.getCarrieraAttiva().studente];
         break;
-      case 'matricola': 
-        [propertyA, propertyB] = [this.studente ? this.matricola : '', other.studente? other.matricola : '']; 
+      case 'matricola':
+        [propertyA, propertyB] = [this.getCarrieraAttiva().studente ? this.getCarrieraAttiva().matricola : '', other.getCarrieraAttiva() ? other.getCarrieraAttiva().matricola : ''];
         break;
-      case 'cdl': 
-        [propertyA, propertyB] = [this.studente ? this.cdl.nome : '', other.studente? other.cdl.nome : '']; 
+      case 'cdl':
+        [propertyA, propertyB] = [this.getCarrieraAttiva().studente ? this.getCarrieraAttiva().corso.nome : '', other.getCarrieraAttiva().corso.nome ? other.getCarrieraAttiva().corso.nome : ''];
         break;
-      case 'professione': 
-        [propertyA, propertyB] = [this.studente ? '' : this.professione, other.studente? '' : other.professione]; 
+      case 'professione':
+        [propertyA, propertyB] = [this.getCarrieraAttiva().studente ? '' : this.getCarrieraAttiva().professione, other.getCarrieraAttiva().studente ? '' : other.getCarrieraAttiva().professione];
         break;
-      case 'cellulare': 
-        [propertyA, propertyB] = [this.cellulare, other.cellulare]; 
+      case 'cellulare':
+        [propertyA, propertyB] = [this.cellulare, other.cellulare];
         break;
-      case 'facebook': 
-        [propertyA, propertyB] = [this.facebook, other.facebook]; 
+      case 'facebook':
+        [propertyA, propertyB] = [this.facebook, other.facebook];
         break;
-      case 'id': 
-        [propertyA, propertyB] = [this.id, other.id]; 
+      case 'id':
+        [propertyA, propertyB] = [this.id, other.id];
         break;
     }
 
@@ -73,5 +70,13 @@ export class Socio{
     let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
     return (valueA < valueB ? -1 : 1) * (order == 'asc' ? 1 : -1);
+  }
+
+  getCarrieraAttiva(): Carriera{
+    return this.carriere[0];
+  }
+
+  getTessera(): Tessera{
+    return this.tessere[0];
   }
 }

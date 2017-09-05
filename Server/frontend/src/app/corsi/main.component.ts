@@ -13,12 +13,12 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
-import { CdL } from '../common/CdL'
-import { CorsiService } from './service'
+import { CdL } from '../common/all'
+import { CorsiService } from './main.service'
 
 @Component({
   selector: 'corsi',
-  templateUrl: './template.html',
+  templateUrl: './main.component.html',
   styleUrls: ['../common/style.css']
 })
 export class CorsiComponent implements OnInit{
@@ -47,7 +47,6 @@ export class CorsiComponent implements OnInit{
 
   updateCorso(corso: CdL){
     if( corso.nome ){
-      console.log(corso);      
       this._corsisrv.updateCorso(corso);
     }else{
       corso.editing = true;

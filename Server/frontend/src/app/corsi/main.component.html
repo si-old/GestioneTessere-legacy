@@ -19,15 +19,20 @@
       <ng-container cdkColumnDef="nome">
         <md-header-cell *cdkHeaderCellDef md-sort-header> Nome </md-header-cell>
         <md-cell *cdkCellDef="let row"> 
-          <text-viewedit [flag]="row.editing" [(content)]="row.nome" placeholder="Nome" ></text-viewedit>
+          <text-viewedit [flag]="row.editing" [(ngModel)]="row.nome" placeholder="Nome" ></text-viewedit>
         </md-cell>
       </ng-container>
   
       <ng-container cdkColumnDef="azioni">
           <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
           <md-cell *cdkCellDef="let row">
-            <md-icon (click)="row.editing=true" *ngIf="!row.editing">mode_edit</md-icon>
-            <md-icon (click)="row.editing=false" *ngIf="row.editing" (click)="updateCorso(row)">done</md-icon>          
+            <button md-icon-button (click)="row.editing=true" *ngIf="!row.editing">
+              <md-icon mdTooltip="Modifica" mdTooltipPosition="right">mode_edit</md-icon>
+            </button>
+            <!--TODO check double click handler-->
+            <button md-icon-button (click)="row.editing=false"  (click)="updateCorso(row)" *ngIf="row.editing">
+              <md-icon mdTooltip="Conferma" mdTooltipPosition="right">done</md-icon>
+            </button>
           </md-cell>
         </ng-container>
       

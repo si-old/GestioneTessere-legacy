@@ -1,0 +1,40 @@
+<div class="example-container mat-elevation-z8">
+    <div>
+        <h2 style="display: inline-block"> Tesseramenti </h2>
+        <button md-icon-button style="float: right; margin: 0.83em 0"  (click)="newCallback()">
+            <md-icon mdTooltip="Apri" mdTooltipPosition="above">add</md-icon>
+        </button>
+    </div>
+    <div style="overflow-x: auto">
+        <md-table #table [dataSource]="tessSource" mdSort>
+
+            <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+            <ng-container cdkColumnDef="anno">
+                <md-header-cell *cdkHeaderCellDef md-sort-header> Anno </md-header-cell>
+                <md-cell *cdkCellDef="let row"> {{row.anno}} </md-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="attivo">
+                    <md-header-cell *cdkHeaderCellDef md-sort-header> Stato </md-header-cell>
+                    <md-cell *cdkCellDef="let row">
+                        <span *ngIf="row.attivo">Aperto</span>
+                        <span *ngIf="!row.attivo">Chiuso</span>
+                    </md-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="azioni">
+                    <md-header-cell *cdkHeaderCellDef md-sort-header> Azioni </md-header-cell>
+                    <md-cell *cdkCellDef="let row">
+                        <button *ngIf="row.attivo" md-icon-button (click)="closeCallback()">
+                            <md-icon mdTooltip="Chiudi" mdTooltipPosition="right">close</md-icon>
+                        </button>
+                    </md-cell>
+            </ng-container>
+
+            <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+            <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+        </md-table>
+    </div>
+</div>

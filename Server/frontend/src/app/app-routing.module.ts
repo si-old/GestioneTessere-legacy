@@ -2,15 +2,14 @@ import { NgModule } from '@angular/core'
 
 import { RouterModule, Routes } from '@angular/router'
 
-import { SociComponent } from './soci/component'
+import { SociComponent } from './soci/main.component'
 import { DirettivoComponent } from './direttivo/component'
-import { CorsiComponent } from './corsi/component'
+import { CorsiComponent } from './corsi/main.component'
+import { TesseramentiComponent } from './tesseramenti/main.component'
+
+import { DettagliSocioComponent } from './soci/dettagli.component'
 
 const routes: Routes = [
-  {
-    path: "soci",
-    component: SociComponent
-  },
   {
     path: "direttivo",
     component: DirettivoComponent
@@ -18,6 +17,18 @@ const routes: Routes = [
   {
     path: "corsi",
     component: CorsiComponent
+  },
+  {
+    path: "tesseramenti",
+    component: TesseramentiComponent
+  },
+  {
+    path: "soci/:id",
+    component: DettagliSocioComponent
+  },
+  {
+    path: "soci",
+    component: SociComponent
   },
   { path: "", redirectTo: "/soci", pathMatch: "full" },
   { path: '**', redirectTo: "/soci", pathMatch: "full" }

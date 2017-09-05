@@ -1,0 +1,52 @@
+form.in_dialog{
+    width: 100%
+}
+
+form.in_route{
+    width: 98%    
+}
+
+div{
+    text-align: start
+}
+
+.label{
+    text-align: right;
+    display: inline-block;
+    min-width: 10%;
+    margin: 1%;
+    font-weight: bold;
+}
+
+.to_left{
+    display: block;
+    float: left;
+}
+
+.to_right{
+    display: block;
+    float: right;
+}
+
+.centered{
+    text-align: center
+}
+.centered label{
+    width: 30%;
+}
+
+.table-container{
+    margin: 1% 0;
+}
+
+.table-container md-table{
+    display: inline-block;
+    width: 87%;
+    border: rgba(0, 0, 0, 0.12) 1px solid;
+    overflow-x: auto;
+}
+
+.table-container .label{
+    width: 10%;
+    vertical-align: top;
+}
