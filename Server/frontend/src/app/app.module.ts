@@ -1,6 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
+﻿import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 import {
   MdButtonModule,
   MdIconModule,
@@ -71,6 +71,7 @@ import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
     FormsModule,
     VieweditModule,
     MdTooltipModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [
@@ -82,7 +83,8 @@ import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
     AggiuntaSocioComponent,
     DettagliSocioComponent,
     ConfirmDialog,
-    CreateCarrieraDialog
+      CreateCarrieraDialog,
+      TextInputDialog
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+﻿import { Component } from '@angular/core'
 
 import { MdDialogRef } from '@angular/material'
 
@@ -15,7 +15,7 @@ import { MdDialogRef } from '@angular/material'
         </div>
         <div md-dialog-actions>
             <button md-button color="primary" (click)="dialogRef.close()" class="half-size" >No</button>
-            <button type="submit" md-button color="primary" (click)="dialogRef.close(testo)" class="half-size" [disabled]="input.invalid"> Si</button>
+            <button md-button color="primary" (click)="dialogRef.close(testo)" class="half-size" [disabled]="input.invalid"> Si</button>
         </div>
         </form>
     `,

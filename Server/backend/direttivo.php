@@ -51,14 +51,18 @@
 					$user = (isset($new_data['user'])) ? $new_data['user'] : $old_data['user'];
 					$pass = (isset($new_data['pass'])) ? $new_data['pass'] : $old_data['pass'];
 					$socio = (isset($new_data['id_socio'])) ? $new_data['id_socio'] : $old_data['id_socio'];
-					echo json_encode($stmt->execute());
 				}else{
 					//senno fai un insert
 					$stmt = $this->db->prepare('INSERT INTO Direttivo (User, Password, Socio) VALUES (?, ?, ?)');
 					$stmt->bind_param('ssi', $new_data['user'], $new_data['pass'], $new_data['id_socio']);
-					echo json_encode($stmt->execute());
 				}
-			}else{
+				if($stmt->execute()){
+					//TODO ritornare l'utente aggiunto o aggiornato
+					echo json_encode("");
+				}
+				echo json_encode(RESTItem::$ERROR_NODATA);
+			}
+			else{
 				echo json_encode(RESTItem::$ERROR_NODATA);
 			}
 		}
