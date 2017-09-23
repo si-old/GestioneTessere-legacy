@@ -4,11 +4,11 @@
 	require_once('include/lib.php');
 	
 	class Socio extends RESTItem{
-		
+		//TODO ritornare lista di tutti i soci con pochi dati oppure socio completo
 		protected function do_get($data){
 			$flag_id = isset($_GET['id']);
       $query = 'SELECT s.id as id, s.nome as nome, s.cognome as cognome, s.email as email, s.cellulare as cellulare
-                       s.studente as studente, s.professione as professione, s.facebook as facebook,
+                       m.studente as studente, m.professione as professione, s.facebook as facebook,
                        m.matricola as matricola, c.nome as cdl
                 FROM Socio as s LEFT JOIN carriera as m ON s.id = m.socio 
                                 JOIN CdL as c ON c.id = m.cdl

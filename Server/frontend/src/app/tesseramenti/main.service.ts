@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core'
+﻿import { Injectable } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
 
 import { Tesseramento } from '../common/all'
-
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';
@@ -17,6 +17,8 @@ const TESSERAMENTI: Tesseramento[] = [
 export class TesseramentiService{
 
     tesseramentiSub: BehaviorSubject<Tesseramento[]> = new BehaviorSubject<Tesseramento[]>(TESSERAMENTI);
+   
+    constructor(private http: HttpClient) { }
 
     private get tesseramentoAttivo(): Tesseramento{
         let filtered = TESSERAMENTI.filter( (tes: Tesseramento) => { return tes.attivo });
@@ -34,7 +36,8 @@ export class TesseramentiService{
         return Observable.of(this.tesseramentoAttivo);
     }
 
-    getTesseramenti(): Observable<Tesseramento[]>{
+    getTesseramenti(): Observable<Tesseramento[]> {
+        //return this.http.get<Tesseramento[]>('http://www.studentingegneria.it/socisi/backend/tesseramento.php');
         return this.tesseramentiSub;
     }
 

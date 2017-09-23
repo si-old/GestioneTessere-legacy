@@ -1,4 +1,4 @@
-<div md-dialog-title style="text-align:center">
+﻿<div md-dialog-title style="text-align:center">
     Aggiungi nuovo socio
 </div>
 <ng-container>
@@ -31,14 +31,14 @@
                 </md-input-container>
                 <label for="cellulare">Cellulare:</label>
                 <md-input-container>
-                    <input type="text" name="cellulare" [(ngModel)]="model.cellulare" mdInput required/>
+                    <input type="text" name="cellulare" [(ngModel)]="model.cellulare" mdInput/>
                 </md-input-container>
             </div>
 
             <div>
                 <label for="facebook">Facebook:</label>
                 <md-input-container>
-                    <input type="text" name="facebook" [(ngModel)]="model.facebook" mdInput required/>
+                    <input type="text" name="facebook" [(ngModel)]="model.facebook" mdInput/>
                 </md-input-container>
                 <label for="studente">Studente:</label>
                 <md-slide-toggle [(ngModel)]="model.carriere[0].studente" name="studente" color="primary" required></md-slide-toggle>
