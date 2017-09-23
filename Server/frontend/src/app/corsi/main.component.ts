@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
 
 import { DataSource } from '@angular/cdk';
-import { MdSort, MdSnackBar } from '@angular/material'
+import { MdSort, MdSnackBar, Sort } from '@angular/material'
 
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromEvent';
@@ -13,43 +13,56 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
-import { CdL } from '../common/all'
+import { CdL, Carriera, TableChangeData } from '../common/all'
 import { CorsiService } from './main.service'
 
 @Component({
   selector: 'corsi',
   templateUrl: './main.component.html',
-  styleUrls: ['../common/style.css']
+  styleUrls: ['../common/style.css', '../common/mainroutes.style.css']
 })
-export class CorsiComponent implements OnInit{
+export class CorsiComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'nome', 'azioni']
+  editing: boolean[] = [];
 
   corsiSource: CorsiDataSource;
 
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MdSort) sorter: MdSort;
 
-  constructor(private _corsisrv: CorsiService, private snackBar: MdSnackBar){
-
+  constructor(private _corsisrv: CorsiService, 
+              private snackBar: MdSnackBar,
+              private changeDetector: ChangeDetectorRef) {
+    this._corsisrv.getCorsi().subscribe(
+      (corsi: CdL[]) => {
+        corsi.forEach(
+          (element, index) => { this.editing[index] = false; }
+        );
+      }
+    );
   }
 
-  ngOnInit(){
-    this.corsiSource = new CorsiDataSource(this._corsisrv, this.sorter);
+  ngOnInit() {
+    this.corsiSource = new CorsiDataSource(this._corsisrv);
+    this.changeDetector.detectChanges();    
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
-        .debounceTime(150)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.corsiSource) { return; }
-          this.corsiSource.filter = this.filter.nativeElement.value;
-        });
+      .debounceTime(150)
+      .distinctUntilChanged()
+      .subscribe(() => {
+        if (!this.corsiSource) { return; }
+        this.corsiSource.filter = this.filter.nativeElement.value;
+      });
+    this.sorter.mdSortChange.subscribe(
+      (next: Sort) => { this.corsiSource.sort = next }
+    )
   }
 
-  updateCorso(corso: CdL){
-    if( corso.nome ){
+  updateCorso(corso: CdL, index: number) {
+    if (corso.nome) {
       this._corsisrv.updateCorso(corso);
-    }else{
-      corso.editing = true;
+      this.editing[index] = false;
+    } else {
       this.snackBar.open("Tutti i campi sono obbligatori", "Chiudi", {
         duration: 1500
       })
@@ -59,41 +72,43 @@ export class CorsiComponent implements OnInit{
 
 
 class CorsiDataSource extends DataSource<CdL>{
-  
-_filterChange = new BehaviorSubject('');
-get filter(): string { return this._filterChange.value; }
-set filter(filter: string) { this._filterChange.next(filter); }
 
-corsiData: CdL[];
+  _filterChange = new BehaviorSubject('');
+  set filter(filter: string) { this._filterChange.next(filter); }
 
-constructor(private corsisrv: CorsiService, private _sorter: MdSort){
-  super();
-  this.corsisrv.getCorsi().then((corsi) => {
-    this.corsiData = corsi;
-  });
-}
-  
-connect(): Observable<CdL[]> {
-  const displayDataChanges = [
-    this._filterChange,
-    this._sorter.mdSortChange,
-    Observable.fromPromise(this.corsisrv.getCorsi())
-  ];
-  
-  return Observable.merge(...displayDataChanges).map(() => {
-    let data =  this.corsiData.slice().filter((item: CdL) => {
-      return item.contains(this.filter.toLowerCase());
-    })
-    if (!this._sorter.active || this._sorter.direction == '') {
-      return data; 
-    }else{
-      return data.sort((a,b) => {
-        return a.compare(b, this._sorter.active, this._sorter.direction);
+  _sortChange = new BehaviorSubject<Sort>({ active: '', direction: '' });
+  set sort(next: Sort) { this._sortChange.next(next); }
+
+  constructor(private corsisrv: CorsiService) {
+    super();
+  }
+
+  connect(): Observable<CdL[]> {
+    const displayDataChanges = [
+      this._filterChange,
+      this._sortChange,
+      this.corsisrv.getCorsi()
+    ];
+
+    return Observable.combineLatest(
+      ...displayDataChanges,
+      (filter_in: string, sort_in: Sort, input: CdL[]) => {
+        return { data: input, filter: filter_in, sort: sort_in }
+      }).map(
+      (input: TableChangeData<CdL[]>) => {
+        let data = input.data.slice().filter((item: CdL) => {
+          return item.contains(input.filter.toLowerCase());
+        })
+        if (!input.sort.active || input.sort.direction == '') {
+          return data;
+        } else {
+          return data.sort((a, b) => {
+            return a.compare(b, input.sort.active, input.sort.direction);
+          });
+        }
+
       });
-    }
-    
-  });
-}
+  }
 
-disconnect() {}  
+  disconnect() { }
 }

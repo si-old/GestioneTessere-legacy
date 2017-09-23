@@ -1,18 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { MdButtonModule, 
-         MdIconModule, 
-         MdToolbarModule,
-         MdInputModule,
-         MdTableModule,
-         MdSortModule,
-         MdSnackBarModule,
-         MdDialogModule,
-         MdSlideToggleModule,
-         MdSelectModule,
-         MdTooltipModule
-       } from '@angular/material';
+import {
+  MdButtonModule,
+  MdIconModule,
+  MdToolbarModule,
+  MdInputModule,
+  MdTableModule,
+  MdSortModule,
+  MdSnackBarModule,
+  MdDialogModule,
+  MdSlideToggleModule,
+  MdSelectModule,
+  MdTooltipModule
+} from '@angular/material';
 
 import { FormsModule } from '@angular/forms'
 import { CdkTableModule } from '@angular/cdk';
@@ -27,7 +28,7 @@ import { AggiuntaSocioComponent } from './soci/aggiunta.component'
 import { SociService } from './soci/main.service'
 import { DettagliSocioComponent } from './soci/dettagli.component'
 
-import { DirettivoComponent } from './direttivo/component'
+import { DirettivoComponent } from './direttivo/main.component'
 
 import { CorsiComponent } from './corsi/main.component'
 import { CorsiService } from './corsi/main.service'
@@ -35,8 +36,9 @@ import { CorsiService } from './corsi/main.service'
 import { TesseramentiService } from './tesseramenti/main.service'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 
-import { ConfirmDialogComponent } from './tesseramenti/confirm-dialog.component'
-import { InputDialogComponent } from './tesseramenti/input-dialog.component'
+import { ConfirmDialog } from './dialogs/confirm.dialog'
+import { TextInputDialog } from './dialogs/textinput.dialog'
+import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
 
 
 @NgModule({
@@ -48,8 +50,9 @@ import { InputDialogComponent } from './tesseramenti/input-dialog.component'
     AggiuntaSocioComponent,
     DettagliSocioComponent,
     TesseramentiComponent,
-    ConfirmDialogComponent,
-    InputDialogComponent
+    ConfirmDialog,
+    TextInputDialog,
+    CreateCarrieraDialog
   ],
   imports: [
     BrowserModule,
@@ -75,11 +78,11 @@ import { InputDialogComponent } from './tesseramenti/input-dialog.component'
     CorsiService,
     TesseramentiService
   ],
-  entryComponents:[
+  entryComponents: [
     AggiuntaSocioComponent,
     DettagliSocioComponent,
-    ConfirmDialogComponent,
-    InputDialogComponent
+    ConfirmDialog,
+    CreateCarrieraDialog
   ],
   bootstrap: [AppComponent]
 })

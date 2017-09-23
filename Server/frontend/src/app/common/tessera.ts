@@ -1,10 +1,10 @@
 import { Tesseramento } from './tesseramento'
 
 export class Tessera{
-
+    id: number;
+    
     numero: string;
     anno: Tesseramento;
-    attiva: boolean;
 
     constructor(fields?: Partial<Tessera>){
         if(fields) Object.assign(this, fields);
@@ -12,5 +12,10 @@ export class Tessera{
 
     contains(needle: string): boolean {
         return this.numero.toLowerCase().indexOf(needle) != -1;
+    }
+
+    clone(): Tessera{
+        let toReturn = new Tessera(this);
+        return toReturn;
     }
 }

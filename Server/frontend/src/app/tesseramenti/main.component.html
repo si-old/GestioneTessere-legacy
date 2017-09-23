@@ -6,18 +6,18 @@
         </button>
     </div>
     <div style="overflow-x: auto">
-        <md-table #table [dataSource]="tessSource" mdSort>
+        <md-table #table [dataSource]="tessSource">
 
             <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
 
             <ng-container cdkColumnDef="anno">
-                <md-header-cell *cdkHeaderCellDef md-sort-header> Anno </md-header-cell>
+                <md-header-cell *cdkHeaderCellDef> Anno </md-header-cell>
                 <md-cell *cdkCellDef="let row"> {{row.anno}} </md-cell>
             </ng-container>
 
             <ng-container cdkColumnDef="attivo">
-                    <md-header-cell *cdkHeaderCellDef md-sort-header> Stato </md-header-cell>
+                    <md-header-cell *cdkHeaderCellDef> Stato </md-header-cell>
                     <md-cell *cdkCellDef="let row">
                         <span *ngIf="row.attivo">Aperto</span>
                         <span *ngIf="!row.attivo">Chiuso</span>
@@ -25,7 +25,7 @@
             </ng-container>
 
             <ng-container cdkColumnDef="azioni">
-                    <md-header-cell *cdkHeaderCellDef md-sort-header> Azioni </md-header-cell>
+                    <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
                     <md-cell *cdkCellDef="let row">
                         <button *ngIf="row.attivo" md-icon-button (click)="closeCallback()">
                             <md-icon mdTooltip="Chiudi" mdTooltipPosition="right">close</md-icon>

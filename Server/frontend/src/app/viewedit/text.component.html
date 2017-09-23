@@ -1,6 +1,5 @@
-<md-input-container *ngIf="flag" floatPlaceholder="never">
-    <input [@flyInOut]="'in'" type="text"  [(ngModel)]="content" 
-            [name]="name" mdInput [required]="inputRequired"
+<md-input-container *ngIf="flag" floatPlaceholder="never" [@flyInOut]="'in'">
+    <input type="text"  [(ngModel)]="content" [name]="name" mdInput [required]="inputRequired"
             class="full_cell"/>
 </md-input-container>
 <ng-container [@flyInOut]="'in'" *ngIf="!flag">

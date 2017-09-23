@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core'
 
 import { CdL } from '../common/all'
 
-const CORSI: CdL[] = [
+import { Observable } from 'rxjs/Observable'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+
+export const CORSI: CdL[] = [
     new CdL({ id: 1, nome: "Ing. Informatica" }),
     new CdL({ id: 2, nome: "Ing. Elettronica" }),
     new CdL({ id: 3, nome: "Ing. Meccanica" }),
@@ -15,14 +18,18 @@ const CORSI: CdL[] = [
 
 @Injectable()
 export class CorsiService{
-    getCorsi(): Promise<CdL[]>{
-        return Promise.resolve(CORSI);
+
+    _obs = new BehaviorSubject<CdL[]>(CORSI);
+
+    getCorsi(): Observable<CdL[]>{
+        return this._obs;
     }
 
     updateCorso(newCorso: CdL){
         let index = CORSI.findIndex( (temp: CdL) => { return temp.id == newCorso.id } );
         if(index != -1){
           Object.assign(CORSI[index], newCorso);
+          this._obs.next(CORSI);
         }
     }
 }

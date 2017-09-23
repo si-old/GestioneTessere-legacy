@@ -12,23 +12,11 @@ import { MdDialogRef } from '@angular/material'
             <button md-button color="primary" (click)="dialogRef.close( true)" class="half-size"> Si</button>
         </div>
     `,
-    styles:[
-        `.fontstyle{
-            font-family: Roboto, "Helvetica Neue", sans-serif;
-        }`,
-        `
-        .centered{
-            text-align: center;
-        }
-        `,
-        `.half-size{
-            width: 50%
-        }`
-    ]
+    styleUrls: ['../common/style.css']
 })
-export class ConfirmDialogComponent{
+export class ConfirmDialog{
 
-    constructor(private dialogRef: MdDialogRef<ConfirmDialogComponent>){
+    constructor(private dialogRef: MdDialogRef<ConfirmDialog>){
 
     }
 }

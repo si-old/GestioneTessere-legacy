@@ -1,23 +1,22 @@
 import { CdL } from './CdL'
 
 export class Carriera {
-    studente: boolean;
+    id: number;
 
+    studente: boolean;
     professione: string;
-    
+
     matricola: string;
     corso: CdL;
-
-    attiva: boolean;
 
     constructor(fields?: Partial<Carriera>) {
         if (fields) Object.assign(this, fields);
     }
 
     contains(needle: string): boolean {
-        return  (!this.studente && this.professione.toLowerCase().indexOf(needle) != 1) ||
-                (this.studente && this.corso.contains(needle)) ||
-                (this.studente && this.matricola.toLowerCase().indexOf(needle) != -1);
+        return (!this.studente && this.professione.toLowerCase().indexOf(needle) != 1) ||
+            (this.studente && this.corso.contains(needle)) ||
+            (this.studente && this.matricola.toLowerCase().indexOf(needle) != -1);
     }
 
     compare(other: Carriera, prop: string, order: string): number {
@@ -39,7 +38,12 @@ export class Carriera {
         return (valueA < valueB ? -1 : 1) * (order == 'asc' ? 1 : -1);
     }
 
-    toString(): string{
-        return (this.studente) ? ( this.matricola+' ('+this.corso.nome+')' ) : this.professione;
+    clone() {
+        let toReturn = new Carriera(this);
+        return toReturn;
+    }
+
+    toString(): string {
+        return (this.studente) ? (this.matricola + ' (' + this.corso.nome + ')') : this.professione;
     }
 }

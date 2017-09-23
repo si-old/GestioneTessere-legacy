@@ -1,30 +1,26 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core'
 
-import {
-    trigger,
-    state,
-    style,
-    animate,
-    transition,
-    group
-  } from '@angular/animations';
+import { trigger, state, style, animate, transition, group } from '@angular/animations';
 
-  import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-  
-  const noop = () => {
-  };
-  
-  export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => BoolVieweditComponent),
-      multi: true
-  };
-  
-  
+import { Carriera } from '../common/all'
+
+
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+
+const noop = () => {
+};
+
+export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => CarrieraVieweditComponent),
+    multi: true
+};
+
+
 
 @Component({
-    selector: 'bool-viewedit',
-    templateUrl: './bool.component.html',
+    selector: 'carriera-viewedit',
+    templateUrl: './carriera.component.html',
     styleUrls: ['./common.component.css'],
     animations: [
         trigger('flyInOut', [
@@ -44,33 +40,20 @@ import {
             ])
           ])
       ],
-      providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
+      providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]      
 })
-export class BoolVieweditComponent{
+export class CarrieraVieweditComponent implements ControlValueAccessor{
 
-    DisplayOptions = DisplayOptions;
+    @Input('required') inputRequired: boolean = false    
 
     @Input() flag: boolean;
-
-    _config: BoolVieweditConfig = {
-        display: DisplayOptions.icon
-    }
-
-    @Input()
-    set config(newConfig: BoolVieweditConfig){
-        this._config = newConfig;
-    }
-
-    get config(){
-        return this._config;
-    }
 
     private onTouchedCallback: () => void = noop;
     private onChangeCallback: (_: any) => void = noop;
 
-    _content: boolean;
+    _content: Carriera;
 
-    set content(in_content: boolean) {
+    set content(in_content: Carriera) {
         if (this._content !== in_content) {
             this._content = in_content;
             this.onChangeCallback(this._content);
@@ -94,14 +77,4 @@ export class BoolVieweditComponent{
     registerOnTouched(fn: any) {
         this.onTouchedCallback = fn;
     }
-}
-
-export class BoolVieweditConfig{
-    display: DisplayOptions;
-    falseView ?: string;
-    trueView ?: string;
-}
-
-export enum DisplayOptions{
-    text, icon
 }

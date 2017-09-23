@@ -10,12 +10,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TextVieweditComponent } from './text.component'
 import { BoolVieweditComponent } from './bool.component'
 import { CorsiVieweditComponent } from './corsi.component'
+import { CarrieraVieweditComponent } from './carriera.component'
 
 @NgModule({
     declarations:[
         TextVieweditComponent,
         BoolVieweditComponent,
-        CorsiVieweditComponent
+        CorsiVieweditComponent,
+        CarrieraVieweditComponent
     ],
     imports: [
         FormsModule,
@@ -29,7 +31,8 @@ import { CorsiVieweditComponent } from './corsi.component'
     exports: [
         TextVieweditComponent,
         BoolVieweditComponent,
-        CorsiVieweditComponent
+        CorsiVieweditComponent,
+        CarrieraVieweditComponent
     ],
     providers: [
     ]

@@ -1,28 +1,21 @@
-.example-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 500px;
-  min-width: 300px;
+.to_left{
+  display: block;
+  float: left;
 }
 
-.example-header {
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  padding-left: 24px;
-  font-size: 20px;
-}/**/
+.to_right{
+  display: block;
+  float: right;
+}
 
-.example-header {
-  min-height: 64px;
-  display: flex;
-  align-items: baseline;
-  padding: 8px 24px 0;
-  font-size: 20px;
-  justify-content: space-between;
-}/**/
+.centered{
+  text-align: center;
+}
 
-.mat-input-container {
-  font-size: 14px;
-  margin-left: 80%;
+.half-size{
+  width: 50%
+}
+
+.fontstyle{
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

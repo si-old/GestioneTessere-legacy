@@ -11,7 +11,7 @@ import { TesseramentiService } from '../tesseramenti/main.service'
 @Component({
     selector: 'aggiunta-socio',
     templateUrl: './aggiunta.component.html',
-    styleUrls: ['./aggiunta.component.css']
+    styleUrls: ['./aggiunta.component.css', '../common/style.css']
 })
 export class AggiuntaSocioComponent implements OnInit {
 
@@ -24,25 +24,25 @@ export class AggiuntaSocioComponent implements OnInit {
         private _tessserv: TesseramentiService,
         private _snackbar: MdSnackBar,
         private _diagref: MdDialogRef<AggiuntaSocioComponent>) {
-        _tessserv.getTesseramentoAttivo().subscribe(
-            (tessAttivo: Tesseramento) => {
-                if(tessAttivo){
+    }
+
+    ngOnInit() {
+        this._corsisrv.getCorsi().combineLatest(
+            this._tessserv.getTesseramentoAttivo(),
+            (in_corsi: CdL[], in_tessAtt: Tesseramento) => { return {corsi: in_corsi, tesseramento: in_tessAtt} }
+        ).subscribe(
+            (x) => {
+                if(x.tesseramento){
                     this.model = new Socio({
                         nome: "", cognome: "", email: "", cellulare: "", facebook: "",
-                        tessere: [new Tessera({ numero: '', anno: tessAttivo })],
-                        carriere: [new Carriera({ studente: true, matricola: '', corso: null })]
+                        tessere: [new Tessera({numero: '', anno: x.tesseramento })],
+                        carriere: [ new Carriera({ matricola: '', corso: x.corsi[0] }) ]
                     });
                     this.loading = false;
                 }else{
                     this.error = true;
                 }
             }
-        )
-    }
-
-    ngOnInit() {
-        this._corsisrv.getCorsi().then(
-            (corsi: CdL[]) => { this.allCdL = corsi }
         )
     }
 
