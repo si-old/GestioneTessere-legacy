@@ -79,4 +79,43 @@ export class Socio {
   getTessera(): Tessera{
     return this.tessere[0];
   }
+
+  clone(): Socio{
+    let toReturn = new Socio();
+    toReturn.id = this.id;
+    toReturn.nome = this.nome;
+    toReturn.cognome = this.cognome;
+    toReturn.email = this.email;
+    toReturn.cellulare = this.cellulare;
+    toReturn.facebook = this.facebook;
+    toReturn.carriere = [];
+    this.carriere.forEach(
+      (carr: Carriera) => { toReturn.carriere.push(carr.clone()) }
+    );
+    toReturn.tessere = [];
+    this.tessere.forEach(
+      (tess: Tessera) => { toReturn.tessere.push(tess.clone()) }
+    );
+    return toReturn;
+  }
+
+  reinit(input: Socio){
+    if(this === input){ //protect against aliasing
+      return
+    }
+    this.id = input.id;
+    this.nome = input.nome;
+    this.cognome = input.cognome;
+    this.email = input.email;
+    this.facebook = input.facebook;
+    this.cellulare = input.cellulare;
+    this.carriere.length = 0 //clear without changing reference to not break observers
+    input.carriere.forEach(
+      (carr: Carriera) => { this.carriere.push(carr) }
+    );
+    this.tessere.length = 0;
+    input.tessere.forEach(
+      (tess: Tessera) => { this.tessere.push(tess) }
+    );
+  }
 }

@@ -2,8 +2,6 @@ export class CdL {
     id: number;
     nome: string;
 
-    editing: boolean;
-
     constructor(fields?: Partial<CdL>) {
         if (fields) Object.assign(this, fields);
     }
@@ -19,7 +17,7 @@ export class CdL {
         if(this.hasOwnProperty(prop) && other.hasOwnProperty(prop)){
             [propertyA, propertyB] = [this[prop], other[prop]];
         }else{
-            console.log("unknown property "+ prop);
+            console.warn("unknown property "+ prop);
             [propertyA, propertyB] = [this.id, other.id];
         }
 
@@ -36,5 +34,9 @@ export class CdL {
         let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
         return (valueA < valueB ? -1 : 1) * (order == 'asc' ? 1 : -1);
+    }
+
+    toString(): string{
+        return this.nome;
     }
 }

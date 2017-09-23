@@ -1,0 +1,40 @@
+<div md-dialog-title>
+    <h3>Nuova Carriera</h3>
+</div>
+<form md-dialog-content #form="ngForm">
+    <label for="studente">Studente:</label>
+    <md-slide-toggle [(ngModel)]="model.studente" name="studente" color="primary" required></md-slide-toggle>
+    <ng-container *ngIf="model.studente">
+        <div>
+            <label for="matricola">Matricola:</label>
+            <md-input-container>
+                <input type="text" name="matricola" [(ngModel)]="model.matricola" mdInput [required]="model.studente" />
+            </md-input-container>
+            <label for="cdl">Corso di laurea:</label>
+            <corsi-viewedit [(ngModel)]="model.corso" [flag]="true" required name="corso"></corsi-viewedit>            
+            <!--<corsi-viewedit name="corso" [(ngModel)]="model.corso" name="cdl" [required]="model.studente"></corsi-viewedit>-->
+            <!--<md-select [(ngModel)]="model.corso" selected="model.corso" name="cdl" [required]="model.studente">
+                <md-option *ngFor="let corso of allCdL" [value]="corso">
+                    {{corso.nome}}
+                </md-option>
+            </md-select>-->
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!model.studente">
+        <div>
+            <label for="professione">Professione:</label>
+            <md-input-container>
+                <input type="text" name="professione" [(ngModel)]="model.professione" mdInput [required]="!model.studente" />
+            </md-input-container>
+        </div>
+    </ng-container>
+</form>
+<div md-dialog-actions style="display: block">
+    <button md-icon-button class="to_right" (click)="commitCarriera(form)" [disabled]="form.invalid">
+        <md-icon mdTooltip="Conferma" mdTooltipPosition="below">done</md-icon>
+    </button>
+    <button md-icon-button md-dialog-close class="to_right" >
+        <md-icon mdTooltip="Annulla" mdTooltipPosition="below">close</md-icon>
+    </button>
+</div>

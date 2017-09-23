@@ -18,19 +18,6 @@ div{
     font-weight: bold;
 }
 
-.to_left{
-    display: block;
-    float: left;
-}
-
-.to_right{
-    display: block;
-    float: right;
-}
-
-.centered{
-    text-align: center
-}
 .centered label{
     width: 30%;
 }

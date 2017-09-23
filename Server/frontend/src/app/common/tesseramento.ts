@@ -1,4 +1,7 @@
 export class Tesseramento{
+    
+    id: number;
+
     anno: string;
     attivo: boolean;
 

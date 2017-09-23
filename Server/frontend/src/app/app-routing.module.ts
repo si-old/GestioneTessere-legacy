@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 
 import { SociComponent } from './soci/main.component'
-import { DirettivoComponent } from './direttivo/component'
+import { DirettivoComponent } from './direttivo/main.component'
 import { CorsiComponent } from './corsi/main.component'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 

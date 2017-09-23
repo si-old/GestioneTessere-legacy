@@ -51,7 +51,7 @@
                         <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" mdInput [required]="model.carriere[0].studente"/>
                     </md-input-container>
                     <label for="cdl">Corso di laurea:</label>
-                    <md-select [(ngModel)]="model.carriere[0].corso" selected="model.carriere[0].corso" name="cdl" required>
+                    <md-select [(ngModel)]="model.carriere[0].corso" selected="model.carriere[0].corso" name="cdl" [required]="model.carriere[0].studente">
                         <md-option *ngFor="let corso of allCdL" [value]="corso">
                             {{corso.nome}}
                         </md-option>
@@ -69,10 +69,10 @@
             </ng-container>
         </div>
         <div md-dialog-actions style="display: block">
-            <button type="submit" class="to_left" md-icon-button (click)="submitForm(form)">
+            <button type="submit" class="to_right" md-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
                 <md-icon mdTooltip="Conferma" mdTooltipPosition="right">check</md-icon>
             </button>
-            <button class="to_left" md-dialog-close md-icon-button (click)="revertForm(form)">
+            <button class="to_right" md-dialog-close md-icon-button (click)="revertForm(form)">
                 <md-icon mdTooltip="Annulla" mdTooltipPosition="right">close</md-icon>
             </button>
         </div>

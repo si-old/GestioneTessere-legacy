@@ -19,25 +19,13 @@ import { MdDialogRef } from '@angular/material'
         </div>
         </form>
     `,
-    styles:[
-        `.fontstyle{
-            font-family: Roboto, "Helvetica Neue", sans-serif;
-        }`,
-        `
-        .centered{
-            text-align: center;
-        }
-        `,
-        `.half-size{
-            width: 50%
-        }`
-    ]
+    styleUrls: ['../common/style.css']
 })
-export class InputDialogComponent{
+export class TextInputDialog{
 
     testo: string;
 
-    constructor(private dialogRef: MdDialogRef<InputDialogComponent>){
+    constructor(private dialogRef: MdDialogRef<TextInputDialog>){
 
     }
 }
