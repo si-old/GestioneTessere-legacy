@@ -1,0 +1,19 @@
+
+form{
+    align-content: center
+}
+
+.formlist{
+    display: block;
+    width: 30%;
+    margin-left: 35%;
+}
+
+.formlist label{
+    display: inline-block;
+    width: 20%;
+    text-align: right;
+}
+.formlist md-input-container{
+    width: 75%
+}

@@ -11,13 +11,7 @@
                 <input type="text" name="matricola" [(ngModel)]="model.matricola" mdInput [required]="model.studente" />
             </md-input-container>
             <label for="cdl">Corso di laurea:</label>
-            <corsi-viewedit [(ngModel)]="model.corso" [flag]="true" required name="corso"></corsi-viewedit>            
-            <!--<corsi-viewedit name="corso" [(ngModel)]="model.corso" name="cdl" [required]="model.studente"></corsi-viewedit>-->
-            <!--<md-select [(ngModel)]="model.corso" selected="model.corso" name="cdl" [required]="model.studente">
-                <md-option *ngFor="let corso of allCdL" [value]="corso">
-                    {{corso.nome}}
-                </md-option>
-            </md-select>-->
+            <corsi-viewedit [(ngModel)]="model.corso" [flag]="true" required name="corso"></corsi-viewedit>
         </div>
     </ng-container>
 

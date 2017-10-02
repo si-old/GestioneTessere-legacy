@@ -1,17 +1,21 @@
-export class Tesseramento{
-    
+export class Tesseramento {
+
     id: number;
 
     anno: string;
     attivo: boolean;
 
-    constructor(fields?: Partial<Tesseramento>){
-        if(fields) Object.assign(this, fields);
+    constructor(fields?: Partial<Tesseramento>) {
+        if (fields) Object.assign(this, fields);
     }
 
-    toString(): string{
+    equals(other: Tesseramento) {
+        return other && this.id == other.id;
+    }
+
+    toString(): string {
         let toReturn: string = this.anno;
-        if( !this.attivo ) toReturn += " (chiuso)" 
+        if (!this.attivo) toReturn += " (chiuso)"
         return toReturn
     }
 }

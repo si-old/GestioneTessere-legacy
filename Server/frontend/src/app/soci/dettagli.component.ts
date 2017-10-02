@@ -9,6 +9,7 @@ import { Socio, Tessera, Carriera, CdL } from '../common/all'
 
 import { CorsiService } from '../corsi/main.service'
 import { SociService } from './main.service'
+import { TesseramentiService } from '../tesseramenti/main.service'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk';
@@ -17,7 +18,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { BoolVieweditConfig, DisplayOptions } from '../viewedit/bool.component'
 import { CreateCarrieraDialog } from '../dialogs/createcarriera.dialog'
-
+import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
 
 @Component({
     selector: 'dettagli-socio',
@@ -36,6 +37,8 @@ export class DettagliSocioComponent implements OnInit {
     model: Socio; //working model, where changes happen
     initModel: Socio; //initial model, used for reverting back in case or cancel
     id: number; //id of the requested Socio
+    hasTessera: boolean = false; // true se ha una tessera dell'ultimo tesseramento, quello attivo
+
 
     //array of CdLs for use in select
     allCdL: CdL[];
@@ -46,7 +49,7 @@ export class DettagliSocioComponent implements OnInit {
     carriereEditing = {}; // map to enable editing of a single row
 
     //properties for tessere table
-    tessereSource: DataSource<Tessera>; //data source, definition down in this file
+    tessereSource: BehaviorSubjectDataSource<Tessera>; //data source, definition down in this file
     tessereColumns: string[] = ['numero', 'anno'];  // showed columns
     tessereEditing = {}; // map to enable editing of a single row
 
@@ -54,6 +57,7 @@ export class DettagliSocioComponent implements OnInit {
 
     constructor(private _corsisrv: CorsiService,
         private _socisrv: SociService,
+        private _tesssrv: TesseramentiService,
         private _snack: MdSnackBar,
         private _location: Location,
         private _route: ActivatedRoute,
@@ -100,7 +104,13 @@ export class DettagliSocioComponent implements OnInit {
             (carr: Carriera) => { this.carriereEditing[carr.id] = false; } //init single row editing in the map
         );
         this.model.tessere.forEach(
-            (tess: Tessera) => { this.tessereEditing[tess.id] = false; }
+            (tess: Tessera) => { 
+                this.tessereEditing[tess.id] = false;
+                this._tesssrv.getTesseramentoAttivo().subscribe(
+                    (tessAttivo) => { if(tess.anno.equals(tessAttivo)) this.hasTessera = true; },
+                    () => {}
+                )
+            }
         );
     }
 
@@ -110,7 +120,7 @@ export class DettagliSocioComponent implements OnInit {
         )
         let source = this._socisrv.getSocioById(this.id)
         this.carriereSource = new BehaviorSubjectDataSource<Carriera>(this.model.carriere);
-        this.tessereSource = new PluckDataSource<Tessera>(source, 'tessere');
+        this.tessereSource = new BehaviorSubjectDataSource<Tessera>(this.model.tessere);
     }
     /**
      * 
@@ -118,6 +128,7 @@ export class DettagliSocioComponent implements OnInit {
     enableEditing() {
         this.editing = true;
         this.carriereColumns.push('azioni');
+        this.tessereColumns.push('azioni');
     }
 
     disableEditing() {
@@ -129,6 +140,7 @@ export class DettagliSocioComponent implements OnInit {
         );
         this.editing = false;
         this.carriereColumns.pop();
+        this.tessereColumns.pop();
     }
 
     /**
@@ -156,6 +168,7 @@ export class DettagliSocioComponent implements OnInit {
                 duration: 1500
             });
         }
+        return false; //to prevent Edge from reloading
     }
 
     /**
@@ -165,7 +178,9 @@ export class DettagliSocioComponent implements OnInit {
     revert(form: any) {
         this.model.reinit(this.initModel);
         this.carriereSource.update();
+        this.tessereSource.update();
         this.disableEditing();
+        return false; //to prevent Edge from reloading
     }
 
     addCarriera() {
@@ -179,21 +194,22 @@ export class DettagliSocioComponent implements OnInit {
         )
     }
 
-}
-
-class PluckDataSource<T> implements DataSource<T>{
-
-    constructor(private source: Observable<any>, private attribute: string) {
-
+    deleteCarriera(ind: number) {
+        this.model.carriere.splice(ind, 1);
+        this.carriereSource.update()
     }
 
-    connect(): Observable<T[]> {
-        return this.source.pluck(this.attribute);
+    addTessera() {
+        this._dialog.open(CreateTesseraDialog).afterClosed().subscribe(
+            (new_tessera: Tessera) => {
+                if (new_tessera) {
+                    this.model.tessere.unshift(new_tessera);
+                    this.tessereSource.update();
+                }
+            }
+        )
     }
 
-    disconnect() {
-
-    }
 }
 
 class BehaviorSubjectDataSource<T> implements DataSource<T>{
@@ -204,7 +220,7 @@ class BehaviorSubjectDataSource<T> implements DataSource<T>{
         this._sub = new BehaviorSubject<T[]>(source);
     }
 
-    update(){
+    update() {
         this._sub.next(this.source);
     }
 

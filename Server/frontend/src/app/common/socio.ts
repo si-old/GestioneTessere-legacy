@@ -25,7 +25,7 @@ export class Socio {
       this.cellulare.toLowerCase().indexOf(needle) != -1 ||
       this.facebook.toLowerCase().indexOf(needle) != -1 ||
       (this.carriere[0].contains(needle)) || //TODO ricerca in tutte le carriere
-      (this.tessere[0].contains(needle) );
+      (this.tessere[0].contains(needle));
   }
 
   compare(other: Socio, prop: string, order: string): number {
@@ -72,15 +72,15 @@ export class Socio {
     return (valueA < valueB ? -1 : 1) * (order == 'asc' ? 1 : -1);
   }
 
-  getCarrieraAttiva(): Carriera{
+  getCarrieraAttiva(): Carriera {
     return this.carriere[0];
   }
 
-  getTessera(): Tessera{
+  getTessera(): Tessera {
     return this.tessere[0];
   }
 
-  clone(): Socio{
+  clone(): Socio {
     let toReturn = new Socio();
     toReturn.id = this.id;
     toReturn.nome = this.nome;
@@ -99,8 +99,8 @@ export class Socio {
     return toReturn;
   }
 
-  reinit(input: Socio){
-    if(this === input){ //protect against aliasing
+  reinit(input: Socio) {
+    if (this === input) { //protect against aliasing
       return
     }
     this.id = input.id;
@@ -111,11 +111,11 @@ export class Socio {
     this.cellulare = input.cellulare;
     this.carriere.length = 0 //clear without changing reference to not break observers
     input.carriere.forEach(
-      (carr: Carriera) => { this.carriere.push(carr) }
+      (carr: Carriera) => { this.carriere.push(carr.clone()) }
     );
     this.tessere.length = 0;
     input.tessere.forEach(
-      (tess: Tessera) => { this.tessere.push(tess) }
+      (tess: Tessera) => { this.tessere.push(tess.clone()) }
     );
   }
 }

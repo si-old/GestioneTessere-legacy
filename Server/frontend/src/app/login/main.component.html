@@ -1,0 +1,20 @@
+<md-toolbar color="primary">
+    <h2 style="width: 100%"> Login </h2>
+</md-toolbar>
+<form #form="ngForm" class="fontstyle">
+    <div class="formlist">
+        <label for="user">Username: </label>
+        <md-input-container>
+            <input type="text" mdInput name="user" required [(ngModel)]="user" />
+        </md-input-container>
+    </div>
+    <div class="formlist">
+        <label for="password">Password: </label>
+        <md-input-container>
+            <input type="password" mdInput name="password" required [(ngModel)]="password" />
+        </md-input-container>
+    </div>
+    <button md-raised-button color="primary" type="submit" name="login" (click)="login()" [disabled]="form.invalid">
+        Login
+    </button>
+</form>
