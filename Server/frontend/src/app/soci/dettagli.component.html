@@ -1,9 +1,10 @@
+<toolbar *ngIf="!in_dialog"></toolbar>
 <div md-dialog-title style="text-align:center">
     <button class="to_left" md-icon-button (click)="exit()">
         <md-icon mdTooltip="Esci" mdTooltipPosition="right">keyboard_arrow_left</md-icon>
     </button>
     <h3>
-        Modifica dati {{model.nome}}
+        Modifica dati {{model.nome}} {{hasTessera}}
     </h3>
 </div>
 <form #form="ngForm" [ngClass]="form_style">
@@ -65,7 +66,10 @@
                     <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
                     <md-cell *cdkCellDef="let row; let ind=index">
                         <button md-icon-button (click)="carriereEditing[ind] = !carriereEditing[ind]">
-                            <md-icon mdTooltip="Modifica" mdTooltipPosition="right">edit</md-icon>
+                            <md-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</md-icon>
+                        </button>
+                        <button md-icon-button (click)="deleteCarriera(ind)">
+                            <md-icon mdTooltip="Elimina" mdTooltipPosition="right">delete</md-icon>
                         </button>
                     </md-cell>
                 </ng-container>
@@ -76,17 +80,33 @@
             </md-table>
         </div>
         <div class="table-container">
-            <span class="label">Tessere:</span>
+            <div class="label">
+                Tessere: <br />
+                <button md-icon-button *ngIf="editing && !hasTessera" (click)="addTessera()">
+                    <md-icon mdTooltip="Nuova tessera" mdTooltipPosition="left">add</md-icon>
+                </button>
+            </div>
             <md-table [dataSource]="tessereSource">
 
                 <ng-container cdkColumnDef="numero">
                     <md-header-cell *cdkHeaderCellDef> Numero </md-header-cell>
-                    <md-cell *cdkCellDef="let row"> {{row.numero}} </md-cell>
+                    <md-cell *cdkCellDef="let row; let ind = index">
+                        <text-viewedit name="numero" [(ngModel)]="row.numero" [flag]="tessereEditing[ind]"></text-viewedit>
+                    </md-cell>
                 </ng-container>
 
                 <ng-container cdkColumnDef="anno">
                     <md-header-cell *cdkHeaderCellDef> Anno </md-header-cell>
                     <md-cell *cdkCellDef="let row"> {{row.anno}} </md-cell>
+                </ng-container>
+
+                <ng-container cdkColumnDef="azioni">
+                    <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
+                    <md-cell *cdkCellDef="let row; let ind=index">
+                        <button md-icon-button (click)="tessereEditing[ind] = !tessereEditing[ind]">
+                            <md-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</md-icon>
+                        </button>
+                    </md-cell>
                 </ng-container>
 
                 <md-header-row *cdkHeaderRowDef="tessereColumns"></md-header-row>

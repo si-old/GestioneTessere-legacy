@@ -36,7 +36,7 @@ export class SociService {
     this._tesssrv.getTesseramenti().combineLatest(
       _corsisrv.getCorsi(),
       (tesseramenti_in: Tesseramento[], corsi_in: CdL[]) => { return { corsi: corsi_in, tesseramenti: tesseramenti_in } }
-    ).subscribe(
+    ).first().subscribe(
       (x) => {
         let i: number = 0;
         SOCI.forEach(

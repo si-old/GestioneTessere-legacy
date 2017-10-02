@@ -6,10 +6,15 @@ import { SociComponent } from './soci/main.component'
 import { DirettivoComponent } from './direttivo/main.component'
 import { CorsiComponent } from './corsi/main.component'
 import { TesseramentiComponent } from './tesseramenti/main.component'
+import { LoginComponent } from './login/main.component'
 
 import { DettagliSocioComponent } from './soci/dettagli.component'
 
 const routes: Routes = [
+  {
+    path: "login",
+    component: LoginComponent
+  },
   {
     path: "direttivo",
     component: DirettivoComponent

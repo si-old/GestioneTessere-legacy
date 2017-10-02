@@ -25,6 +25,21 @@ export class CorsiService{
         return this._obs;
     }
 
+    addCorso(nome: string){
+        let id = Math.max.apply([], CORSI.map( (cdl) => cdl.id ));
+        let newCorso = new CdL({id: id+1, nome: nome});
+        CORSI.push(newCorso);
+        this._obs.next(CORSI);
+    }
+
+    deleteCorso(corso: CdL){
+        let ind = CORSI.map( (cdl: CdL) => { return cdl.id } ).indexOf(corso.id);
+        if ( ind >= 0 && ind < CORSI.length){
+            CORSI.splice(ind, 1);
+        }
+        this._obs.next(CORSI);
+    }
+
     updateCorso(newCorso: CdL){
         let index = CORSI.findIndex( (temp: CdL) => { return temp.id == newCorso.id } );
         if(index != -1){

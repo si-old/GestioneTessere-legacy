@@ -15,8 +15,7 @@ import { TesseramentiService } from '../tesseramenti/main.service'
 })
 export class AggiuntaSocioComponent implements OnInit {
 
-    loading: boolean = true;
-    error: boolean = false;
+    error: boolean;
     model: Socio;
     allCdL: CdL[];
 
@@ -29,34 +28,33 @@ export class AggiuntaSocioComponent implements OnInit {
     ngOnInit() {
         this._corsisrv.getCorsi().combineLatest(
             this._tessserv.getTesseramentoAttivo(),
-            (in_corsi: CdL[], in_tessAtt: Tesseramento) => { return {corsi: in_corsi, tesseramento: in_tessAtt} }
+            (in_corsi: CdL[], in_tessAtt: Tesseramento) => { return { corsi: in_corsi, tesseramento: in_tessAtt } }
         ).subscribe(
             (x) => {
-                if(x.tesseramento){
-                    this.model = new Socio({
-                        nome: "", cognome: "", email: "", cellulare: "", facebook: "",
-                        tessere: [new Tessera({numero: '', anno: x.tesseramento })],
-                        carriere: [ new Carriera({ matricola: '', corso: x.corsi[0] }) ]
-                    });
-                    this.loading = false;
-                }else{
-                    this.error = true;
-                }
-            }
+                this.error = false;
+                this.model = new Socio({
+                    nome: "", cognome: "", email: "", cellulare: "", facebook: "",
+                    tessere: [new Tessera({ numero: '', anno: x.tesseramento })],
+                    carriere: [new Carriera({ matricola: '', corso: x.corsi[0] })]
+                });
+            },
+            () => { this.error = true; }
         )
     }
 
     submitForm(form: any) {
         if (!form.invalid) {
             this._diagref.close(this.model);
-        }else{
-            this._snackbar.open("Tutti i campi sono obbligatori","Ok", {
+        } else {
+            this._snackbar.open("Tutti i campi sono obbligatori", "Ok", {
                 duration: 1500
             })
         }
+        return false; //to prevent Edge from reloading
     }
 
     revertForm(form: any) {
         this._diagref.close(null);
+        return false; //to prevent Edge from reloading
     }
 }

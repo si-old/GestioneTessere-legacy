@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
 
 import { DataSource } from '@angular/cdk';
-import { MdSort, MdSnackBar, Sort } from '@angular/material'
+import { MdSort, MdSnackBar, Sort, MdDialog } from '@angular/material'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -16,6 +16,10 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { CdL, Carriera, TableChangeData } from '../common/all'
 import { CorsiService } from './main.service'
 
+import { TextInputDialog } from '../dialogs/textinput.dialog'
+import { ConfirmDialog } from '../dialogs/confirm.dialog'
+
+
 @Component({
   selector: 'corsi',
   templateUrl: './main.component.html',
@@ -25,6 +29,7 @@ export class CorsiComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'nome', 'azioni']
   editing: boolean[] = [];
+  initValues: string[] = [];
 
   corsiSource: CorsiDataSource;
 
@@ -33,11 +38,15 @@ export class CorsiComponent implements OnInit {
 
   constructor(private _corsisrv: CorsiService, 
               private snackBar: MdSnackBar,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              private dialog: MdDialog) {
     this._corsisrv.getCorsi().subscribe(
       (corsi: CdL[]) => {
         corsi.forEach(
-          (element, index) => { this.editing[index] = false; }
+          (element, index) => { 
+            this.editing[index] = false; 
+            this.initValues[index] = element.nome;
+          }
         );
       }
     );
@@ -58,9 +67,29 @@ export class CorsiComponent implements OnInit {
     )
   }
 
+  revertCorso(corso: CdL, index: number){
+    corso.nome = this.initValues[index];
+    this.editing[index] = false;
+  } 
+
+  addCorso(){
+    this.dialog.open(TextInputDialog, {
+      data : "nome"
+    }).afterClosed().subscribe(
+      (name) => { if (name) this._corsisrv.addCorso(name) }
+    );
+  }
+
+  deleteCorso(corso: CdL){
+    this.dialog.open(ConfirmDialog).afterClosed().subscribe(
+      (response) => { if(response) this._corsisrv.deleteCorso(corso); }
+    )
+  }
+
   updateCorso(corso: CdL, index: number) {
     if (corso.nome) {
       this._corsisrv.updateCorso(corso);
+      this.initValues[index] = corso.nome;
       this.editing[index] = false;
     } else {
       this.snackBar.open("Tutti i campi sono obbligatori", "Chiudi", {

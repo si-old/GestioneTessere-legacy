@@ -30,7 +30,6 @@ export class CreateCarrieraDialog{
 
     commitCarriera(form: any){
         if(!form.invalid){
-            
             this._diagref.close(this.model);
         }
     }

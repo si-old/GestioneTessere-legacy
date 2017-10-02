@@ -42,7 +42,9 @@ export class TesseramentiComponent implements OnInit {
     }
 
     newCallback() {
-        let diagopened: MdDialogRef<TextInputDialog> = this.dialog.open(TextInputDialog);
+        let diagopened: MdDialogRef<TextInputDialog> = this.dialog.open(TextInputDialog, {
+            data: "anno"
+        });
         diagopened.afterClosed().subscribe(
             anno => { if (anno) this._tessService.attivaNuovoTesseramento(anno); }
         );

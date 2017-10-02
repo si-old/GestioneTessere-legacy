@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms'
 import { CdkTableModule } from '@angular/cdk';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
+import { ToolbarComponent } from './toolbar.component'
 
 import { AppRoutingModule } from './app-routing.module';
 import { VieweditModule } from './viewedit/viewedit.module'
@@ -36,10 +37,12 @@ import { CorsiService } from './corsi/main.service'
 import { TesseramentiService } from './tesseramenti/main.service'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 
+import { LoginComponent } from './login/main.component'
+
 import { ConfirmDialog } from './dialogs/confirm.dialog'
 import { TextInputDialog } from './dialogs/textinput.dialog'
 import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
-
+import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
     TesseramentiComponent,
     ConfirmDialog,
     TextInputDialog,
-    CreateCarrieraDialog
+    CreateCarrieraDialog,
+    CreateTesseraDialog,
+    LoginComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -83,8 +89,9 @@ import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
     AggiuntaSocioComponent,
     DettagliSocioComponent,
     ConfirmDialog,
-      CreateCarrieraDialog,
-      TextInputDialog
+    CreateCarrieraDialog,
+    TextInputDialog,
+    CreateTesseraDialog
   ],
   bootstrap: [AppComponent]
 })
