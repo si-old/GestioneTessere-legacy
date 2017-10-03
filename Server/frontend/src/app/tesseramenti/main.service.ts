@@ -26,10 +26,6 @@ export class TesseramentiService {
         let filtered = TESSERAMENTI.filter((tes: Tesseramento) => { return tes.attivo });
         if (filtered.length == 1) {
             return filtered[0];
-        } else if (filtered.length > 1) {
-            console.warn("Errore, più di un tesseramento attivo");
-        } else {
-            console.warn("Errore, nessun tesseramento attivo");
         }
         return null;
     }
@@ -52,19 +48,26 @@ export class TesseramentiService {
         return this.tesseramentiSub
     }
 
-    chiudiTesseramento(): boolean {
+    _chiudiTesseramentoAtt(){
         let tessAttivo: Tesseramento = this.tesseramentoAttivo;
         if (tessAttivo && tessAttivo.attivo) {
             tessAttivo.attivo = false;
-            this.tesseramentiSub.next(TESSERAMENTI);
             return true;
         } else {
             return false;
         }
     }
 
+    chiudiTesseramento(): boolean {
+        let toReturn = this._chiudiTesseramentoAtt();
+        if (toReturn){
+            this.tesseramentiSub.next(TESSERAMENTI);
+        }
+        return toReturn;
+    }
+
     attivaNuovoTesseramento(nuovoAnno: string): Observable<Tesseramento> {
-        this.chiudiTesseramento();
+        this._chiudiTesseramentoAtt();
         TESSERAMENTI.unshift(new Tesseramento({ id: next_id, anno: nuovoAnno, attivo: true }));
         next_id = next_id + 1;
         this.tesseramentiSub.next(TESSERAMENTI);

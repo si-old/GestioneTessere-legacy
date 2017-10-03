@@ -80,7 +80,7 @@ class SociDataSource extends DataSource<Socio>{
   _sortChange = new BehaviorSubject<Sort>({ active: '', direction: '' })
 
   set sort(next: Sort) {
-    this._sortChange.next(next);
+    this._sortChange.next(next); //aliased observable to assure a first emission. mdSortChange doesn't do that
   }
 
   constructor(private socisrv: SociService) {

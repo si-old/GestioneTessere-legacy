@@ -14,7 +14,7 @@
             <input type="password" mdInput name="password" required [(ngModel)]="password" />
         </md-input-container>
     </div>
-    <button md-raised-button color="primary" type="submit" name="login" (click)="login()" [disabled]="form.invalid">
+    <button md-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
         Login
     </button>
 </form>

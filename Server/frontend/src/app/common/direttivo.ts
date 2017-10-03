@@ -1,10 +1,10 @@
 ﻿import { Socio } from './socio'
 
-export class Direttivo extends Socio {
+export class MembroDirettivo extends Socio {
     user: string;
     password: string;
 
-    constructor(fields?: Partial<Direttivo>) {
+    constructor(fields?: Partial<MembroDirettivo>) {
         super(fields);
         if (fields) Object.assign(this, fields);
     }

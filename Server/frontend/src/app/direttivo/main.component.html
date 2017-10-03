@@ -1,1 +1,41 @@
+<toolbar></toolbar>
 <h2> Direttivo </h2>
+<md-table [dataSource]="direttivoSource">
+
+    <ng-container cdkColumnDef="user">
+        <md-header-cell *cdkHeaderCellDef> Username </md-header-cell>
+        <md-cell *cdkCellDef="let row; let ind=index">
+            <!--{{row.user}}-->
+            <text-viewedit [(ngModel)]="row.user" [flag]="editing[ind]"></text-viewedit>
+        </md-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="password">
+        <md-header-cell *cdkHeaderCellDef> Password </md-header-cell>
+        <md-cell *cdkCellDef="let row; let ind=index">
+            <text-viewedit [(ngModel)]="row.password" [flag]="editing[ind]"></text-viewedit>
+        </md-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="azioni">
+        <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
+        <md-cell *cdkCellDef="let row; let ind = index">
+            <button md-icon-button (click)="editing[ind] = true" *ngIf="!editing[ind]">
+                    <md-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</md-icon>
+                </button>
+            <button md-icon-button (click)="editing[ind] = false" *ngIf="editing[ind]">
+                    <md-icon mdTooltip="Conferma" mdTooltipPosition="left">done</md-icon>
+                </button>
+            <button md-icon-button (click)="deleteMembro(row)">
+                    <md-icon mdTooltip="Elimina" mdTooltipPosition="right">delete</md-icon>
+                </button>
+            <a md-icon-button routerLink="/soci/{{row.id}}">
+                <md-icon mdTooltip="Dettagli" mdTooltipPosition="right">link</md-icon>
+            </a>
+        </md-cell>
+    </ng-container>
+
+    <md-header-row *cdkHeaderRowDef="direttivoColumns"></md-header-row>
+    <md-row *cdkRowDef="let row; columns: direttivoColumns;"></md-row>
+
+</md-table>

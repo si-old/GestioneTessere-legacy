@@ -26,17 +26,19 @@ export class AggiuntaSocioComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.model = new Socio({
+            nome: "", cognome: "", email: "", cellulare: "", facebook: "",
+            tessere: [new Tessera({ numero: '' })],
+            carriere: [new Carriera({ matricola: '' })]
+        });
         this._corsisrv.getCorsi().combineLatest(
             this._tessserv.getTesseramentoAttivo(),
             (in_corsi: CdL[], in_tessAtt: Tesseramento) => { return { corsi: in_corsi, tesseramento: in_tessAtt } }
-        ).subscribe(
+        ).do(() => {console.log("aggiuntacomponentsub")}).subscribe(
             (x) => {
                 this.error = false;
-                this.model = new Socio({
-                    nome: "", cognome: "", email: "", cellulare: "", facebook: "",
-                    tessere: [new Tessera({ numero: '', anno: x.tesseramento })],
-                    carriere: [new Carriera({ matricola: '', corso: x.corsi[0] })]
-                });
+                this.model.tessere[0].anno = x.tesseramento;
+                this.model.carriere[0].corso = x.corsi[0];
             },
             () => { this.error = true; }
         )

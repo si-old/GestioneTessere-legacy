@@ -6,9 +6,8 @@ import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/map';
 
 const SOCI: Socio[] = [
   new Socio({
