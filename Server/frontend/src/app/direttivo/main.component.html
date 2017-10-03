@@ -1,5 +1,10 @@
 <toolbar></toolbar>
-<h2> Direttivo </h2>
+<div>
+    <h2 style="display: inline-block"> Direttivo </h2>
+    <button md-icon-button style="float: right; margin: 0.83em 0" (click)="addMembro()">
+        <md-icon mdTooltip="Apri" mdTooltipPosition="above">add</md-icon>
+    </button>
+</div>
 <md-table [dataSource]="direttivoSource">
 
     <ng-container cdkColumnDef="user">

@@ -1,0 +1,12 @@
+/*form{
+    width: 100%
+}*/
+
+/* TODO check stile applicazione per font e display */
+
+label{
+    text-align: right;
+    display: inline-block;
+    width: 30%;
+    margin: 1%;
+}

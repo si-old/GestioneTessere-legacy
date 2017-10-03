@@ -31,6 +31,7 @@ import { DettagliSocioComponent } from './soci/dettagli.component'
 
 import { DirettivoComponent } from './direttivo/main.component'
 import { DirettivoService } from './direttivo/main.service'
+import { AggiuntaDirettivoComponent } from './direttivo/aggiunta.component'
 
 import { CorsiComponent } from './corsi/main.component'
 import { CorsiService } from './corsi/main.service'
@@ -60,7 +61,8 @@ import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
     CreateCarrieraDialog,
     CreateTesseraDialog,
     LoginComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    AggiuntaDirettivoComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +99,8 @@ import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
     ConfirmDialog,
     CreateCarrieraDialog,
     TextInputDialog,
-    CreateTesseraDialog
+    CreateTesseraDialog,
+    AggiuntaDirettivoComponent
   ],
   bootstrap: [AppComponent]
 })

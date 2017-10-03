@@ -1,0 +1,31 @@
+<div md-dialog-title>
+    <h3>Aggiungi Membro direttivo</h3>
+</div>
+<form #form="ngForm" md-dialog-content>
+    <div>
+        <label for="socio">Socio: </label>            
+        <md-select placeholder="Soci" [(ngModel)]="socio" selected="socio" [required]="inputRequired" name="socio">
+            <md-option *ngFor="let soci of allSoci" [value]="soci">
+                {{soci.id}} - {{soci.nome}}
+            </md-option>
+        </md-select>
+    </div>
+    <div>
+        <label for="user">Username: </label>
+        <md-input-container>
+            <input type="text" mdInput name="user" required [(ngModel)]="user" />
+        </md-input-container>
+    </div>
+    <div>
+        <label for="password">Password: </label>
+        <md-input-container>
+            <input type="password" mdInput name="password" required [(ngModel)]="password" />
+        </md-input-container>
+    </div>
+    <div>
+        <label for="password2">Ripeti Password: </label>
+        <md-input-container>
+            <input type="password" mdInput name="password2" required [(ngModel)]="password2" />
+        </md-input-container>
+    </div>
+</form>
