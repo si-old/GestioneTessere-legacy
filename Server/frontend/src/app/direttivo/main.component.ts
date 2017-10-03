@@ -4,6 +4,7 @@ import { DataSource } from '@angular/cdk'
 import { MdDialog } from '@angular/material'
 
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
+import { AggiuntaDirettivoComponent } from './aggiunta.component'
 
 import { MembroDirettivo } from '../common/all'
 import { DirettivoService } from './main.service'
@@ -36,6 +37,12 @@ export class DirettivoComponent{
       }
     );
     this._changeref.detectChanges();
+  }
+
+  addMembro(){
+    this._dialog.open(AggiuntaDirettivoComponent).afterClosed().subscribe(
+      (x) => { if(x) console.log(x); }
+    )
   }
 
   deleteMembro(m: MembroDirettivo){
