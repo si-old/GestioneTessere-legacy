@@ -8,35 +8,42 @@ import { CorsiComponent } from './corsi/main.component'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 import { LoginComponent } from './login/main.component'
 
+import { LoggedinGuard, AdminGuard } from './login/main.service'
+
 import { DettagliSocioComponent } from './soci/dettagli.component'
 
 const routes: Routes = [
   {
-    path: "login",
-    component: LoginComponent
-  },
-  {
     path: "direttivo",
-    component: DirettivoComponent
+    component: DirettivoComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: "corsi",
-    component: CorsiComponent
+    component: CorsiComponent,
+    canActivate: [LoggedinGuard]
   },
   {
     path: "tesseramenti",
-    component: TesseramentiComponent
+    component: TesseramentiComponent,
+    canActivate: [LoggedinGuard]
   },
   {
     path: "soci/:id",
-    component: DettagliSocioComponent
+    component: DettagliSocioComponent,
+    canActivate: [LoggedinGuard]
   },
   {
     path: "soci",
-    component: SociComponent
+    component: SociComponent,
+    canActivate: [LoggedinGuard]
   },
-  { path: "", redirectTo: "/soci", pathMatch: "full" },
-  { path: '**', redirectTo: "/soci", pathMatch: "full" }
+  {
+    path: "login",
+    component: LoginComponent
+  },
+  { path: "", redirectTo: "/login", pathMatch: "full" },
+  { path: '**', redirectTo: "/login", pathMatch: "full" }
 ]
 
 @NgModule({

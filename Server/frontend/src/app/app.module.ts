@@ -30,6 +30,7 @@ import { SociService } from './soci/main.service'
 import { DettagliSocioComponent } from './soci/dettagli.component'
 
 import { DirettivoComponent } from './direttivo/main.component'
+import { DirettivoService } from './direttivo/main.service'
 
 import { CorsiComponent } from './corsi/main.component'
 import { CorsiService } from './corsi/main.service'
@@ -38,6 +39,7 @@ import { TesseramentiService } from './tesseramenti/main.service'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 
 import { LoginComponent } from './login/main.component'
+import { LoginService, LoggedinGuard, AdminGuard }  from './login/main.service'
 
 import { ConfirmDialog } from './dialogs/confirm.dialog'
 import { TextInputDialog } from './dialogs/textinput.dialog'
@@ -83,7 +85,11 @@ import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
   providers: [
     SociService,
     CorsiService,
-    TesseramentiService
+    TesseramentiService,
+    DirettivoService,
+    LoginService,
+    LoggedinGuard,
+    AdminGuard
   ],
   entryComponents: [
     AggiuntaSocioComponent,

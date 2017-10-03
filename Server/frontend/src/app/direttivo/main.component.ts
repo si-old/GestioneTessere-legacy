@@ -1,4 +1,14 @@
-import { Component } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
+
+import { DataSource } from '@angular/cdk'
+import { MdDialog } from '@angular/material'
+
+import { ConfirmDialog } from '../dialogs/confirm.dialog'
+
+import { MembroDirettivo } from '../common/all'
+import { DirettivoService } from './main.service'
+
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'direttivo',
@@ -7,4 +17,47 @@ import { Component } from '@angular/core'
 })
 export class DirettivoComponent{
 
+  direttivoColumns: string[] =  ['user', 'password', 'azioni']
+  direttivoSource = null;
+  editing : boolean[] = [];
+
+  constructor(private _dirsrv: DirettivoService,
+              private _changeref: ChangeDetectorRef,
+              private _dialog: MdDialog){
+
+  }
+
+  ngOnInit(){
+    let obs = this._dirsrv.getDirettivo();
+    this.direttivoSource = new ObservableDataSource(obs);
+    obs.subscribe(
+      (x: MembroDirettivo[]) => { 
+        x.forEach( (v, i) => {this.editing[i] = false})
+      }
+    );
+    this._changeref.detectChanges();
+  }
+
+  deleteMembro(m: MembroDirettivo){
+    this._dialog.open(ConfirmDialog).afterClosed().subscribe(
+      (x: boolean) => { if(x) this._dirsrv.deleteMembro(m); }
+    )
+  }
+}
+
+class ObservableDataSource implements DataSource<MembroDirettivo>{
+  
+  constructor(private _obs: Observable<MembroDirettivo[]>){
+
+  }
+
+  connect(): Observable<MembroDirettivo[]>{
+    return this._obs.do(
+      (x) => {console.log('obsds');console.log(x)}
+    );
+  }
+
+  disconnect(){
+
+  }
 }

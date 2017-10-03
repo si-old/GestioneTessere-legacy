@@ -3,3 +3,12 @@
   border-color: black;
   margin-left: 0.5em;
 }
+
+.right-button{
+  display: inline-block;
+  float: right
+}
+
+.full-size{
+  flex-grow: 1;
+}
