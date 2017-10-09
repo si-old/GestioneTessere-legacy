@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
 
-import { DataSource } from '@angular/cdk';
-import { MdSort, MdSnackBar, Sort, MdDialog } from '@angular/material'
+import { DataSource } from '@angular/cdk/table';
+import { MatSort, MatSnackBar, Sort, MatDialog } from '@angular/material'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -13,7 +13,8 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
-import { CdL, Carriera, TableChangeData } from '../common/all'
+import { CdL, Carriera, } from '../model/all'
+import { TableChangeData } from '../common/all'
 import { CorsiService } from './main.service'
 
 import { TextInputDialog } from '../dialogs/textinput.dialog'
@@ -34,12 +35,12 @@ export class CorsiComponent implements OnInit {
   corsiSource: CorsiDataSource;
 
   @ViewChild('filter') filter: ElementRef;
-  @ViewChild(MdSort) sorter: MdSort;
+  @ViewChild(MatSort) sorter: MatSort;
 
   constructor(private _corsisrv: CorsiService, 
-              private snackBar: MdSnackBar,
+              private snackBar: MatSnackBar,
               private changeDetector: ChangeDetectorRef,
-              private dialog: MdDialog) {
+              private dialog: MatDialog) {
     this._corsisrv.getCorsi().subscribe(
       (corsi: CdL[]) => {
         corsi.forEach(
@@ -62,7 +63,7 @@ export class CorsiComponent implements OnInit {
         if (!this.corsiSource) { return; }
         this.corsiSource.filter = this.filter.nativeElement.value;
       });
-    this.sorter.mdSortChange.subscribe(
+    this.sorter.sortChange.subscribe(
       (next: Sort) => { this.corsiSource.sort = next }
     )
   }

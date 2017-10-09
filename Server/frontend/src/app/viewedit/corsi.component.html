@@ -2,9 +2,9 @@
     {{content.nome}}
 </ng-container>
 <ng-container *ngIf="flag">
-        <md-select [@flyInOut] placeholder="Corsi di Laurea" [(ngModel)]="content" selected="content" [required]="inputRequired">
-            <md-option *ngFor="let corso of allCdL" [value]="corso">
-                {{corso.nome}}
-            </md-option>
-        </md-select>
+    <mat-select [@flyInOut] placeholder="Corsi di Laurea" [(ngModel)]="content" selected="content" [required]="inputRequired" matInput>
+        <mat-option *ngFor="let corso of allCdL" [value]="corso">
+            {{corso.nome}}
+        </mat-option>
+    </mat-select>
 </ng-container>

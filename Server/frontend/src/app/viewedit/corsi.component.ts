@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@ang
 
 import { trigger, state, style, animate, transition, group } from '@angular/animations';
 
-import { CdL } from '../common/all'
+import { CdL } from '../model/all'
 import { CorsiService } from '../corsi/main.service'
 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';

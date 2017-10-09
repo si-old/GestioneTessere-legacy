@@ -24,7 +24,7 @@ export class Socio {
       this.email.toLowerCase().indexOf(needle) != -1 ||
       this.cellulare.toLowerCase().indexOf(needle) != -1 ||
       this.facebook.toLowerCase().indexOf(needle) != -1 ||
-      (this.carriere[0].contains(needle)) || //TODO ricerca in tutte le carriere
+      (this.carriere[0].contains(needle)) ||
       (this.tessere[0].contains(needle));
   }
 

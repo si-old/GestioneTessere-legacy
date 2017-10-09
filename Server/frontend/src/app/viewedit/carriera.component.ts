@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@ang
 
 import { trigger, state, style, animate, transition, group } from '@angular/animations';
 
-import { Carriera } from '../common/all'
+import { Carriera } from '../model/all'
 
 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';

@@ -1,39 +1,38 @@
-<toolbar></toolbar>
 <div>
     <h2 style="display: inline-block"> Tesseramenti </h2>
-    <button md-icon-button style="float: right; margin: 0.83em 0" (click)="newCallback()">
-            <md-icon mdTooltip="Apri" mdTooltipPosition="above">add</md-icon>
+    <button mat-icon-button style="float: right; margin: 0.83em 0" (click)="newCallback()">
+            <mat-icon mdTooltip="Apri" mdTooltipPosition="above">add</mat-icon>
         </button>
 </div>
 <div style="overflow-x: auto">
-    <md-table #table [dataSource]="tessSource">
+    <mat-table #table [dataSource]="tessSource">
 
         <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
 
         <ng-container cdkColumnDef="anno">
-            <md-header-cell *cdkHeaderCellDef> Anno </md-header-cell>
-            <md-cell *cdkCellDef="let row"> {{row.anno}} </md-cell>
+            <mat-header-cell *cdkHeaderCellDef> Anno </mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{row.anno}} </mat-cell>
         </ng-container>
 
         <ng-container cdkColumnDef="attivo">
-            <md-header-cell *cdkHeaderCellDef> Stato </md-header-cell>
-            <md-cell *cdkCellDef="let row">
+            <mat-header-cell *cdkHeaderCellDef> Stato </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
                 <span *ngIf="row.attivo">Aperto</span>
                 <span *ngIf="!row.attivo">Chiuso</span>
-            </md-cell>
+            </mat-cell>
         </ng-container>
 
         <ng-container cdkColumnDef="azioni">
-            <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
-            <md-cell *cdkCellDef="let row">
-                <button *ngIf="row.attivo" md-icon-button (click)="closeCallback()">
-                            <md-icon mdTooltip="Chiudi" mdTooltipPosition="right">close</md-icon>
+            <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+                <button *ngIf="row.attivo" mat-icon-button (click)="closeCallback()">
+                            <mat-icon mdTooltip="Chiudi" mdTooltipPosition="right">close</mat-icon>
                         </button>
-            </md-cell>
+            </mat-cell>
         </ng-container>
 
-        <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
-        <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
-    </md-table>
+        <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
 </div>

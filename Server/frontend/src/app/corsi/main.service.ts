@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 
-import { CdL } from '../common/all'
+import { CdL } from '../model/all'
 
 import { Observable } from 'rxjs/Observable'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'

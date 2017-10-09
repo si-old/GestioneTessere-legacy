@@ -1,81 +1,79 @@
 ﻿<div class="main-container">
-    <div md-dialog-title>
+    <div mat-dialog-title>
         Aggiungi nuovo socio
     </div>
     <ng-container *ngIf="!error">
         <form #form="ngForm">
-            <div md-dialog-content style="text-align:left">
+            <div mat-dialog-content style="text-align:left">
                 <div>
                     <label for="numero">Numero Tessera:</label>
-                    <md-input-container>
-                        <input type="text" name="numero" [(ngModel)]="model.tessere[0].numero" mdInput required/>
-                    </md-input-container>
+                    <mat-input-container>
+                        <input type="text" name="numero" [(ngModel)]="model.tessere[0].numero" matInput required/>
+                    </mat-input-container>
                     <label for="anno">Anno: {{ model.tessere[0].anno }} </label>
                 </div>
 
                 <div>
                     <label for="nome">Nome:</label>
-                    <md-input-container>
-                        <input type="text" name="nome" [(ngModel)]="model.nome" mdInput required/>
-                    </md-input-container>
+                    <mat-input-container>
+                        <input type="text" name="nome" [(ngModel)]="model.nome" matInput required/>
+                    </mat-input-container>
                     <label for="cognome">Cognome:</label>
-                    <md-input-container>
-                        <input type="text" name="cognome" [(ngModel)]="model.cognome" mdInput required/>
-                    </md-input-container>
+                    <mat-input-container>
+                        <input type="text" name="cognome" [(ngModel)]="model.cognome" matInput required/>
+                    </mat-input-container>
                 </div>
 
                 <div>
                     <label for="email">E-Mail:</label>
-                    <md-input-container>
-                        <input type="text" name="email" [(ngModel)]="model.email" mdInput required/>
-                    </md-input-container>
+                    <mat-input-container>
+                        <input type="text" name="email" [(ngModel)]="model.email" matInput required/>
+                    </mat-input-container>
                     <label for="cellulare">Cellulare:</label>
-                    <md-input-container>
-                        <input type="text" name="cellulare" [(ngModel)]="model.cellulare" mdInput/>
-                    </md-input-container>
+                    <mat-input-container>
+                        <input type="text" name="cellulare" [(ngModel)]="model.cellulare" matInput/>
+                    </mat-input-container>
                 </div>
 
                 <div>
                     <label for="facebook">Facebook:</label>
-                    <md-input-container>
-                        <input type="text" name="facebook" [(ngModel)]="model.facebook" mdInput/>
-                    </md-input-container>
+                    <mat-input-container>
+                        <input type="text" name="facebook" [(ngModel)]="model.facebook" matInput/>
+                    </mat-input-container>
                     <label for="studente">Studente:</label>
-                    <md-slide-toggle [(ngModel)]="model.carriere[0].studente" name="studente" color="primary"></md-slide-toggle>
+                    <mat-slide-toggle [(ngModel)]="model.carriere[0].studente" name="studente" color="primary"></mat-slide-toggle>
                 </div>
 
                 <ng-container *ngIf="model.carriere[0].studente">
                     <div>
                         <label for="matricola">Matricola:</label>
-                        <md-input-container>
-                            <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" mdInput [required]="model.carriere[0].studente"
+                        <mat-input-container>
+                            <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" matInput [required]="model.carriere[0].studente"
                             />
-                        </md-input-container>
+                        </mat-input-container>
                         <label for="cdl">Corso di laurea:</label>
-                        <md-select [(ngModel)]="model.carriere[0].corso" selected="model.carriere[0].corso" name="cdl" [required]="model.carriere[0].studente">
-                            <md-option *ngFor="let corso of allCdL" [value]="corso">
-                                {{corso.nome}}
-                            </md-option>
-                        </md-select>
+                        <div class="mat-form-field">
+                            <corsi-viewedit [(ngModel)]="model.carriere[0].corso" [flag]="true" required name="corso"></corsi-viewedit>
+                        </div>
                     </div>
                 </ng-container>
 
                 <ng-container *ngIf="!model.carriere[0].studente">
                     <div>
                         <label for="professione">Professione:</label>
-                        <md-input-container>
-                            <input type="text" name="professione" [(ngModel)]="model.carriere[0].professione" mdInput [required]="!model.carriere[0].studente"
+                        <mat-input-container>
+                            <input type="text" name="professione" [(ngModel)]="model.carriere[0].professione" matInput [required]="!model.carriere[0].studente"
                             />
-                        </md-input-container>
+                        </mat-input-container>
                     </div>
                 </ng-container>
             </div>
-            <div md-dialog-actions style="display: block">
-                <button type="submit" class="to_right" md-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
-                <md-icon mdTooltip="Conferma" mdTooltipPosition="right">check</md-icon>
+            <div mat-dialog-actions style="display: block">
+                <button type="submit" class="to_right" mat-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
+                <mat-icon mdTooltip="Conferma" mdTooltipPosition="right">check</mat-icon>
             </button>
-                <button class="to_right" md-dialog-close md-icon-button (click)="revertForm(form)">
-                <md-icon mdTooltip="Annulla" mdTooltipPosition="right">close</md-icon>
+                <button class="to_right" mat-dialog-close mat-icon-button (click)="revertForm(form)">
+                <mat-icon mdTooltip="Annulla" mdTooltipPosition="right">close</mat-icon>
             </button>
             </div>
         </form>

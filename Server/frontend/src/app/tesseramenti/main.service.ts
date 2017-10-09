@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 
-import { Tesseramento } from '../common/all'
+import { Tesseramento } from '../model/all'
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';

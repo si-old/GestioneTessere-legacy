@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 
-import { DataSource } from '@angular/cdk'
-import { MdDialog } from '@angular/material'
+import { DataSource } from '@angular/cdk/table'
+import { MatDialog } from '@angular/material'
 
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
 import { AggiuntaDirettivoComponent } from './aggiunta.component'
 
-import { MembroDirettivo } from '../common/all'
+import { MembroDirettivo } from '../model/all'
 import { DirettivoService } from './main.service'
 
 import { Observable } from 'rxjs/Observable'
@@ -24,7 +24,7 @@ export class DirettivoComponent{
 
   constructor(private _dirsrv: DirettivoService,
               private _changeref: ChangeDetectorRef,
-              private _dialog: MdDialog){
+              private _dialog: MatDialog){
 
   }
 
@@ -41,7 +41,7 @@ export class DirettivoComponent{
 
   addMembro(){
     this._dialog.open(AggiuntaDirettivoComponent).afterClosed().subscribe(
-      (x) => { if(x) console.log(x); }
+      (x) => { if(x) this._dirsrv.addMembro(x) }
     )
   }
 
@@ -59,9 +59,7 @@ class ObservableDataSource implements DataSource<MembroDirettivo>{
   }
 
   connect(): Observable<MembroDirettivo[]>{
-    return this._obs.do(
-      (x) => {console.log('obsds');console.log(x)}
-    );
+    return this._obs;
   }
 
   disconnect(){

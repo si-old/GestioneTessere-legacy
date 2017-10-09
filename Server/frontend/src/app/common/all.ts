@@ -1,10 +1,4 @@
-﻿import { Tessera } from './tessera'
-import { Carriera } from './carriera'
-import { Socio } from './socio'
-import { CdL } from './CdL'
-import { Tesseramento } from './tesseramento'
-import { MembroDirettivo } from './direttivo'
+﻿import { TableChangeData } from './tableChangeData'
+import { EqualFieldsValidatorDirective } from './equalFields.directive'
 
-import { TableChangeData } from './tableChangeData'
-
-export { Tessera, Carriera, Socio, CdL, Tesseramento, TableChangeData, MembroDirettivo };
+export { TableChangeData, EqualFieldsValidatorDirective };

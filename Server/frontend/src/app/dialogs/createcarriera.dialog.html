@@ -1,34 +1,36 @@
-<div md-dialog-title>
+<div mat-dialog-title>
     <h3>Nuova Carriera</h3>
 </div>
-<form md-dialog-content #form="ngForm">
+<form mat-dialog-content #form="ngForm">
     <label for="studente">Studente:</label>
-    <md-slide-toggle [(ngModel)]="model.studente" name="studente" color="primary" required></md-slide-toggle>
+    <mat-slide-toggle [(ngModel)]="model.studente" name="studente" color="primary" required></mat-slide-toggle>
     <ng-container *ngIf="model.studente">
         <div>
             <label for="matricola">Matricola:</label>
-            <md-input-container>
-                <input type="text" name="matricola" [(ngModel)]="model.matricola" mdInput [required]="model.studente" />
-            </md-input-container>
+            <mat-input-container>
+                <input type="text" name="matricola" [(ngModel)]="model.matricola" matInput [required]="model.studente" />
+            </mat-input-container>
             <label for="cdl">Corso di laurea:</label>
-            <corsi-viewedit [(ngModel)]="model.corso" [flag]="true" required name="corso"></corsi-viewedit>
+            <div class="mat-form-field">
+                <corsi-viewedit [(ngModel)]="model.corso" [flag]="true" required name="corso"></corsi-viewedit>
+            </div>
         </div>
     </ng-container>
 
     <ng-container *ngIf="!model.studente">
         <div>
             <label for="professione">Professione:</label>
-            <md-input-container>
-                <input type="text" name="professione" [(ngModel)]="model.professione" mdInput [required]="!model.studente" />
-            </md-input-container>
+            <mat-input-container>
+                <input type="text" name="professione" [(ngModel)]="model.professione" matInput [required]="!model.studente" />
+            </mat-input-container>
         </div>
     </ng-container>
 </form>
-<div md-dialog-actions style="display: block">
-    <button md-icon-button class="to_right" (click)="commitCarriera(form)" [disabled]="form.invalid">
-        <md-icon mdTooltip="Conferma" mdTooltipPosition="below">done</md-icon>
+<div mat-dialog-actions style="display: block">
+    <button mat-icon-button class="to_right" (click)="commitCarriera(form)" [disabled]="form.invalid">
+        <mat-icon mdTooltip="Conferma" mdTooltipPosition="below">done</mat-icon>
     </button>
-    <button md-icon-button md-dialog-close class="to_right" >
-        <md-icon mdTooltip="Annulla" mdTooltipPosition="below">close</md-icon>
+    <button mat-icon-button mat-dialog-close class="to_right" >
+        <mat-icon mdTooltip="Annulla" mdTooltipPosition="below">close</mat-icon>
     </button>
 </div>
