@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core'
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
-import { MdDialogRef, MdSnackBar } from '@angular/material'
+import { MatDialogRef, MatSnackBar } from '@angular/material'
 
-import { Socio, Tessera, Carriera, CdL, Tesseramento } from '../common/all'
+import { Socio, Tessera, Carriera, CdL, Tesseramento } from '../model/all'
 import { CorsiService } from '../corsi/main.service'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
@@ -21,8 +21,8 @@ export class AggiuntaSocioComponent implements OnInit {
 
     constructor(private _corsisrv: CorsiService,
         private _tessserv: TesseramentiService,
-        private _snackbar: MdSnackBar,
-        private _diagref: MdDialogRef<AggiuntaSocioComponent>) {
+        private _snackbar: MatSnackBar,
+        private _diagref: MatDialogRef<AggiuntaSocioComponent>) {
     }
 
     ngOnInit() {
@@ -31,14 +31,13 @@ export class AggiuntaSocioComponent implements OnInit {
             tessere: [new Tessera({ numero: '' })],
             carriere: [new Carriera({ matricola: '' })]
         });
-        this._corsisrv.getCorsi().combineLatest(
-            this._tessserv.getTesseramentoAttivo(),
-            (in_corsi: CdL[], in_tessAtt: Tesseramento) => { return { corsi: in_corsi, tesseramento: in_tessAtt } }
-        ).do(() => {console.log("aggiuntacomponentsub")}).subscribe(
-            (x) => {
+        this._corsisrv.getCorsi().subscribe(
+            (x: CdL[]) => { this.model.carriere[0].corso = x[0]; },
+        )
+        this._tessserv.getTesseramentoAttivo().subscribe(
+            (x: Tesseramento) => {
                 this.error = false;
-                this.model.tessere[0].anno = x.tesseramento;
-                this.model.carriere[0].corso = x.corsi[0];
+                this.model.tessere[0].anno = x;
             },
             () => { this.error = true; }
         )

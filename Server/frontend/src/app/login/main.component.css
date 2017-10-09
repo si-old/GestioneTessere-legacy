@@ -14,6 +14,6 @@ form{
     width: 20%;
     text-align: right;
 }
-.formlist md-input-container{
+.formlist mat-input-container{
     width: 75%
 }

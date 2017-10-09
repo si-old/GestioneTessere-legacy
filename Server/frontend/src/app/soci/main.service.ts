@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 
-import { Socio, Carriera, Tessera, CdL, Tesseramento } from '../common/all'
+import { Socio, Carriera, Tessera, CdL, Tesseramento } from '../model/all'
 
 import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
@@ -69,10 +69,14 @@ export class SociService {
   getSocioById(id: number): Observable<Socio> {
     return this._obs.map<Socio[], Socio[]>(
       (input: Socio[]) => { return input.filter( (el: Socio) => { return el.id === id } ) }
-    ).filter(
-      (input) => { return input.length == 1 }
     ).map<Socio[], Socio>(
-      (input: Socio[]) => { return input[0] }
+      (input: Socio[]) => { 
+        if(input.length == 1){
+          return input[0]
+        }else{
+          throw new Error("Socio non presente");
+        }
+       }
     );
   }
 

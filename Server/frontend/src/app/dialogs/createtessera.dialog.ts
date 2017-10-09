@@ -1,34 +1,34 @@
 import { Component, Inject } from '@angular/core'
 
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 
-import { Tesseramento, Tessera } from '../common/all'
+import { Tesseramento, Tessera } from '../model/all'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
 @Component({
     selector: 'createtessera-dialog',
     template: `
-        <p md-dialog-title color="primary" class="centered">Nuova tessera</p>
+        <p mat-dialog-title color="primary" class="centered">Nuova tessera</p>
         <ng-container *ngIf="!error">
-            <form #form="ngForm" md-dialog-content>
+            <form #form="ngForm" mat-dialog-content>
                 Anno: {{activeTesseramento}}<br />
                 <label for="numero">Numero:</label>
-                <md-input-container>
-                    <input type="text" name="numero" [(ngModel)]="numero" mdInput required />
-                </md-input-container>
-                <div md-dialog-actions style="display: block">
-                    <button md-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
-                        <md-icon mdTooltip="Conferma" mdTooltipPosition="below">done</md-icon>
+                <mat-input-container>
+                    <input type="text" name="numero" [(ngModel)]="numero" matInput required />
+                </mat-input-container>
+                <div mat-dialog-actions style="display: block">
+                    <button mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
+                        <mat-icon mdTooltip="Conferma" mdTooltipPosition="below">done</mat-icon>
                     </button>
-                    <button md-icon-button md-dialog-close class="to_right" >
-                        <md-icon mdTooltip="Annulla" mdTooltipPosition="below">close</md-icon>
+                    <button mat-icon-button mat-dialog-close class="to_right" >
+                        <mat-icon mdTooltip="Annulla" mdTooltipPosition="below">close</mat-icon>
                     </button>
                 </div>
             </form>
         </ng-container>
         <ng-container *ngIf="error">
-            <div md-dialog-content>
+            <div mat-dialog-content>
                 <h3>Nessun tesseramento attivo!</h3>
             </div>
         </ng-container>
@@ -42,8 +42,8 @@ export class CreateTesseraDialog {
 
     numero: string;
 
-    constructor( @Inject(MD_DIALOG_DATA) private str: string,
-        private dialogRef: MdDialogRef<CreateTesseraDialog>,
+    constructor( @Inject(MAT_DIALOG_DATA) private str: string,
+        private dialogRef: MatDialogRef<CreateTesseraDialog>,
         private tesseramentoSrv: TesseramentiService) {
         this.tesseramentoSrv.getTesseramentoAttivo().subscribe(
             (tessAttivo: Tesseramento) => { this.activeTesseramento = tessAttivo; this.error = false; },

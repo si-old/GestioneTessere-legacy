@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { FormsModule } from '@angular/forms'
 
-import { MdInputModule, MdIconModule, MdSlideToggleModule, MdSelectModule } from '@angular/material'
+import { MatInputModule, MatIconModule, MatSlideToggleModule, MatSelectModule } from '@angular/material'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,10 +22,10 @@ import { CarrieraVieweditComponent } from './carriera.component'
     imports: [
         FormsModule,
         BrowserModule,
-        MdInputModule,
-        MdIconModule,
-        MdSlideToggleModule,
-        MdSelectModule,
+        MatInputModule,
+        MatIconModule,
+        MatSlideToggleModule,
+        MatSelectModule,
         BrowserAnimationsModule
     ],
     exports: [

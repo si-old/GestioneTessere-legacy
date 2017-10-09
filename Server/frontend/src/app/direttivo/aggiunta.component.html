@@ -1,31 +1,43 @@
-<div md-dialog-title>
+<div mat-dialog-title>
     <h3>Aggiungi Membro direttivo</h3>
 </div>
-<form #form="ngForm" md-dialog-content>
+<form #form="ngForm" mat-dialog-content>
     <div>
-        <label for="socio">Socio: </label>            
-        <md-select placeholder="Soci" [(ngModel)]="socio" selected="socio" [required]="inputRequired" name="socio">
-            <md-option *ngFor="let soci of allSoci" [value]="soci">
-                {{soci.id}} - {{soci.nome}}
-            </md-option>
-        </md-select>
+        <label for="socio">Socio: </label>
+        <mat-input-container>
+            <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio" [required]="inputRequired" name="socio">
+                <mat-option *ngFor="let soci of allSoci" [value]="soci">
+                    {{soci.id}} - {{soci.nome}}
+                </mat-option>
+            </mat-select>
+        </mat-input-container>
     </div>
     <div>
         <label for="user">Username: </label>
-        <md-input-container>
-            <input type="text" mdInput name="user" required [(ngModel)]="user" />
-        </md-input-container>
+        <mat-input-container>
+            <input type="text" matInput name="user" required [(ngModel)]="user" />
+        </mat-input-container>
     </div>
-    <div>
-        <label for="password">Password: </label>
-        <md-input-container>
-            <input type="password" mdInput name="password" required [(ngModel)]="password" />
-        </md-input-container>
+    <div ngModelGroup="passwords" equalFields>
+        <div>
+            <label for="password">Password: </label>
+            <mat-input-container>
+                <input type="password" matInput name="password" required [(ngModel)]="password" />
+            </mat-input-container>
+        </div>
+        <div>
+            <label for="password2">Ripeti Password: </label>
+            <mat-input-container>
+                <input type="password" matInput name="password2" required [(ngModel)]="password2" />
+            </mat-input-container>
+        </div>
     </div>
-    <div>
-        <label for="password2">Ripeti Password: </label>
-        <md-input-container>
-            <input type="password" mdInput name="password2" required [(ngModel)]="password2" />
-        </md-input-container>
+    <div mat-dialog-actions class="to_right">
+        <button type="button" mat-icon-button mat-dialog-close>
+            <mat-icon  mdTooltip="Annulla" mdTooltipPosition="below">close</mat-icon>
+        </button>
+        <button type="submit" mat-icon-button (click)="addMembro(form)" [disabled]="form.invalid">
+            <mat-icon  mdTooltip="Salva" mdTooltipPosition="below">done</mat-icon>
+        </button>
     </div>
 </form>

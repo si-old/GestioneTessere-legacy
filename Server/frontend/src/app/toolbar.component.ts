@@ -6,19 +6,19 @@ import { LoginService } from './login/main.service'
 @Component({
     selector: 'toolbar',
     template: `
-    <md-toolbar color="primary">
-        <a md-raised-button class="custom-button" color="accent" routerLink="/soci">Soci</a>
-        <a md-raised-button class="custom-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
-        <a md-raised-button class="custom-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
+    <mat-toolbar color="primary">
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/soci">Soci</a>
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
         <ng-container *ngIf="isAdmin">
-            <a md-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
+            <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
         </ng-container>
         <div class="full-size">
-            <button md-fab color="accent" class="right-button" (click)="logout()">
-                <md-icon mdTooltip="Logout" mdTooltipPosition="below">power_settings_new</md-icon>
+            <button mat-fab color="accent" class="right-button" (click)="logout()">
+                <mat-icon mdTooltip="Logout" mdTooltipPosition="below">power_settings_new</mat-icon>
             </button>
         </div>
-    </md-toolbar>
+    </mat-toolbar>
     `,
     styleUrls: ['./toolbar.component.css']
 })

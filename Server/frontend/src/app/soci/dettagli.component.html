@@ -1,132 +1,140 @@
-<toolbar *ngIf="!in_dialog"></toolbar>
-<div md-dialog-title style="text-align:center">
-    <button class="to_left" md-icon-button (click)="exit()">
-        <md-icon mdTooltip="Esci" mdTooltipPosition="right">keyboard_arrow_left</md-icon>
+<div class="fontstyle">
+    <div mat-dialog-title style="text-align:center">
+        <button class="to_left" mat-icon-button (click)="exit()">
+        <mat-icon mdTooltip="Esci" mdTooltipPosition="right">keyboard_arrow_left</mat-icon>
     </button>
-    <h3>
-        Modifica dati {{model.nome}}
-    </h3>
-</div>
-<form #form="ngForm" [ngClass]="form_style">
-    <div md-dialog-content>
-        <div class="form_group">
-            <span class="label">Nome:</span>
-            <text-viewedit [(ngModel)]="model.nome" name="nome" [flag]="editing" required></text-viewedit>
-        </div>
-        <div class="form_group">
-            <span class="label">Cognome:</span>
-            <text-viewedit [(ngModel)]="model.cognome" name="cognome" [flag]="editing" required></text-viewedit>
-        </div>
-        <div class="form_group">
-            <span class="label">E-Mail:</span>
-            <text-viewedit [(ngModel)]="model.email" name="email" [flag]="editing" required></text-viewedit>
-        </div>
-        <div class="form_group">
-            <span class="label">Cellulare:</span>
-            <text-viewedit [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" required></text-viewedit>
-        </div>
-        <div class="form_group">
-            <span class="label">Facebook:</span>
-            <text-viewedit [(ngModel)]="model.facebook" name="facebook" [flag]="editing" required></text-viewedit>
-        </div>
-        <div class="table-container">
-            <div class="label">
-                Carriere: <br />
-                <button md-icon-button *ngIf="editing" (click)="addCarriera()">
-                    <md-icon mdTooltip="Nuova carriera" mdTooltipPosition="left">add</md-icon>
-                </button>
+        <h3>
+            Modifica dati {{model.nome}}
+        </h3>
+    </div>
+    <form #form="ngForm" [ngClass]="form_style">
+        <div mat-dialog-content>
+            <div class="form_group">
+                <span class="label">Nome:</span>
+                <text-viewedit [(ngModel)]="model.nome" name="nome" [flag]="editing" required></text-viewedit>
             </div>
-            <md-table [dataSource]="carriereSource">
+            <div class="form_group">
+                <span class="label">Cognome:</span>
+                <text-viewedit [(ngModel)]="model.cognome" name="cognome" [flag]="editing" required></text-viewedit>
+            </div>
+            <div class="form_group">
+                <span class="label">E-Mail:</span>
+                <text-viewedit [(ngModel)]="model.email" name="email" [flag]="editing" required></text-viewedit>
+            </div>
+            <div class="form_group">
+                <span class="label">Cellulare:</span>
+                <text-viewedit [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" required></text-viewedit>
+            </div>
+            <div class="form_group">
+                <span class="label">Facebook:</span>
+                <text-viewedit [(ngModel)]="model.facebook" name="facebook" [flag]="editing" required></text-viewedit>
+            </div>
+            <div class="table-container">
+                <div class="label">
+                    Carriere: <br />
+                    <button mat-icon-button *ngIf="editing" (click)="addCarriera()">
+                    <mat-icon mdTooltip="Nuova carriera" mdTooltipPosition="left">add</mat-icon>
+                </button>
+                </div>
+                <mat-table [dataSource]="carriereSource">
 
-                <ng-container cdkColumnDef="studente">
-                    <md-header-cell *cdkHeaderCellDef> Studente/Lavoratore </md-header-cell>
-                    <md-cell *cdkCellDef="let row; let ind=index">
-                        {{row.studente ? 'Studente' : 'Lavoratore'}}
-                    </md-cell>
-                </ng-container>
+                    <ng-container cdkColumnDef="studente">
+                        <mat-header-cell *cdkHeaderCellDef> Studente/Lavoratore </mat-header-cell>
+                        <mat-cell *cdkCellDef="let row; let ind=index">
+                            {{row.studente ? 'Studente' : 'Lavoratore'}}
+                        </mat-cell>
+                    </ng-container>
 
-                <ng-container cdkColumnDef="dettagli">
-                    <md-header-cell *cdkHeaderCellDef> Corso di laurea/ Professione </md-header-cell>
-                    <md-cell *cdkCellDef="let row; let ind = index">
-                        <ng-container *ngIf="!carriereEditing[ind]">
-                            {{row}}
-                        </ng-container>
-                        <ng-container *ngIf="carriereEditing[ind]">
-                            <ng-container *ngIf="row.studente">
-                                <corsi-viewedit [(ngModel)]="row.corso" [flag]="true" required name="corso"></corsi-viewedit>
+                    <ng-container cdkColumnDef="dettagli">
+                        <mat-header-cell *cdkHeaderCellDef> Corso di laurea/ Professione </mat-header-cell>
+                        <mat-cell *cdkCellDef="let row; let ind = index">
+                            <ng-container *ngIf="!carriereEditing[ind]">
+                                {{row}}
                             </ng-container>
-                            <md-input-container *ngIf="!row.studente">
-                                <input type="text" [(ngModel)]="row.professione" name="professione" mdInput required />
-                            </md-input-container>
-                        </ng-container>
-                    </md-cell>
-                </ng-container>
+                            <ng-container *ngIf="carriereEditing[ind]">
+                                <ng-container *ngIf="row.studente">
+                                    <corsi-viewedit [(ngModel)]="row.corso" [flag]="true" required name="corso"></corsi-viewedit>
+                                </ng-container>
+                                <mat-input-container *ngIf="!row.studente">
+                                    <input type="text" [(ngModel)]="row.professione" name="professione" matInput required />
+                                </mat-input-container>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
 
-                <ng-container cdkColumnDef="azioni">
-                    <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
-                    <md-cell *cdkCellDef="let row; let ind=index">
-                        <button md-icon-button (click)="carriereEditing[ind] = !carriereEditing[ind]">
-                            <md-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</md-icon>
+                    <ng-container cdkColumnDef="azioni">
+                        <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
+                        <mat-cell *cdkCellDef="let row; let ind=index">
+                            <button mat-icon-button (click)="carriereEditing[ind] = !carriereEditing[ind]">
+                            <mat-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</mat-icon>
                         </button>
-                        <button md-icon-button (click)="deleteCarriera(ind)">
-                            <md-icon mdTooltip="Elimina" mdTooltipPosition="right">delete</md-icon>
+                            <button mat-icon-button (click)="deleteCarriera(ind)">
+                            <mat-icon mdTooltip="Elimina" mdTooltipPosition="right">delete</mat-icon>
                         </button>
-                    </md-cell>
-                </ng-container>
+                        </mat-cell>
+                    </ng-container>
 
-                <md-header-row *cdkHeaderRowDef="carriereColumns"></md-header-row>
-                <md-row *cdkRowDef="let row; columns: carriereColumns;"></md-row>
+                    <mat-header-row *cdkHeaderRowDef="carriereColumns"></mat-header-row>
+                    <mat-row *cdkRowDef="let row; columns: carriereColumns;"></mat-row>
 
-            </md-table>
-        </div>
-        <div class="table-container">
-            <div class="label">
-                Tessere: <br />
-                <button md-icon-button *ngIf="editing && !hasTessera" (click)="addTessera()">
-                    <md-icon mdTooltip="Nuova tessera" mdTooltipPosition="left">add</md-icon>
-                </button>
+                </mat-table>
             </div>
-            <md-table [dataSource]="tessereSource">
+            <div class="table-container">
+                <div class="label">
+                    Tessere: <br />
+                    <button mat-icon-button *ngIf="editing && !hasTessera" (click)="addTessera()">
+                        <mat-icon mdTooltip="Nuova tessera" mdTooltipPosition="left">add</mat-icon>
+                    </button>
+                </div>
+                <mat-table [dataSource]="tessereSource">
 
-                <ng-container cdkColumnDef="numero">
-                    <md-header-cell *cdkHeaderCellDef> Numero </md-header-cell>
-                    <md-cell *cdkCellDef="let row; let ind = index">
-                        <text-viewedit name="numero" [(ngModel)]="row.numero" [flag]="tessereEditing[ind]"></text-viewedit>
-                    </md-cell>
-                </ng-container>
+                    <ng-container cdkColumnDef="numero">
+                        <mat-header-cell *cdkHeaderCellDef> Numero </mat-header-cell>
+                        <mat-cell *cdkCellDef="let row; let ind = index">
+                            <ng-container *ngIf="!tessereEditing[ind]">
+                                {{row.numero}}
+                            </ng-container>
+                            <ng-container *ngIf="tessereEditing[ind]">
+                                <mat-input-container>
+                                    <input type="text" [(ngModel)]="row.numero" name="numero" matInput/>
+                                </mat-input-container>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
 
-                <ng-container cdkColumnDef="anno">
-                    <md-header-cell *cdkHeaderCellDef> Anno </md-header-cell>
-                    <md-cell *cdkCellDef="let row"> {{row.anno}} </md-cell>
-                </ng-container>
+                    <ng-container cdkColumnDef="anno">
+                        <mat-header-cell *cdkHeaderCellDef> Anno </mat-header-cell>
+                        <mat-cell *cdkCellDef="let row"> {{row.anno}} </mat-cell>
+                    </ng-container>
 
-                <ng-container cdkColumnDef="azioni">
-                    <md-header-cell *cdkHeaderCellDef> Azioni </md-header-cell>
-                    <md-cell *cdkCellDef="let row; let ind=index">
-                        <button md-icon-button (click)="tessereEditing[ind] = !tessereEditing[ind]">
-                            <md-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</md-icon>
+                    <ng-container cdkColumnDef="azioni">
+                        <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
+                        <mat-cell *cdkCellDef="let row; let ind=index">
+                            <button mat-icon-button (click)="tessereEditing[ind] = !tessereEditing[ind]">
+                            <mat-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</mat-icon>
                         </button>
-                    </md-cell>
-                </ng-container>
+                        </mat-cell>
+                    </ng-container>
 
-                <md-header-row *cdkHeaderRowDef="tessereColumns"></md-header-row>
-                <md-row *cdkRowDef="let row; columns: tessereColumns;"></md-row>
-            </md-table>
+                    <mat-header-row *cdkHeaderRowDef="tessereColumns"></mat-header-row>
+                    <mat-row *cdkRowDef="let row; columns: tessereColumns;"></mat-row>
+                </mat-table>
+            </div>
         </div>
-    </div>
-    <div md-dialog-actions style="display: block">
-        <ng-container *ngIf="editing">
-            <button class="to_right" md-icon-button (click)="confirm(form)" [disabled]="form.invalid">
-                <md-icon mdTooltip="Conferma" mdTooltipPosition="above">done</md-icon>
+        <div mat-dialog-actions style="text-align: end; flex-direction: row-reverse; padding-bottom: 10px;">
+            <ng-container *ngIf="editing">
+                <button mat-icon-button (click)="revert(form)">
+                <mat-icon mdTooltip="Annulla" mdTooltipPosition="above">close</mat-icon>
             </button>
-            <button class="to_right" md-icon-button (click)="revert(form)">
-                <md-icon mdTooltip="Annulla" mdTooltipPosition="above">close</md-icon>
+                <button mat-icon-button (click)="confirm(form)" [disabled]="form.invalid">
+                <mat-icon mdTooltip="Conferma" mdTooltipPosition="above">done</mat-icon>
             </button>
-        </ng-container>
-        <ng-container *ngIf="!editing">
-            <button class="to_right" md-icon-button (click)="enableEditing()">
-                <md-icon mdTooltip="Modifica" mdTooltipPosition="above">edit</md-icon>
+            </ng-container>
+            <ng-container *ngIf="!editing">
+                <button mat-icon-button (click)="enableEditing()">
+                <mat-icon mdTooltip="Modifica" mdTooltipPosition="above">edit</mat-icon>
             </button>
-        </ng-container>
-    </div>
-</form>
+            </ng-container>
+        </div>
+    </form>
+</div>

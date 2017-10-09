@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 
-import { MdDialog, MdDialogRef } from '@angular/material'
+import { MatDialog, MatDialogRef } from '@angular/material'
 
-import { Tesseramento } from '../common/all'
+import { Tesseramento } from '../model/all'
 import { TesseramentiService } from './main.service'
 
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
@@ -11,7 +11,7 @@ import { TextInputDialog } from '../dialogs/textinput.dialog'
 
 import { Observable } from 'rxjs/Observable'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataSource } from '@angular/cdk';
+import { DataSource } from '@angular/cdk/table';
 
 @Component({
     selector: 'tesseramenti',
@@ -25,7 +25,7 @@ export class TesseramentiComponent implements OnInit {
 
     constructor(private _tessService: TesseramentiService,
         private changeDetector: ChangeDetectorRef,
-        private dialog: MdDialog) {
+        private dialog: MatDialog) {
 
     }
 
@@ -35,14 +35,14 @@ export class TesseramentiComponent implements OnInit {
     }
 
     closeCallback() {
-        let diagopened: MdDialogRef<ConfirmDialog> = this.dialog.open(ConfirmDialog);
+        let diagopened: MatDialogRef<ConfirmDialog> = this.dialog.open(ConfirmDialog);
         diagopened.afterClosed().subscribe(
             response => { if (response) this._tessService.chiudiTesseramento(); }
         );
     }
 
     newCallback() {
-        let diagopened: MdDialogRef<TextInputDialog> = this.dialog.open(TextInputDialog, {
+        let diagopened: MatDialogRef<TextInputDialog> = this.dialog.open(TextInputDialog, {
             data: "anno"
         });
         diagopened.afterClosed().subscribe(

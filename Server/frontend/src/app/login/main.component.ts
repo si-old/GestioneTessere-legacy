@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 
 import { Router } from '@angular/router'
 
-import { MdSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material'
 
 import { LoginService } from './main.service'
 
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit{
 
     error: boolean = true;
 
-    constructor(private mdsnack: MdSnackBar, 
+    constructor(private snack: MatSnackBar, 
                 private _loginsrv: LoginService,
                 private _router: Router) {
     }
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit{
         if(res){
             this._router.navigate(['/soci'])
         }else{
-            this.mdsnack.open("Errore di autenticazione", "OK", {
+            this.snack.open("Errore di autenticazione", "OK", {
                 duration: 1500,
             })
         }

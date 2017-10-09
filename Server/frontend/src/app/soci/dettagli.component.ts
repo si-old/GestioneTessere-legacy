@@ -2,17 +2,17 @@ import { Component, OnInit, Inject, Optional } from '@angular/core'
 
 import { Location } from '@angular/common'
 
-import { ActivatedRoute } from "@angular/router";
-import { MD_DIALOG_DATA, MdDialogRef, MdSnackBar, MdDialog } from '@angular/material'
+import { ActivatedRoute, Router } from "@angular/router";
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material'
 
-import { Socio, Tessera, Carriera, CdL } from '../common/all'
+import { Socio, Tessera, Carriera, CdL } from '../model/all'
 
 import { CorsiService } from '../corsi/main.service'
 import { SociService } from './main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataSource } from '@angular/cdk';
+import { DataSource } from '@angular/cdk/table';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -27,9 +27,9 @@ import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
 })
 export class DettagliSocioComponent implements OnInit {
 
-    //related to having this component in a MdDialog or as a main component or a Route
+    //related to having this component in a MatDialog or as a main component or a Route
     private in_dialog: boolean = false; // true is it is in a dialog
-    private _diagref: MdDialogRef<DettagliSocioComponent> = null;
+    private _diagref: MatDialogRef<DettagliSocioComponent> = null;
     private form_style: string = "in_route" //style for the form, to assure a good visualization
 
     //model and editing data
@@ -58,12 +58,13 @@ export class DettagliSocioComponent implements OnInit {
     constructor(private _corsisrv: CorsiService,
         private _socisrv: SociService,
         private _tesssrv: TesseramentiService,
-        private _snack: MdSnackBar,
+        private _snack: MatSnackBar,
         private _location: Location,
         private _route: ActivatedRoute,
-        private _dialog: MdDialog,
-        @Optional() @Inject(MD_DIALOG_DATA) data: any,
-        @Optional() private diagref: MdDialogRef<DettagliSocioComponent>) {
+        private _router: Router,
+        private _dialog: MatDialog,
+        @Optional() @Inject(MAT_DIALOG_DATA) data: any,
+        @Optional() private diagref: MatDialogRef<DettagliSocioComponent>) {
 
         if (diagref) { //if injected reference is not null, we are in a dialog
             this.in_dialog = true;
@@ -84,7 +85,8 @@ export class DettagliSocioComponent implements OnInit {
                 (params) => {
                     this.id = +params['id'];
                     this._socisrv.getSocioById(+params['id']).subscribe(
-                        socio => { this.initData(socio); }
+                        socio => { this.initData(socio); },
+                        (x) => { this._router.navigate(['/soci']) }
                     );
                 }
             );

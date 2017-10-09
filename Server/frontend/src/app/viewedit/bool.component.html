@@ -1,7 +1,7 @@
 <ng-container *ngIf="!flag" [@flyInOut]>
     <ng-container *ngIf="config.display==DisplayOptions.icon">
-        <md-icon *ngIf="content">check</md-icon>
-        <md-icon *ngIf="!content">close</md-icon>
+        <mat-icon *ngIf="content">check</mat-icon>
+        <mat-icon *ngIf="!content">close</mat-icon>
     </ng-container>
     <ng-container *ngIf="config.display==DisplayOptions.text">
         <ng-container *ngIf="content">{{config.trueView}}</ng-container>
@@ -9,7 +9,7 @@
     </ng-container>
 </ng-container>
 <ng-container *ngIf="flag">
-        <md-slide-toggle [@flyInOut] [(ngModel)]="content" 
+        <mat-slide-toggle [@flyInOut] [(ngModel)]="content" 
                         name="content" color="primary">
-        </md-slide-toggle>
+        </mat-slide-toggle>
 </ng-container>

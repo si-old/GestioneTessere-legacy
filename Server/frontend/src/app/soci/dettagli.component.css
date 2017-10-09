@@ -26,7 +26,7 @@ div{
     margin: 1% 0;
 }
 
-.table-container md-table{
+.table-container mat-table{
     display: inline-block;
     width: 87%;
     border: rgba(0, 0, 0, 0.12) 1px solid;

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 
-import { MdDialogRef } from '@angular/material'
+import { MatDialogRef } from '@angular/material'
 
 import { SociService } from '../soci/main.service'
-import { MembroDirettivo, Socio } from '../common/all'
+import { MembroDirettivo, Socio } from '../model/all'
 
 @Component({
     selector: 'aggiunta-direttivo',
@@ -19,7 +19,7 @@ export class AggiuntaDirettivoComponent implements OnInit {
     password: string;
     password2: string;
     
-    constructor(private _diagref: MdDialogRef<AggiuntaDirettivoComponent>,
+    constructor(private _diagref: MatDialogRef<AggiuntaDirettivoComponent>,
         private _socisrv: SociService) {
 
     }
@@ -30,5 +30,13 @@ export class AggiuntaDirettivoComponent implements OnInit {
         )
     }
 
-    //TODO check form e ritorno utente al direttivo
+    addMembro(form){
+        if(!form.invalid && this.password == this.password2){
+            let toReturn: MembroDirettivo  = new MembroDirettivo(this.socio);
+            toReturn.user = this.user;
+            toReturn.password = this.password;
+            this._diagref.close(toReturn);
+        }
+        return false;
+    }
 }

@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
 
-import { Socio, TableChangeData } from '../common/all'
+import { Socio } from '../model/all'
+import { TableChangeData } from '../common/all'
 import { SociService } from './main.service'
 import { AggiuntaSocioComponent } from './aggiunta.component'
 import { DettagliSocioComponent } from './dettagli.component'
 
-import { MdSort, MdSnackBar, MdDialog, MdDialogRef, Sort } from '@angular/material'
+import { MatSort, MatSnackBar, MatDialog, MatDialogRef, Sort } from '@angular/material'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataSource } from '@angular/cdk';
+import { DataSource } from '@angular/cdk/table';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
@@ -29,11 +30,11 @@ export class SociComponent implements OnInit {
   sociSource: SociDataSource;
 
   @ViewChild('filter') filter: ElementRef;
-  @ViewChild(MdSort) sorter: MdSort;
+  @ViewChild(MatSort) sorter: MatSort;
 
   constructor(private socisrv: SociService,
-    private snackBar: MdSnackBar,
-    private dialog: MdDialog,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
     private changeDetector: ChangeDetectorRef) {
   }
 
@@ -46,13 +47,13 @@ export class SociComponent implements OnInit {
       .subscribe(() => {
         if (this.sociSource) { this.sociSource.filter = this.filter.nativeElement.value; }
       });
-    this.sorter.mdSortChange.subscribe(
+    this.sorter.sortChange.subscribe(
       (next: Sort) => { this.sociSource.sort = next }
     )
   }
 
   addSocio() {
-    let diagopened: MdDialogRef<AggiuntaSocioComponent> = this.dialog.open(AggiuntaSocioComponent, {
+    let diagopened: MatDialogRef<AggiuntaSocioComponent> = this.dialog.open(AggiuntaSocioComponent, {
       width: "75%"
     });
     diagopened.afterClosed().subscribe(
@@ -61,7 +62,7 @@ export class SociComponent implements OnInit {
   }
 
   editSocio(selected: Socio) {
-    let diagopened: MdDialogRef<DettagliSocioComponent> = this.dialog.open(DettagliSocioComponent, {
+    let diagopened: MatDialogRef<DettagliSocioComponent> = this.dialog.open(DettagliSocioComponent, {
       width: "75%",
       data: { socio: selected }
     });
@@ -80,7 +81,7 @@ class SociDataSource extends DataSource<Socio>{
   _sortChange = new BehaviorSubject<Sort>({ active: '', direction: '' })
 
   set sort(next: Sort) {
-    this._sortChange.next(next); //aliased observable to assure a first emission. mdSortChange doesn't do that
+    this._sortChange.next(next); //aliased observable to assure a first emission. sortChange doesn't do that
   }
 
   constructor(private socisrv: SociService) {

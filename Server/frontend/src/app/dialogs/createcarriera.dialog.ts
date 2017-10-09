@@ -1,8 +1,8 @@
 import { Component } from '@angular/core'
 
-import { MdDialogRef } from '@angular/material'
+import { MatDialogRef } from '@angular/material'
 
-import { Carriera } from '../common/all'
+import { Carriera } from '../model/all'
 
 @Component({
     selector: 'create-carriera-dialog',
@@ -24,7 +24,7 @@ import { Carriera } from '../common/all'
 export class CreateCarrieraDialog{
     private model: Carriera = new Carriera({id: -1, studente: false, professione: ''});
 
-    constructor(private _diagref: MdDialogRef<CreateCarrieraDialog>){
+    constructor(private _diagref: MatDialogRef<CreateCarrieraDialog>){
 
     }
 

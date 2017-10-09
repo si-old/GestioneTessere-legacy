@@ -1,21 +1,21 @@
 ﻿import { Component, Inject } from '@angular/core'
 
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 
 @Component({
     selector: 'confirm-dialog',
     template: `
-        <p md-dialog-title color="primary" class="centered">Conferma</p>
+        <p mat-dialog-title color="primary" class="centered">Conferma</p>
         <form>
-        <div md-dialog-content class="fontstyle">
+        <div mat-dialog-content class="fontstyle">
             <label>Inserisci {{str}}:</label>
-            <md-input-container>
-                <input type="text" mdInput name="anno" [(ngModel)]="testo" #input="ngModel" required/>
-            </md-input-container>
+            <mat-input-container>
+                <input type="text" matInput name="anno" [(ngModel)]="testo" #input="ngModel" required/>
+            </mat-input-container>
         </div>
-        <div md-dialog-actions>
-            <button md-button color="primary" (click)="onSubmit(false)" class="half-size" >No</button>
-            <button md-button color="primary" (click)="onSubmit(true)" class="half-size" [disabled]="input.invalid"> Si</button>
+        <div mat-dialog-actions>
+            <button type="button" mat-button color="primary" (click)="onSubmit(false)" class="half-size" >No</button>
+            <button type="submit" mat-button color="primary" (click)="onSubmit(true)" class="half-size" [disabled]="input.invalid"> Si</button>
         </div>
         </form>
     `,
@@ -24,8 +24,8 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material'
 export class TextInputDialog{
 
     testo: string;
-    constructor(@Inject(MD_DIALOG_DATA) private str: string,
-                private dialogRef: MdDialogRef<TextInputDialog>){
+    constructor(@Inject(MAT_DIALOG_DATA) private str: string,
+                private dialogRef: MatDialogRef<TextInputDialog>){
     }
 
     onSubmit(accept: boolean): boolean{

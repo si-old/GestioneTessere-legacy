@@ -2,21 +2,21 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import {
-  MdButtonModule,
-  MdIconModule,
-  MdToolbarModule,
-  MdInputModule,
-  MdTableModule,
-  MdSortModule,
-  MdSnackBarModule,
-  MdDialogModule,
-  MdSlideToggleModule,
-  MdSelectModule,
-  MdTooltipModule
+  MatButtonModule,
+  MatIconModule,
+  MatToolbarModule,
+  MatInputModule,
+  MatTableModule,
+  MatSortModule,
+  MatSnackBarModule,
+  MatDialogModule,
+  MatSlideToggleModule,
+  MatSelectModule,
+  MatTooltipModule
 } from '@angular/material';
 
 import { FormsModule } from '@angular/forms'
-import { CdkTableModule } from '@angular/cdk';
+import { CdkTableModule } from '@angular/cdk/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar.component'
@@ -38,6 +38,8 @@ import { CorsiService } from './corsi/main.service'
 
 import { TesseramentiService } from './tesseramenti/main.service'
 import { TesseramentiComponent } from './tesseramenti/main.component'
+
+import { EqualFieldsValidatorDirective } from './common/all'
 
 import { LoginComponent } from './login/main.component'
 import { LoginService, LoggedinGuard, AdminGuard }  from './login/main.service'
@@ -62,25 +64,26 @@ import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
     CreateTesseraDialog,
     LoginComponent,
     ToolbarComponent,
-    AggiuntaDirettivoComponent
+    AggiuntaDirettivoComponent,
+    EqualFieldsValidatorDirective
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MdButtonModule,
-    MdIconModule,
-    MdToolbarModule,
-    MdInputModule,
-    MdSnackBarModule,
-    MdDialogModule,
-    MdTableModule,
-    MdSortModule,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatTableModule,
+    MatSortModule,
     CdkTableModule,
-    MdSlideToggleModule,
-    MdSelectModule,
+    MatSlideToggleModule,
+    MatSelectModule,
     FormsModule,
     VieweditModule,
-    MdTooltipModule,
+    MatTooltipModule,
     HttpClientModule,
     AppRoutingModule
   ],
