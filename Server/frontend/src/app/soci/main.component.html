@@ -5,7 +5,7 @@
     <input matInput #filter placeholder="Ricerca soci">
   </mat-input-container>
   <button mat-icon-button (click)="addSocio()">
-      <mat-icon mdTooltip="Nuovo" mdTooltipPosition="above">add</mat-icon>    
+      <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
     </button>
 </div>
 
@@ -59,10 +59,10 @@
       <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
       <mat-cell *cdkCellDef="let row">
         <button mat-icon-button (click)="editSocio(row)">
-              <mat-icon mdTooltip="Dettagli" mdTooltipPosition="left">info_outline</mat-icon>
+              <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
             </button>
         <a mat-icon-button routerLink="{{row.id}}">
-          <mat-icon mdTooltip="Dettagli" mdTooltipPosition="right">link</mat-icon>
+          <mat-icon matTooltip="Dettagli" matTooltipPosition="right">link</mat-icon>
         </a>
       </mat-cell>
     </ng-container>

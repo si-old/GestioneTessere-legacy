@@ -1,7 +1,7 @@
 <div>
     <h2 style="display: inline-block"> Tesseramenti </h2>
     <button mat-icon-button style="float: right; margin: 0.83em 0" (click)="newCallback()">
-            <mat-icon mdTooltip="Apri" mdTooltipPosition="above">add</mat-icon>
+            <mat-icon matTooltip="Apri" matTooltipPosition="left">add</mat-icon>
         </button>
 </div>
 <div style="overflow-x: auto">
@@ -27,7 +27,7 @@
             <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
             <mat-cell *cdkCellDef="let row">
                 <button *ngIf="row.attivo" mat-icon-button (click)="closeCallback()">
-                            <mat-icon mdTooltip="Chiudi" mdTooltipPosition="right">close</mat-icon>
+                            <mat-icon matTooltip="Chiudi" matTooltipPosition="right">close</mat-icon>
                         </button>
             </mat-cell>
         </ng-container>

@@ -1,22 +1,38 @@
 import { Injectable } from '@angular/core'
 import { Router, CanActivate } from '@angular/router'
 
-const LSItemKey: string = 'admin';
+import { HttpClient } from '@angular/common/http'
+
+import { Observable } from 'rxjs/Observable'
+
+const REST_ENDPOINT: string = "http://www.studentingegneria.it/socisi/backend/login.php"
+
+const LSItemKey_admin: string = 'admin';
+const LSItemKey_user: string = 'username';
 const LSItemKey_expiration: string = 'admin_expiration';
 const duration: number = 24 * 60 * 60 * 1000 // 24h * 60m * 60s * 1000ms
 
 @Injectable()
 export class LoginService {
 
-    login(user: string, password: string): boolean {
-        let admin: boolean = false;
-        let res: boolean = true;
-        if (user == 'admin') {
-            admin = true;
-        }
-        localStorage.setItem(LSItemKey, JSON.stringify(admin));
-        localStorage.setItem(LSItemKey_expiration, JSON.stringify(new Date().getTime()));
-        return res;
+    constructor(private http: HttpClient) {
+
+    }
+
+    login(user: string, password: string): Observable<boolean> {
+        return this.http.post<LoginAnswer>(REST_ENDPOINT, JSON.stringify({
+            user: user,
+            password: password
+        })).map(
+            (answer) => {
+                if (answer.result) {
+                    localStorage.setItem(LSItemKey_admin, JSON.stringify(answer.admin));
+                    localStorage.setItem(LSItemKey_user, JSON.stringify(user));
+                    localStorage.setItem(LSItemKey_expiration, JSON.stringify(new Date().getTime()));
+                }
+                return answer.result
+            }
+            )
     }
 
     logout() {
@@ -33,14 +49,17 @@ export class LoginService {
 
     isLoggedIn(): boolean {
         this.check_expiration();
-        return JSON.parse(localStorage.getItem(LSItemKey)) != null;
+        return JSON.parse(localStorage.getItem(LSItemKey_admin)) != null;
     }
 
     isAdmin(): boolean {
         this.check_expiration();
-        return JSON.parse(localStorage.getItem(LSItemKey));
+        return JSON.parse(localStorage.getItem(LSItemKey_admin));
     }
 
+    getUsername(): string{
+        return this.isLoggedIn() ? JSON.parse(localStorage.getItem(LSItemKey_user)) : "";
+    }
 }
 
 @Injectable()
@@ -74,4 +93,9 @@ export class AdminGuard implements CanActivate {
         }
         return toReturn
     }
+}
+
+interface LoginAnswer {
+    result: boolean
+    admin: boolean
 }

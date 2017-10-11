@@ -5,8 +5,11 @@
 	require_once('include/lib.php');
 	
 	class Login extends RESTItem{
+
+		private static $ADMIN_USER = "admin";
+		private static $ADMIN_PSW = "studentingegneria";
 		
-		private function get_data($user, $password){
+		private function check_login($user, $password){
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE User=? and Password=? ');
 			$stmt->bind_param('ss', $user, $password);
 			$stmt->execute();
@@ -19,21 +22,25 @@
 		}
 		
 		protected function do_get($data){
-			echo json_encode(RESTItem::$ERROR_NODATA);
+			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
 		}
 		
-		protected function do_post($new_data){
-			if(isset($_POST['user']) && isset($_POST['password'])){
-				$user = $_POST['user'];
-				$password = $_POST['password'];
-				echo json_encode($this->get_data($user, $password));
+		protected function do_post($data){
+			if(isset($data['user']) && isset($data['password'])){
+				$user = $data['user'];
+				$password = $data['password'];
+				$is_admin = strcasecmp($user, Login::$ADMIN_USER)==0 && strcmp($password, Login::$ADMIN_PSW)==0;
+				$successful = $is_admin || $this->check_login($user, $password);
+				return array(	'result' => $successful,
+								'admin' => $is_admin
+							);
 			}else{
-				echo json_encode(false);
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST);	
 			}
 		}
 		
 		protected function do_del($data){
-			echo json_encode(RESTItem::$ERROR_NODATA);
+			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
 		}
 	}
 	

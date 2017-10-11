@@ -14,23 +14,28 @@ import { LoginService } from './login/main.service'
             <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
         </ng-container>
         <div class="full-size">
-            <button mat-fab color="accent" class="right-button" (click)="logout()">
-                <mat-icon mdTooltip="Logout" mdTooltipPosition="below">power_settings_new</mat-icon>
-            </button>
+            <div class="to-right">
+                Ciao {{username}}
+                <button mat-fab color="accent" class="right-button" (click)="logout()">
+                    <mat-icon matTooltip="Logout" matTooltipPosition="below">power_settings_new</mat-icon>
+                </button>
+            </div>
         </div>
     </mat-toolbar>
     `,
     styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent{
 
-    isAdmin: boolean = false;
-
-    constructor(private _loginsrv: LoginService, private _router: Router) {
+    get isAdmin(){
+        return this._loginsrv.isAdmin();
     }
 
-    ngOnInit() {
-        this.isAdmin = this._loginsrv.isAdmin();
+    get username(){
+        return this._loginsrv.getUsername();        
+    }
+
+    constructor(private _loginsrv: LoginService, private _router: Router) {
     }
 
     logout() {

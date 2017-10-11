@@ -1,7 +1,7 @@
 <div>
     <h2 style="display: inline-block"> Direttivo </h2>
     <button mat-icon-button style="float: right; margin: 0.83em 0" (click)="addMembro()">
-        <mat-icon mdTooltip="Apri" mdTooltipPosition="above">add</mat-icon>
+        <mat-icon matTooltip="Apri" matTooltipPosition="above">add</mat-icon>
     </button>
 </div>
 <mat-table [dataSource]="direttivoSource">
@@ -25,16 +25,16 @@
         <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
         <mat-cell *cdkCellDef="let row; let ind = index">
             <button mat-icon-button (click)="editing[ind] = true" *ngIf="!editing[ind]">
-                <mat-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</mat-icon>
+                <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
             </button>
             <button mat-icon-button (click)="editing[ind] = false" *ngIf="editing[ind]">
-                <mat-icon mdTooltip="Conferma" mdTooltipPosition="left">done</mat-icon>
+                <mat-icon matTooltip="Conferma" matTooltipPosition="left">done</mat-icon>
             </button>
             <a mat-icon-button routerLink="/soci/{{row.id}}">
-                <mat-icon mdTooltip="Dettagli" mdTooltipPosition="below">link</mat-icon>
+                <mat-icon matTooltip="Dettagli" matTooltipPosition="below">link</mat-icon>
             </a>
             <button mat-icon-button (click)="deleteMembro(row)">
-                <mat-icon mdTooltip="Elimina" mdTooltipPosition="right">delete</mat-icon>
+                <mat-icon matTooltip="Elimina" matTooltipPosition="right">delete</mat-icon>
             </button>
         </mat-cell>
     </ng-container>
