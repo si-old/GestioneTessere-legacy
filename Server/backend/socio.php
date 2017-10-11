@@ -32,9 +32,9 @@
 			}
 			//se abbiamo id, c'è un solo elemento, mandiamo solo quello
 			if($flag_id){
-				echo json_encode($res[0]);
+				return $res[0];
 			}else{
-				echo json_encode($res);
+				return $res;
 			}
 		}
 		
@@ -46,10 +46,10 @@
 				//dovremmo controllare se il nome c'è già?
 				//$stmt = $this->db->prepare('INSERT INTO CdL (Nome) VALUES (?)');
 				//$stmt->bind_param('s', $data['nome']);
-				//echo json_encode($stmt->execute());
+				//return $stmt->execute();
 			//}else{
-				echo json_encode(RESTItem::$ERROR_NODATA);
-			//}
+				throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
+				//}
 		}
 		
 		protected function do_del($data){
@@ -61,9 +61,9 @@
         $stmt = $this->db->prepare('DELETE FROM Carriera WHERE Socio=?');
 				$stmt->bind_param('i', $data['id']);
         $stmt->execute();
-				echo json_encode($this->db->commit());
+				return $this->db->commit();
 			}else{
-				echo json_encode(RESTItem::$ERROR_NODATA);
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
 		}
 	}

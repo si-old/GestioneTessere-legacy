@@ -19,10 +19,10 @@ import { TesseramentiService } from '../tesseramenti/main.service'
                 </mat-input-container>
                 <div mat-dialog-actions style="display: block">
                     <button mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
-                        <mat-icon mdTooltip="Conferma" mdTooltipPosition="below">done</mat-icon>
+                        <mat-icon matTooltip="Conferma" matTooltipPosition="below">done</mat-icon>
                     </button>
                     <button mat-icon-button mat-dialog-close class="to_right" >
-                        <mat-icon mdTooltip="Annulla" mdTooltipPosition="below">close</mat-icon>
+                        <mat-icon matTooltip="Annulla" matTooltipPosition="below">close</mat-icon>
                     </button>
                 </div>
             </form>

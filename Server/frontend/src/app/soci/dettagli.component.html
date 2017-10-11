@@ -1,7 +1,7 @@
 <div class="fontstyle">
     <div mat-dialog-title style="text-align:center">
         <button class="to_left" mat-icon-button (click)="exit()">
-        <mat-icon mdTooltip="Esci" mdTooltipPosition="right">keyboard_arrow_left</mat-icon>
+        <mat-icon matTooltip="Esci" matTooltipPosition="right">keyboard_arrow_left</mat-icon>
     </button>
         <h3>
             Modifica dati {{model.nome}}
@@ -33,7 +33,7 @@
                 <div class="label">
                     Carriere: <br />
                     <button mat-icon-button *ngIf="editing" (click)="addCarriera()">
-                    <mat-icon mdTooltip="Nuova carriera" mdTooltipPosition="left">add</mat-icon>
+                    <mat-icon matTooltip="Nuova carriera" matTooltipPosition="left">add</mat-icon>
                 </button>
                 </div>
                 <mat-table [dataSource]="carriereSource">
@@ -66,10 +66,10 @@
                         <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
                         <mat-cell *cdkCellDef="let row; let ind=index">
                             <button mat-icon-button (click)="carriereEditing[ind] = !carriereEditing[ind]">
-                            <mat-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</mat-icon>
+                            <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
                         </button>
                             <button mat-icon-button (click)="deleteCarriera(ind)">
-                            <mat-icon mdTooltip="Elimina" mdTooltipPosition="right">delete</mat-icon>
+                            <mat-icon matTooltip="Elimina" matTooltipPosition="right">delete</mat-icon>
                         </button>
                         </mat-cell>
                     </ng-container>
@@ -83,7 +83,7 @@
                 <div class="label">
                     Tessere: <br />
                     <button mat-icon-button *ngIf="editing && !hasTessera" (click)="addTessera()">
-                        <mat-icon mdTooltip="Nuova tessera" mdTooltipPosition="left">add</mat-icon>
+                        <mat-icon matTooltip="Nuova tessera" matTooltipPosition="left">add</mat-icon>
                     </button>
                 </div>
                 <mat-table [dataSource]="tessereSource">
@@ -111,7 +111,7 @@
                         <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
                         <mat-cell *cdkCellDef="let row; let ind=index">
                             <button mat-icon-button (click)="tessereEditing[ind] = !tessereEditing[ind]">
-                            <mat-icon mdTooltip="Modifica" mdTooltipPosition="left">edit</mat-icon>
+                            <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
                         </button>
                         </mat-cell>
                     </ng-container>
@@ -124,15 +124,15 @@
         <div mat-dialog-actions style="text-align: end; flex-direction: row-reverse; padding-bottom: 10px;">
             <ng-container *ngIf="editing">
                 <button mat-icon-button (click)="revert(form)">
-                <mat-icon mdTooltip="Annulla" mdTooltipPosition="above">close</mat-icon>
+                <mat-icon matTooltip="Annulla" matTooltipPosition="above">close</mat-icon>
             </button>
                 <button mat-icon-button (click)="confirm(form)" [disabled]="form.invalid">
-                <mat-icon mdTooltip="Conferma" mdTooltipPosition="above">done</mat-icon>
+                <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
             </button>
             </ng-container>
             <ng-container *ngIf="!editing">
                 <button mat-icon-button (click)="enableEditing()">
-                <mat-icon mdTooltip="Modifica" mdTooltipPosition="above">edit</mat-icon>
+                <mat-icon matTooltip="Modifica" matTooltipPosition="above">edit</mat-icon>
             </button>
             </ng-container>
         </div>

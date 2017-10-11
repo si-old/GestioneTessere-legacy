@@ -4,7 +4,7 @@
     <input matInput #filter placeholder="Ricerca corsi">
   </mat-input-container>
   <button mat-icon-button (click)="addCorso()">
-        <mat-icon mdTooltip="Nuovo" mdTooltipPosition="above">add</mat-icon>    
+        <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
       </button>
 </div>
 
@@ -27,17 +27,17 @@
     <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
     <mat-cell *cdkCellDef="let row; let ind = index">
       <button mat-icon-button (click)="editing[ind] = true" *ngIf="!editing[ind]">
-          <mat-icon mdTooltip="Modifica" mdTooltipPosition="right">mode_edit</mat-icon>
+          <mat-icon matTooltip="Modifica" matTooltipPosition="right">mode_edit</mat-icon>
         </button>
       <ng-container *ngIf="editing[ind]">
         <button mat-icon-button (click)="revertCorso(row, ind)">
-            <mat-icon mdTooltip="Annulla" mdTooltipPosition="left">close</mat-icon>
+            <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
           </button>
         <button mat-icon-button (click)="updateCorso(row, ind)">
-            <mat-icon mdTooltip="Conferma" mdTooltipPosition="above">done</mat-icon>
+            <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
           </button>
         <button mat-icon-button (click)="deleteCorso(row)">
-            <mat-icon mdTooltip="Elimina" mdTooltipPosition="right">delete</mat-icon>
+            <mat-icon matTooltip="Elimina" matTooltipPosition="right">delete</mat-icon>
           </button>
       </ng-container>
     </mat-cell>

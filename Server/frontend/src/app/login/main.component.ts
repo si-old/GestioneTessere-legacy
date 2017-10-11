@@ -11,34 +11,37 @@ import { LoginService } from './main.service'
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.css', '../common/style.css']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
     user: string
     password: string
 
     error: boolean = true;
 
-    constructor(private snack: MatSnackBar, 
-                private _loginsrv: LoginService,
-                private _router: Router) {
+    constructor(private snack: MatSnackBar,
+        private _loginsrv: LoginService,
+        private _router: Router) {
     }
 
-    ngOnInit(){
-        if(this._loginsrv.isLoggedIn()){
-            this._router.navigate(['/soci'])            
+    ngOnInit() {
+        if (this._loginsrv.isLoggedIn()) {
+            this._router.navigate(['/soci'])
         }
     }
 
     login(form) {
         let res: boolean = false;
         if (form.valid) {
-            res = this._loginsrv.login(this.user, this.password)
-        }
-        if(res){
-            this._router.navigate(['/soci'])
-        }else{
-            this.snack.open("Errore di autenticazione", "OK", {
-                duration: 1500,
-            })
+            this._loginsrv.login(this.user, this.password).subscribe(
+                (res) => {
+                    if (res) {
+                        this._router.navigate(['/soci'])
+                    } else {
+                        this.snack.open("Errore di autenticazione", "OK", {
+                            duration: 1500,
+                        })
+                    }
+                }
+            )
         }
         return false;
     }

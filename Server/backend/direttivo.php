@@ -21,7 +21,7 @@
 		protected function do_get($data){
 			$id = isset($_GET['id']) ? $_GET['id'] : -1;
 			if($id > 0){
-				echo json_encode($this->get_data($id));
+				return $this->get_data($id);
 			}else{
 				$stmt = $this->db->prepare('SELECT * FROM Direttivo');
 				$stmt->execute();
@@ -32,7 +32,7 @@
 					$res[$i] = array('id' => $idr, 'user' => $user, 'pass' => $pass, 'id_socio' => $socio);
 					$i++;
 				}
-				echo json_encode($res);
+				return $res;
 			}
 		}
 		
@@ -58,12 +58,12 @@
 				}
 				if($stmt->execute()){
 					//TODO ritornare l'utente aggiunto o aggiornato
-					echo json_encode("");
+					return "";
 				}
-				echo json_encode(RESTItem::$ERROR_NODATA);
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
 			else{
-				echo json_encode(RESTItem::$ERROR_NODATA);
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
 		}
 		
@@ -71,9 +71,9 @@
 			if(isset($data['id'])){
 				$stmt = $this->db->prepare('DELETE FROM Direttivo WHERE ID=?');
 				$stmt->bind_param('i', $data['id']);
-				echo json_encode($stmt->execute());
+				return $stmt->execute();
 			}else{
-				echo json_encode(RESTItem::$ERROR_NODATA);
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
 		}
 	}
