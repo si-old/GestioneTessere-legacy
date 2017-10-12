@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 
-const REST_ENDPOINT: string = "http://www.studentingegneria.it/socisi/backend/tesseramento.php"
+const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/tesseramento.php"
 
 @Injectable()
 export class TesseramentiService {
@@ -16,8 +16,12 @@ export class TesseramentiService {
     constructor(private http: HttpClient) { }
 
 
-    updateSub(value: Tesseramento[]): void {
-        this.tesseramentiSub.next(value);
+    private updateSub(value: Tesseramento[]): void {
+        let temp : Tesseramento[] = [];
+        value.forEach(
+            (old) => {temp.push(new Tesseramento(old));}
+        )
+        this.tesseramentiSub.next(temp);
     }
 
     getTesseramentoAttivo(): Observable<Tesseramento> {

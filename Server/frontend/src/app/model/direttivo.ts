@@ -1,6 +1,8 @@
 ﻿import { Socio } from './socio'
 
 export class MembroDirettivo extends Socio {
+
+    id_direttivo: number;
     user: string;
     password: string;
 

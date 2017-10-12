@@ -27,10 +27,13 @@
             <button mat-icon-button (click)="editing[ind] = true" *ngIf="!editing[ind]">
                 <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
             </button>
-            <button mat-icon-button (click)="editing[ind] = false" *ngIf="editing[ind]">
-                <mat-icon matTooltip="Conferma" matTooltipPosition="left">done</mat-icon>
+            <button mat-icon-button (click)="revertChanges(row, ind)" *ngIf="editing[ind]">
+                <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
             </button>
-            <a mat-icon-button routerLink="/soci/{{row.id}}">
+            <button mat-icon-button (click)="commitChanges(row, ind)" *ngIf="editing[ind]">
+                <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
+            </button>
+            <a mat-icon-button routerLink="/soci/{{row.id}}" *ngIf="row.id>=0">
                 <mat-icon matTooltip="Dettagli" matTooltipPosition="below">link</mat-icon>
             </a>
             <button mat-icon-button (click)="deleteMembro(row)">

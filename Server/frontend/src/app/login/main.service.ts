@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http'
 
 import { Observable } from 'rxjs/Observable'
 
-const REST_ENDPOINT: string = "http://www.studentingegneria.it/socisi/backend/login.php"
+const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/login.php"
 
 const LSItemKey_admin: string = 'admin';
 const LSItemKey_user: string = 'username';

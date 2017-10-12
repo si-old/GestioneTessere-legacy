@@ -1,50 +1,53 @@
 import { Injectable } from '@angular/core'
 
+import { HttpClient } from '@angular/common/http'
+
 import { CdL } from '../model/all'
 
 import { Observable } from 'rxjs/Observable'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { Subject } from 'rxjs/Subject'
 
-export const CORSI: CdL[] = [
-    new CdL({ id: 1, nome: "Ing. Informatica" }),
-    new CdL({ id: 2, nome: "Ing. Elettronica" }),
-    new CdL({ id: 3, nome: "Ing. Meccanica" }),
-    new CdL({ id: 4, nome: "Ing. Gestionale" }),
-    new CdL({ id: 5, nome: "Ing. Civile" }),
-    new CdL({ id: 6, nome: "Ing. Ambientale" }),
-    new CdL({ id: 7, nome: "Ing. Edile" }),
-    new CdL({ id: 8, nome: "Ing. Chimica" })
-]
+const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/cdl.php"
 
 @Injectable()
 export class CorsiService{
 
-    _obs = new BehaviorSubject<CdL[]>(CORSI);
+    _obs = new Subject<CdL[]>();
 
+    constructor(private http: HttpClient){
+
+    }
+
+    private updateSub(value){
+        let temp : CdL[] = [];
+        value.forEach(
+            (old) => {temp.push(new CdL(old));}
+        )
+        this._obs.next(temp);
+    }
+    
     getCorsi(): Observable<CdL[]>{
+        this.http.get<CdL[]>(REST_ENDPOINT).subscribe(
+            (value) => {this.updateSub(value)}
+        )
         return this._obs;
     }
 
     addCorso(nome: string){
-        let id = Math.max.apply([], CORSI.map( (cdl) => cdl.id ));
-        let newCorso = new CdL({id: id+1, nome: nome});
-        CORSI.push(newCorso);
-        this._obs.next(CORSI);
+        this.http.post<CdL[]>(REST_ENDPOINT, {'nome': nome}).subscribe(
+            (value) => { this.updateSub(value) }
+        );
     }
 
     deleteCorso(corso: CdL){
-        let ind = CORSI.map( (cdl: CdL) => { return cdl.id } ).indexOf(corso.id);
-        if ( ind >= 0 && ind < CORSI.length){
-            CORSI.splice(ind, 1);
-        }
-        this._obs.next(CORSI);
+        this.http.delete<CdL[]>(REST_ENDPOINT+'/'+corso.id).subscribe(
+            (value) => { this.updateSub(value) }
+        );
     }
 
     updateCorso(newCorso: CdL){
-        let index = CORSI.findIndex( (temp: CdL) => { return temp.id == newCorso.id } );
-        if(index != -1){
-          Object.assign(CORSI[index], newCorso);
-          this._obs.next(CORSI);
-        }
+        this.http.post<CdL[]>(REST_ENDPOINT, newCorso).subscribe(
+            (value) => { this.updateSub(value) }
+        );
     }
 }

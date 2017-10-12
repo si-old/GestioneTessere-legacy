@@ -5,13 +5,7 @@
 	class CdL extends RESTItem{
 		
 		protected function do_get($data){
-			$flag_id = isset($_GET['id']);
-			if($flag_id){
-				$stmt = $this->db->prepare('SELECT * FROM CdL WHERE ID=?');
-				$stmt->bind_param('i', $_GET['id']);
-			}else{
-				$stmt = $this->db->prepare('SELECT * FROM CdL');
-			}
+			$stmt = $this->db->prepare('SELECT * FROM CdL ORDER BY ID ASC');
 			$stmt->execute();
 			$stmt->bind_result($id, $nome);
 			$res = array();
@@ -20,33 +14,35 @@
 				$res[$i] = array('id' => $id, 'nome' => $nome);
 				$i++;
 			}
-			//se abbiamo id, c'è un solo elemento, mandiamo solo quello
-			if($flag_id){
-				return $res[0];
-			}else{
-				return $res;
-			}
+			return $res;
 		}
 		
 		protected function do_post($data){
 			$valid = isset($data['nome']);
+			$update = isset($data['id']);
 			if($valid){
-				//dovremmo controllare se il nome c'è già?
-				$stmt = $this->db->prepare('INSERT INTO CdL (Nome) VALUES (?)');
-				$stmt->bind_param('s', $data['nome']);
-				return $stmt->execute();
+				if($update){
+					$stmt = $this->db->prepare('UPDATE CdL SET Nome = ? WHERE ID = ?');
+					$stmt->bind_param('si', $data['nome'], $data['id']);
+				}else{
+					$stmt = $this->db->prepare('INSERT INTO CdL (Nome) VALUES (?)');	
+					$stmt->bind_param('s', $data['nome']);
+				}
+				$stmt->execute();
+				return $this->do_get("");
 			}else{
 				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
 		}
 		
 		protected function do_del($data){
-			if(isset($data['id'])){
+			if(isset($_GET['id'])){
 				$stmt = $this->db->prepare('DELETE FROM CdL WHERE ID=?');
-				$stmt->bind_param('i', $data['id']);
-				return $stmt->execute();
+				$stmt->bind_param('i', $_GET['id']);
+				$stmt->execute();
+				return $this->do_get("");
 			}else{
-				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
+				throw new RESTException(HttpStatusCode::$NOT_FOUND);
 			}
 		}
 	}
