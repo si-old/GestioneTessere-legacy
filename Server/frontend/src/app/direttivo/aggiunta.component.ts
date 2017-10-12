@@ -17,7 +17,6 @@ export class AggiuntaDirettivoComponent implements OnInit {
     socio: Socio = null
     user: string;
     password: string;
-    password2: string;
     
     constructor(private _diagref: MatDialogRef<AggiuntaDirettivoComponent>,
         private _socisrv: SociService) {
@@ -31,7 +30,7 @@ export class AggiuntaDirettivoComponent implements OnInit {
     }
 
     addMembro(form){
-        if(!form.invalid && this.password == this.password2){
+        if(!form.invalid){
             let toReturn: MembroDirettivo  = new MembroDirettivo(this.socio);
             toReturn.user = this.user;
             toReturn.password = this.password;

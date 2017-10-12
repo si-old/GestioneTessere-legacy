@@ -1,6 +1,6 @@
 tesseramento(id: int, PK; anno: str; aperto: bool)
 
-socio(id: int, PK; nome: str; cognome: str; email: str; cellulare: str; studente: bool; professione: str; facebook: int;)
+socio(id: int, PK; nome: str; cognome: str; email: str; cellulare: str; facebook: int;)
 
 tessera(socio: int, PK, FK->socio.id; anno: id, PK, FK->tesseramento.id; numero: int)
 
@@ -8,4 +8,4 @@ direttivo(id: int, PK; user: str; password: str; socio: int, FK->socio.id)
 
 CdL(id: int, PK; nome: str)
 
-carriera(socio: int, PK, FK->socio.id; cdl: int, PK, FK->corsidilaurea.id; matricola: str; attiva: bool)
+carriera(id: int, PK; socio: int FK->socio.id;  studente: bool; professione: str; cdl: int FK->corsidilaurea.id; matricola: str; attiva: bool)

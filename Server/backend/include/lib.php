@@ -8,7 +8,7 @@
 
 		public function dispatch(){
 			//to avoid output
-			error_reporting(E_ERROR);
+			error_reporting(E_ALL);
 
 			//to allow CORS
 			header("Access-Control-Allow-Origin: *");
@@ -31,7 +31,7 @@
 				case 'OPTIONS':
 					break;
 				}
-				echo json_encode($res);
+				echo json_encode($res, JSON_UNESCAPED_UNICODE);
 			}catch(RESTException $ex){
 				http_response_code($ex->get_error_code());
 			}catch(Exception $ex){

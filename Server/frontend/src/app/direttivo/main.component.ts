@@ -40,7 +40,7 @@ export class DirettivoComponent{
   }
 
   addMembro(){
-    this._dialog.open(AggiuntaDirettivoComponent).afterClosed().subscribe(
+    this._dialog.open(AggiuntaDirettivoComponent, {width: "40%"}).afterClosed().subscribe(
       (x) => { if(x) this._dirsrv.addMembro(x) }
     )
   }
@@ -49,6 +49,16 @@ export class DirettivoComponent{
     this._dialog.open(ConfirmDialog).afterClosed().subscribe(
       (x: boolean) => { if(x) this._dirsrv.deleteMembro(m); }
     )
+  }
+
+  commitChanges(m: MembroDirettivo, ind: number){
+    this._dirsrv.changeMembro(m);
+    this.editing[ind] = false;
+  }
+
+  revertChanges(m: MembroDirettivo, ind: number){
+    this._dirsrv.getDirettivo();
+    this.editing[ind] = false;
   }
 }
 

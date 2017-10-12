@@ -18,19 +18,11 @@
             <input type="text" matInput name="user" required [(ngModel)]="user" />
         </mat-input-container>
     </div>
-    <div ngModelGroup="passwords" equalFields>
-        <div>
-            <label for="password">Password: </label>
-            <mat-input-container>
-                <input type="password" matInput name="password" required [(ngModel)]="password" />
-            </mat-input-container>
-        </div>
-        <div>
-            <label for="password2">Ripeti Password: </label>
-            <mat-input-container>
-                <input type="password" matInput name="password2" required [(ngModel)]="password2" />
-            </mat-input-container>
-        </div>
+    <div>
+        <label for="password">Password: </label>
+        <mat-input-container>
+            <input type="text" matInput name="password" required [(ngModel)]="password" />
+        </mat-input-container>
     </div>
     <div mat-dialog-actions class="to_right">
         <button type="button" mat-icon-button mat-dialog-close>

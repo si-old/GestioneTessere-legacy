@@ -25,4 +25,4 @@ hs_err_pid*
 /tutorials
 
 #ignoring vscode file
-*/.vscode/*
+.vscode/*

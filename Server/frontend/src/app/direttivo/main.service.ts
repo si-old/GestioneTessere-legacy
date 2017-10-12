@@ -1,50 +1,55 @@
 import { Injectable } from '@angular/core'
 
+import { HttpClient } from '@angular/common/http'
+
 import { MembroDirettivo, Carriera, Tessera } from '../model/all'
 
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 
 
-const DIRETTIVO: MembroDirettivo[] = [
-    new MembroDirettivo({
-        id: 1, nome: 'nome', cognome: 'cognome', email: 'email', cellulare: 'cellulare', user: 'nome1', password: 'pass1',
-        facebook: 'fb', carriere: [new Carriera({ id: 1, studente: true, matricola: 'matr' }), new Carriera({ id: 2, studente: true, matricola: 'matr' }),
-        new Carriera({ id: 3, studente: true, matricola: 'matr' }), new Carriera({ id: 4, studente: true, matricola: 'matr' }),
-        new Carriera({ id: 5, studente: true, matricola: 'matr' })],
-        tessere: [new Tessera({ id: 1, numero: '0', anno: null })]
-    })
-]
+const REST_ENDPOINT = "https://www.studentingegneria.it/socisi/backend/direttivo.php";
 
 @Injectable()
 export class DirettivoService {
 
-    _obs = new BehaviorSubject<MembroDirettivo[]>(DIRETTIVO)
+    _obs = new Subject<MembroDirettivo[]>()
+
+    constructor(private http: HttpClient) {
+
+    }
+
+    private updateSub(value){
+        let temp : MembroDirettivo[] = [];
+        value.forEach(
+            (old) => {temp.push(new MembroDirettivo(old));}
+        )
+        this._obs.next(temp);
+    }
 
     getDirettivo(): Observable<MembroDirettivo[]> {
+        this.http.get<MembroDirettivo[]>(REST_ENDPOINT).subscribe(
+            (value) => this.updateSub(value)
+        )
         return this._obs;
     }
 
-    deleteMembro(m: MembroDirettivo){
-        let found = -1;
-        DIRETTIVO.forEach(
-            (x: MembroDirettivo, i: number) => { if (x.id == m.id) found = i;}
+    deleteMembro(m: MembroDirettivo) {
+        this.http.delete<MembroDirettivo[]>(REST_ENDPOINT + '/' + m.id_direttivo).subscribe(
+            (value) => { this.updateSub(value); }
         )
-        if(found >= 0){
-            DIRETTIVO.splice(found, 1);
-            this._obs.next(DIRETTIVO);
-        }
     }
 
-    addMembro(m: MembroDirettivo){
-        let found = -1;
-        DIRETTIVO.forEach(
-            (x: MembroDirettivo, i: number) => { if (x.id == m.id) found = i;}
+    addMembro(m: MembroDirettivo) {
+        this.http.post<MembroDirettivo[]>(REST_ENDPOINT, m).subscribe(
+            (value) => {this.updateSub(value);}
         )
-        if(found < 0){
-            DIRETTIVO.push(m);
-            this._obs.next(DIRETTIVO);
-        }
+    }
+
+    changeMembro(m: MembroDirettivo) {
+        this.http.post<MembroDirettivo[]>(REST_ENDPOINT, m).subscribe(
+            (value) => {this.updateSub(value);}
+        )
     }
 
 }
