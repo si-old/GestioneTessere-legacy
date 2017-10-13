@@ -15,7 +15,21 @@ export class Socio {
   tessere: Tessera[];
 
   constructor(fields?: Partial<Socio>) {
-    if (fields) Object.assign(this, fields);
+    if (fields) {
+      Object.assign(this, fields);
+      if (fields.carriere) {
+        this.carriere = [];
+        fields.carriere.forEach(
+          (c) => { this.carriere.push(new Carriera(c)) }
+        )
+      }
+      if (fields.tessere) {
+        this.tessere = [];
+        fields.tessere.forEach(
+          (t) => { this.tessere.push(new Tessera(t)) }
+        )
+      }
+    }
   }
 
   contains(needle: string): boolean {

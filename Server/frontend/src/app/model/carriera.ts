@@ -10,7 +10,12 @@ export class Carriera {
     corso: CdL;
 
     constructor(fields?: Partial<Carriera>) {
-        if (fields) Object.assign(this, fields);
+        if (fields) {
+            Object.assign(this, fields);
+            if (fields.corso) {
+                this.corso = new CdL(fields.corso);
+            }
+        }
     }
 
     contains(needle: string): boolean {

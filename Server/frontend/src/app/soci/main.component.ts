@@ -22,7 +22,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 @Component({
   selector: 'soci',
   templateUrl: './main.component.html',
-  styleUrls: ['../common/style.css','../common/mainroutes.style.css']
+  styleUrls: ['../common/style.css','../common/mainroutes.style.css', './main.component.css'],
 })
 export class SociComponent implements OnInit {
 

@@ -13,7 +13,7 @@
           "--disable-session-crashed-bubble"
         ],
         "sourceMapPathOverrides": {
-          "webpack://*": "${workspaceRoot}/*"
+          "webpack:////mnt/d/*": "D:\\*"
         }
       },
       {
@@ -25,7 +25,7 @@
         "webRoot": "${workspaceRoot}/",
         "sourceMaps": true,
         "sourceMapPathOverrides": {
-          "webpack://*": "${workspaceRoot}/*"
+          "webpack:////mnt/d/*": "D:\\*"
         }
       }
     ]

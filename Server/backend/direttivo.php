@@ -9,7 +9,9 @@
 		private function get_data($id){
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE ID=?');
 			$stmt->bind_param('i', $id);
-			$stmt->execute();
+			if( ! $stmt->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
 			$stmt->bind_result($idr, $user, $pass, $socio);
 			if($stmt->fetch()){
 				return array('id_direttivo' => $idr, 'user' => $user, 'password' => $pass, 'id' => $socio);
@@ -18,15 +20,15 @@
 			}
 		}
 		
-		protected function do_get($data){
+		protected function do_get(){
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo');
-			$stmt->execute();
+			if( ! $stmt->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
 			$stmt->bind_result($idr, $user, $pass, $socio);
-			$i = 0;
 			$res = array();
 			while($stmt->fetch()){
-				$res[$i] = array('id_direttivo' => $idr, 'user' => $user, 'password' => $pass, 'id' => $socio);
-				$i++;
+				$res[] = array('id_direttivo' => $idr, 'user' => $user, 'password' => $pass, 'id' => $socio);
 			}
 			return $res;
 		}
@@ -49,22 +51,22 @@
 					$stmt = $this->db->prepare('INSERT INTO Direttivo (User, Password, Socio) VALUES (?, ?, ?)');
 					$stmt->bind_param('ssi', $new_data['user'], $new_data['password'], $new_data['id']);
 				}
-				if($stmt->execute()){
-					return $this->do_get();
-				}else{
+				if( ! $stmt->execute() ){
 					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
 				}
-			}
-			else{
+				return $this->do_get();
+			}else{
 				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
 		}
 		
-		protected function do_del($body){
-			if( isset($_GET['id']) ){
+		protected function do_del(){
+			if( $this->had_id ){
 				$stmt = $this->db->prepare('DELETE FROM Direttivo WHERE ID=?');
-				$stmt->bind_param('i', $_GET['id']);
-				$stmt->execute();
+				$stmt->bind_param('i', $this->id );
+				if( ! $stmt->execute() ){
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				}
 				return $this->do_get();
 			}else{
 				throw new RESTException(HttpStatusCode::$NOT_FOUND);

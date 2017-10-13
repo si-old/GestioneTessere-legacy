@@ -5,37 +5,38 @@
 	require_once('include/utils.php');
 
 	class Socio extends RESTItem{
-		private function get_list(){
-			/*
-			"SELECT s.ID as s_id, s.Nome as s_nome, s.Cognome as s_cognome,   s.Email as s_email, s.Cellulare as s_cellulare, s.Facebook as s_facebook,  ca_id, ca_studente, ca_professione, ca_matricola, ca_attiva, c_id,   c_nome, t_id, t_numero, a_id, a_anno, a_aperto FROM Socio as s LEFT JOIN ( SELECT ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente,  ca.Professione as ca_professione, ca.Matricola as ca_matricola,  ca.Attiva as ca_attiva, c.ID as c_id, c.Nome as c_nome FROM Carriera as ca JOIN CdL as c on c.ID = ca.CdL WHERE ca.Attiva = 1 ) as c on ca_socio = s.ID LEFT JOIN (  SELECT t.Socio as t_socio, t.ID as t_id, t.Numero as t_numero, a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID WHERE a.Aperto = 1 ) as t on t_socio = s.ID"
 
-			*/
-			$query_carriere = 'SELECT ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente, 
-																ca.Professione as ca_professione, ca.Matricola as ca_matricola, 
-																ca.Attiva as ca_attiva, c.ID as c_id, c.Nome as c_nome
-													FROM Carriera as ca JOIN CdL as c on c.ID = ca.CdL
-													WHERE ca.Attiva = 1';
-			$query_tessere = '	SELECT t.Socio as t_socio, t.ID as t_id, t.Numero as t_numero, a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
-													FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID
-													WHERE a.Aperto = 1';
-			$query = "SELECT s.ID as s_id, s.Nome as s_nome, s.Cognome as s_cognome, 
-											 s.Email as s_email, s.Cellulare as s_cellulare, s.Facebook as s_facebook,
-											 ca_id, ca_studente, ca_professione, ca_matricola, ca_attiva, c_id, 
-											 c_nome, t_id, t_numero, a_id, a_anno, a_aperto
-								FROM Socio as s LEFT JOIN ( $query_carriere ) as c on ca_socio = s.ID
-																LEFT JOIN ( $query_tessere ) as t on t_socio = s.ID";
+		private $query_carriere = '	SELECT	ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente, 
+											ca.Professione as ca_professione, ca.Matricola as ca_matricola, 
+											ca.Attiva as ca_attiva, c.ID as c_id, c.Nome as c_nome
+									FROM Carriera as ca JOIN CdL as c on c.ID = ca.CdL ';
+		
+		private $query_tessere = '	SELECT	t.Socio as t_socio, t.ID as t_id, t.Numero as t_numero, 
+											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
+									FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID ';
+
+		private function get_list(){
+			$query_carriere_attive = $this->query_carriere.'WHERE ca.Attiva = 1';
+			$query_tessere_attive = $this->query_tessere.'WHERE a.Aperto = 1';
+			$query = "	SELECT	s.ID as s_id, s.Nome as s_nome, s.Cognome as s_cognome, 
+								s.Email as s_email, s.Cellulare as s_cellulare, s.Facebook as s_facebook,
+								ca_id, ca_studente, ca_professione, ca_matricola, ca_attiva, c_id, 
+								c_nome, t_id, t_numero, a_id, a_anno, a_aperto
+						FROM Socio as s	LEFT JOIN ( $query_carriere_attive ) as c on ca_socio = s.ID
+										LEFT JOIN ( $query_tessere_attive ) as t on t_socio = s.ID";
 			$stmt = $this->db->prepare($query);
-			$stmt->execute();
+			if( ! $stmt->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
 			$results = fetch_results($stmt);
 			$users = array();
-			$i = 0;
 			foreach( $results as $user ){
 				$tesseramento = array('id' => $user['a_id'], 'anno' => $user['a_anno'], 'aperto' => $user['a_aperto']);
 				$tessera = array('id' => $user['t_id'], 'anno' => $tesseramento, 'numero' => $user['t_numero']);
 				$corso = array('id' => $user['c_id'], 'nome' => $user['c_nome']);
 				$carriera = array('id' => $user['ca_id'], 'studente' => $user['ca_studente'], 'professione' => $user['ca_professione'],
 													'matricola' => $user['ca_matricola'], 'corso' => $corso);
-				$users[$i++] = array('id' => $user['s_id'], 'nome' => $user['s_nome'], 'cognome' => $user['s_cognome'],
+				$users[] = array('id' => $user['s_id'], 'nome' => $user['s_nome'], 'cognome' => $user['s_cognome'],
 															'email' => $user['s_email'], 'cellulare' => $user['s_cellulare'], 'facebook' => $user['s_facebook'], 
 															'carriere' => array($carriera), 'tessere' => array($tessera));
 			}
@@ -43,45 +44,175 @@
 		}
 
 		private function get_full_socio($id){
-			throw new RESTException(HttpStatusCode::$NOT_IMPLEMENTED);
+			$query_socio = 'SELECT * FROM Socio WHERE ID = ?';
+			$query_tessere_socio = $this->query_tessere.'WHERE t.Socio = ?';
+			$query_carriere_socio = $this->query_carriere.'WHERE ca.Socio = ?';
+			
+			$stmt_socio = $this->db->prepare($query_socio);
+			$stmt_socio->bind_param('i', $id);
+			if( ! $stmt_socio->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+			$res_socio = fetch_results($stmt_socio);
+
+			$stmt_tessere = $this->db->prepare($query_tessere_socio);
+			$stmt_tessere->bind_param('i', $id);
+			if( ! $stmt_tessere->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}			$res_tessere = fetch_results($stmt_tessere);
+			
+			$stmt_carriere = $this->db->prepare($query_carriere_socio);
+			$stmt_carriere->bind_param('i', $id);
+			if( ! $stmt_carriere->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}			$res_carriere = fetch_results($stmt_carriere);
+
+			if (count($res_socio) != 1){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+
+			$carriere = [];
+			foreach($res_carriere as $carriera){
+				$corso = array('id' => $carriera['c_id'], 'nome'=> $carriera['c_nome']);
+				$carriere[] = array('id' => $carriera['ca_id'], 'studente' => $carriera['ca_studente'], 'professione' => $carriera['ca_professione'],
+									'matricola' => $carriera['ca_matricola'], 'corso' => $corso);
+			}
+
+			$tessere = [];
+			foreach($res_tessere as $tessera){
+				$tesseramento = array('id' => $tessera['a_id'], 'anno' => $tessera['a_anno'], 'aperto' => $tessera['a_aperto']);
+				$tessere[] = array('id' => $tessera['t_id'], 'anno' => $tesseramento, 'numero' => $tessera['t_numero']);
+			}
+			$user = $res_socio[0];
+			$toReturn = array(	'id' => $user['ID'], 'nome' => $user['Nome'], 'cognome' => $user['Cognome'],
+								'email' => $user['Email'], 'cellulare' => $user['Cellulare'], 'facebook' => $user['Facebook'], 
+								'carriere' => $carriere, 'tessere' => $tessere);
+			return $toReturn;
 		}
 
-		protected function do_get($data){
-			$flag_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
-			if($flag_id){
-				return $this->get_full_socio($_GET['id']);
+		protected function do_get(){
+			if($this->has_id){
+				return $this->get_full_socio($this->id);
 			}else{
 				return $this->get_list();
 			}
 		}
 
-		protected function do_post($data){
-			//TODO inserimento utenti, controlli su integrità vincoli
-			//$data = $this->get_body();
-			//$valid = isset($data['nome']);
-			//if($valid){
-				//dovremmo controllare se il nome c'è già?
-				//$stmt = $this->db->prepare('INSERT INTO CdL (Nome) VALUES (?)');
-				//$stmt->bind_param('s', $data['nome']);
-				//return $stmt->execute();
-			//}else{
-				throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
-				//}
+		private function validate_socio($new_socio){
+			$valid_nome = isset($new_socio['nome']) && strlen($new_socio['nome']) > 0;
+			$valid_cognome = isset($new_socio['cognome']) && strlen($new_socio['cognome']) > 0;
+			$valid_email = isset($new_socio['email']) && strlen($new_socio['email']) > 0;
+			$valid_socio = $valid_nome && $valid_cognome && $valid_email && isset($new_socio['cellulare']) && isset($new_socio['facebook']);
+			
+			$valid_tessere = isset($new_socio['tessere']) && count($new_socio['tessere']) > 0;
+			$valid_tesseramento =  $valid_tessere && isset($new_socio['tessere'][0]['anno']) && isset($new_socio['tessere'][0]['anno']['id']);
+			$valid_tessera = $valid_tesseramento && isset($new_socio['tessere'][0]['numero']);
+
+			$valid_carriere = isset($new_socio['carriere']) && count($new_socio['carriere']) > 0;
+			$valid_carriera_base = $valid_carriere && isset($new_socio['carriere'][0]['studente']);
+			$valid_carriera_prof = $valid_carriera_base && !$new_socio['carriere'][0]['studente'] && isset($new_socio['carriere'][0]['professione']) 
+									&& strlen($new_socio['carriere'][0]['professione']) > 0;
+			$valid_carriera_stud = $valid_carriera_base && $new_socio['carriere'][0]['studente'] && isset($new_socio['carriere'][0]['matricola'])
+									&& isset($new_socio['carriere'][0]['corso']) && isset($new_socio['carriere'][0]['corso']['id']);
+			$valid_carriera = $valid_carriera_stud || $valid_carriera_prof;
+
+			return $valid_socio && $valid_tessera && $valid_carriera;
 		}
 
-		protected function do_del($data){
-			if(isset($data['id'])){
-				$this->db->begin_transaction();
-				$stmt = $this->db->prepare('DELETE FROM Socio WHERE ID=?');
-				$stmt->bind_param('i', $data['id']);
-				$stmt->execute();
-				$stmt = $this->db->prepare('DELETE FROM Carriera WHERE Socio=?');
-				$stmt->bind_param('i', $data['id']);
-				$stmt->execute();
-				return $this->db->commit();
-			}else{
+		private function add_socio($new_socio){
+			$this->db->begin_transaction();
+
+			$stmt_socio = $this->db->prepare('INSERT INTO Socio(Nome, Cognome, Email, Cellulare, Facebook) VALUES (?, ?, ?, ?, ?)');
+			$stmt_socio->bind_param('sssss', $new_socio['nome'], $new_socio['cognome'], $new_socio['email'], $new_socio['cellulare'], $new_socio['facebook']);
+			if( ! $stmt_socio->execute() ){
+				$this->db->rollback();
+				throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+			$socio_id = $this->db->insert_id;
+			
+			$tessera = $new_socio['tessere'][0];
+			$stmt_tessera = $this->db->prepare('INSERT INTO Tessera(Socio, Anno, Numero) VALUES (?, ?, ?)');
+			$stmt_tessera->bind_param('iii', $socio_id, $tessera['anno']['id'], $tessera['numero']);
+			if( ! $stmt_tessera->execute() ){
+				$this->db->rollback();
+				throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+
+			$carriera = $new_socio['carriere'][0];
+			$stmt_carriera = $this->db->prepare('INSERT INTO Carriera(Socio, Studente, Professione, CdL, Matricola, Attiva) VALUES (?, ?, ?, ?, ?, 1)');
+			$stmt_carriera->bind_param('iisis', $socio_id, $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola']);
+			if( ! $stmt_carriera->execute() ){
+				$this->db->rollback();
+				throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+
+			$this->db->commit();
+		}
+
+		private function edit_socio($new_socio){
+			$this->db->begin_transaction();
+
+			$stmt_socio = $this->db->prepare('UPDATE Socio SET Nome=?,Cognome=?,Email=?,Cellulare=?,Facebook=? WHERE ID=?');
+			$stmt_socio->bind_param('sssssi', $new_socio['nome'], $new_socio['cognome'], $new_socio['email'], 
+											  $new_socio['cellulare'], $new_socio['facebook'], $new_socio['id']);
+			if( ! $stmt_socio->execute() ){
+				$this->db->rollback();
+				throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+
+			$carriere_ids = '';
+			foreach($new_socio['carriere'] as $carriera){
+				$stmt_carriera = $this->db->prepare('UPDATE Carriera SET Studente=?,Professione=?,CdL=?,Matricola=?,Attiva=? WHERE  ID=?');
+				$stmt_carriera->bind_param('isisii', $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola'], $carriera['attiva'], $carriera['id']);
+				if( ! $stmt_carriera->execute() ){
+					$this->db->rollback();
+					throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+				}
+				$carriere_ids = $carriere_ids.$carriera['id'].', ';
+			}
+			$carriere_ids = substr($carriere_ids, 0, -2);
+			$stmt_carriere_del = $this->db->prepare('DELETE FROM Carriera WHERE ID NOT IN (?)');
+			$stmt_carriere_del->bind_param('s', $carriere_ids);
+			if( ! $stmt_carriere_del->execute()){
+				$this->db->rollback();
+				throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+
+			$tessere_ids = '';
+			foreach($new_socio['tessere'] as $tessera){
+				$stmt_tessera = $this->db->prepare('UPDATE Tessera SET Anno=?,Numero=? WHERE ID=?');
+				$stmt_tessera->bind_param('iii', $tessera['anno']['id'], $tessera['numero'], $tessera['id']);
+				if( ! $stmt_tessera->execute() ){
+					$this->db->rollback();
+					throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+				}
+				$tessere_ids = $tessere_ids.$tessera['id'].', ';				
+			}
+			$tessere_ids = substr($tessere_ids, 0, -2);
+			$stmt_tessere_del = $this->db->prepare('DELETE FROM Tessera WHERE ID NOT IN (?)');
+			$stmt_tessere_del->bind_param('s', $tessere_ids);
+			if( ! $stmt_tessere_del->execute()){
+				$this->db->rollback();
+				throw new RESTException(HtppStatusCode::$INTERNAL_SERVER_ERROR);
+			}
+
+			$this->db->commit();
+		}
+
+		protected function do_post($data){
+			if(!$this->validate_socio($data)){
 				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
+			if($this->has_id){
+				$this->edit_socio($data);
+			}else{
+				$this->add_socio($data);
+			}
+			return $this->do_get();
+		}
+
+		protected function do_del(){
+			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
 		}
 	}
 

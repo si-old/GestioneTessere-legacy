@@ -26,3 +26,4 @@ hs_err_pid*
 
 #ignoring vscode file
 .vscode/*
+.vscode

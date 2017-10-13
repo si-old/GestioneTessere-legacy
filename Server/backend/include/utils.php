@@ -7,9 +7,8 @@ function fetch_results($stmt){
     $meta = $stmt->result_metadata();
     
     $variables = array();    
-    $i = 0;
     while($field = $meta->fetch_field())
-        $variables[$i++] = &$data[$field->name]; // pass by reference
+        $variables[] = &$data[$field->name]; // pass by reference
     
     call_user_func_array(array($stmt, 'bind_result'), $variables);
     

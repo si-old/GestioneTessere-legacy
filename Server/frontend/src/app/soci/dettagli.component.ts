@@ -29,16 +29,13 @@ export class DettagliSocioComponent implements OnInit {
 
     //related to having this component in a MatDialog or as a main component or a Route
     private in_dialog: boolean = false; // true is it is in a dialog
-    private _diagref: MatDialogRef<DettagliSocioComponent> = null;
     private form_style: string = "in_route" //style for the form, to assure a good visualization
 
     //model and editing data
     editing: boolean = false; // true if you are editing data, false if you are just reading
     model: Socio; //working model, where changes happen
-    initModel: Socio; //initial model, used for reverting back in case or cancel
     id: number; //id of the requested Socio
     hasTessera: boolean = false; // true se ha una tessera dell'ultimo tesseramento, quello attivo
-
 
     //array of CdLs for use in select
     allCdL: CdL[];
@@ -63,34 +60,8 @@ export class DettagliSocioComponent implements OnInit {
         private _route: ActivatedRoute,
         private _router: Router,
         private _dialog: MatDialog,
-        @Optional() @Inject(MAT_DIALOG_DATA) data: any,
+        @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
         @Optional() private diagref: MatDialogRef<DettagliSocioComponent>) {
-
-        if (diagref) { //if injected reference is not null, we are in a dialog
-            this.in_dialog = true;
-            this.form_style = "in_dialog";
-            this._diagref = diagref;
-        }
-        if (this.in_dialog && data) { //if we are in a dialog and data have been given to us, use them
-            this.initData(data.socio);
-        } else if (this.in_dialog) { // if we are in a dialog but no data, use a default model
-            this.initData(new Socio({
-                nome: "", cognome: "", email: "", cellulare: "", facebook: "",
-                tessere: [new Tessera({ id: 1, numero: '', anno: null })],
-                carriere: [new Carriera({ id: 1, studente: true, matricola: '', corso: null })]
-            })
-            );
-        } else { // otherwise we are not in a dialog, get the id from the params and retrieve the correct socio
-            _route.params.subscribe(
-                (params) => {
-                    this.id = +params['id'];
-                    this._socisrv.getSocioById(+params['id']).subscribe(
-                        socio => { this.initData(socio); },
-                        (x) => { this._router.navigate(['/soci']) }
-                    );
-                }
-            );
-        }
     }
 
     /**
@@ -100,8 +71,6 @@ export class DettagliSocioComponent implements OnInit {
 
     private initData(socio: Socio): void {
         this.model = socio;
-        // deep copy
-        this.initModel = this.model.clone();
         this.model.carriere.forEach(
             (carr: Carriera) => { this.carriereEditing[carr.id] = false; } //init single row editing in the map
         );
@@ -114,15 +83,40 @@ export class DettagliSocioComponent implements OnInit {
                 )
             }
         );
+        this.carriereSource = new BehaviorSubjectDataSource<Carriera>(this.model.carriere);
+        this.tessereSource = new BehaviorSubjectDataSource<Tessera>(this.model.tessere);
     }
 
     ngOnInit() {
-        this._corsisrv.getCorsi().subscribe(
-            (corsi: CdL[]) => { this.allCdL = corsi } //retrieve the array of CdL for use in the form
-        )
-        let source = this._socisrv.getSocioById(this.id)
-        this.carriereSource = new BehaviorSubjectDataSource<Carriera>(this.model.carriere);
-        this.tessereSource = new BehaviorSubjectDataSource<Tessera>(this.model.tessere);
+        if (this.diagref) { //if injected reference is not null, we are in a dialog
+            this.in_dialog = true;
+            this.form_style = "in_dialog";
+        }
+        if (this.in_dialog && this.data) { //if we are in a dialog and data have been given to us, use them
+            this.initData(this.data.socio);
+        } else if (this.in_dialog) { // if we are in a dialog but no data, use a default model
+            this.initData(new Socio({
+                nome: "", cognome: "", email: "", cellulare: "", facebook: "",
+                tessere: [new Tessera({ id: 1, numero: '', anno: null })],
+                carriere: [new Carriera({ id: 1, studente: true, matricola: '', corso: null })]
+            })
+            );
+        } else { // otherwise we are not in a dialog, get the id from the params and retrieve the correct socio
+            this._corsisrv.getCorsi().subscribe(
+                (corsi: CdL[]) => { this.allCdL = corsi } //retrieve the array of CdL for use in the form
+            )
+            this.carriereSource = new BehaviorSubjectDataSource<Carriera>();
+            this.tessereSource = new BehaviorSubjectDataSource<Tessera>();
+            this._route.params.subscribe(
+                (params) => {
+                    this.id = +params['id'];
+                    this._socisrv.getSocioById(+params['id']).subscribe(
+                        socio => { this.initData(socio); },
+                        (x) => { this._router.navigate(['/soci']) }
+                    );
+                }
+            );
+        }
     }
     /**
      * 
@@ -150,7 +144,7 @@ export class DettagliSocioComponent implements OnInit {
      */
     exit() {
         if (this.in_dialog) {
-            this._diagref.close(null);
+            this.diagref.close(null);
         } else {
             this._location.back();
         }
@@ -163,8 +157,7 @@ export class DettagliSocioComponent implements OnInit {
     confirm(form: any) {
         if (!form.invalid) {
             this.disableEditing();
-            this._socisrv.updateSocio(this.model)
-            this.initModel.reinit(this.model);
+            this._socisrv.updateSocio(this.model);
         } else {
             this._snack.open("Qualche campo non è stato compilato correttamente", "OK", {
                 duration: 1500
@@ -178,7 +171,7 @@ export class DettagliSocioComponent implements OnInit {
      * @param form the form to revert
      */
     revert(form: any) {
-        this.model.reinit(this.initModel);
+        this._socisrv.getSocioById(this.id);
         this.carriereSource.update();
         this.tessereSource.update();
         this.disableEditing();
@@ -218,8 +211,12 @@ class BehaviorSubjectDataSource<T> implements DataSource<T>{
 
     _sub: BehaviorSubject<T[]>
 
-    constructor(private source: T[]) {
-        this._sub = new BehaviorSubject<T[]>(source);
+    constructor(private source ?: T[]) {
+        if(source){
+            this._sub = new BehaviorSubject<T[]>(source);
+        }else{
+            this._sub = new BehaviorSubject<T[]>(null);
+        }
     }
 
     update() {
