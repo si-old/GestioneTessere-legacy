@@ -4,15 +4,15 @@
 	
 	class CdL extends RESTItem{
 		
-		protected function do_get($data){
+		protected function do_get(){
 			$stmt = $this->db->prepare('SELECT * FROM CdL ORDER BY ID ASC');
-			$stmt->execute();
+			if( ! $stmt->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
 			$stmt->bind_result($id, $nome);
 			$res = array();
-			$i = 0;
 			while($stmt->fetch()){
-				$res[$i] = array('id' => $id, 'nome' => $nome);
-				$i++;
+				$res[] = array('id' => $id, 'nome' => $nome);
 			}
 			return $res;
 		}
@@ -28,19 +28,23 @@
 					$stmt = $this->db->prepare('INSERT INTO CdL (Nome) VALUES (?)');	
 					$stmt->bind_param('s', $data['nome']);
 				}
-				$stmt->execute();
-				return $this->do_get("");
+				if( ! $stmt->execute() ){
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				}
+				return $this->do_get();
 			}else{
 				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
 			}
 		}
 		
-		protected function do_del($data){
-			if(isset($_GET['id'])){
+		protected function do_del(){
+			if($this->has_id){
 				$stmt = $this->db->prepare('DELETE FROM CdL WHERE ID=?');
-				$stmt->bind_param('i', $_GET['id']);
-				$stmt->execute();
-				return $this->do_get("");
+				$stmt->bind_param('i', $this->id);
+				if( ! $stmt->execute() ){
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				}
+				return $this->do_get();
 			}else{
 				throw new RESTException(HttpStatusCode::$NOT_FOUND);
 			}

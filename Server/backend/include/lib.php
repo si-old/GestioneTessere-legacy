@@ -4,6 +4,8 @@
 
 		function __construct($db){
 			$this->db = $db;
+			$this->has_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
+			$this->id = $_GET['id'];
 		}
 
 		public function dispatch(){
@@ -20,16 +22,16 @@
 				header("Content-Type: application/json");				
 				switch($_SERVER['REQUEST_METHOD']){
 				case 'GET': 
-					$res = $this->do_get($body);
+					$res = $this->do_get();
 					break;
 				case 'POST':
 					$res = $this->do_post($body);
 					break;
 				case 'DELETE':
-					$res = $this->do_del($body);
+					$res = $this->do_del();
 					break;
 				case 'OPTIONS':
-					break;
+					return;
 				}
 				echo json_encode($res, JSON_UNESCAPED_UNICODE);
 			}catch(RESTException $ex){
@@ -39,11 +41,11 @@
 			}
 		}		
 
-		abstract protected function do_get($body);
+		abstract protected function do_get();
 
 		abstract protected function do_post($body);
 
-		abstract protected function do_del($body);
+		abstract protected function do_del();
 
 	};
 

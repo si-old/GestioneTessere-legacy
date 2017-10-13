@@ -12,7 +12,9 @@
 		private function check_login($user, $password){
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE User=? and Password=? ');
 			$stmt->bind_param('ss', $user, $password);
-			$stmt->execute();
+			if( ! $stmt->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
 			$stmt->bind_result($idr, $user, $pass, $socio);
 			if($stmt->fetch()){
 				return true;
@@ -21,7 +23,7 @@
 			}
 		}
 		
-		protected function do_get($data){
+		protected function do_get(){
 			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
 		}
 		
@@ -39,7 +41,7 @@
 			}
 		}
 		
-		protected function do_del($data){
+		protected function do_del(){
 			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
 		}
 	}

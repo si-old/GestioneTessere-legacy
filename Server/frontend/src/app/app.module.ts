@@ -1,5 +1,5 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler, forwardRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import {
   MatButtonModule,
@@ -48,6 +48,9 @@ import { ConfirmDialog } from './dialogs/confirm.dialog'
 import { TextInputDialog } from './dialogs/textinput.dialog'
 import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
 import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
+import { MessageDialog } from './dialogs/message.dialog'
+
+import { DialogErrorHandler } from './common/dialogErrorHandler'
 
 @NgModule({
   declarations: [
@@ -65,7 +68,8 @@ import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
     LoginComponent,
     ToolbarComponent,
     AggiuntaDirettivoComponent,
-    EqualFieldsValidatorDirective
+    EqualFieldsValidatorDirective,
+    MessageDialog
   ],
   imports: [
     BrowserModule,
@@ -94,7 +98,11 @@ import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
     DirettivoService,
     LoginService,
     LoggedinGuard,
-    AdminGuard
+    AdminGuard,
+    {
+      provide: ErrorHandler, 
+      useClass: DialogErrorHandler
+    }
   ],
   entryComponents: [
     AggiuntaSocioComponent,
@@ -103,7 +111,8 @@ import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
     CreateCarrieraDialog,
     TextInputDialog,
     CreateTesseraDialog,
-    AggiuntaDirettivoComponent
+    AggiuntaDirettivoComponent,
+    MessageDialog
   ],
   bootstrap: [AppComponent]
 })

@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core'
 
 import { Socio, Carriera, Tessera, CdL, Tesseramento } from '../model/all'
 
+import { HttpClient } from '@angular/common/http'
+
 import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
+
+const REST_ENDPOINT: string = 'https://www.studentingegneria.it/socisi/backend/socio.php'
 
 const SOCI: Socio[] = [
   new Socio({
@@ -27,74 +31,50 @@ const SOCI: Socio[] = [
 @Injectable()
 export class SociService {
 
-  private _obs: BehaviorSubject<Socio[]>;
+  private _obs: Subject<Socio[]>;
+  private _singleObs: Subject<Socio>;
 
-  private corsi: CdL[];
-
-  constructor(private _corsisrv: CorsiService, private _tesssrv: TesseramentiService) {
-    this._tesssrv.getTesseramenti().combineLatest(
-      _corsisrv.getCorsi(),
-      (tesseramenti_in: Tesseramento[], corsi_in: CdL[]) => { return { corsi: corsi_in, tesseramenti: tesseramenti_in } }
-    ).first().subscribe(
-      (x) => {
-        let i: number = 0;
-        SOCI.forEach(
-          (socio: Socio) => {
-            socio.carriere.forEach(
-              (carriera: Carriera) => {
-                if (carriera.studente) {
-                  carriera.corso = x.corsi[i];
-                  i = (i + 1) % x.corsi.length
-                }
-              }
-            )
-            socio.tessere.forEach(
-              (tessera: Tessera, index: number) => {
-                let mod = x.tesseramenti.length - 1;
-                tessera.anno = (index == 0) ? x.tesseramenti[0] : x.tesseramenti[(index % mod) + 1];
-              }
-            )
-          }
-        )
-      }
-      )
-    this._obs = new BehaviorSubject<Socio[]>(SOCI);
+  constructor(private http: HttpClient) {
+    this._obs = new Subject<Socio[]>();
+    this._singleObs = new Subject<Socio>();
   }
 
+  updateObs(value){
+    let tempArray: Socio[] = [];
+    value.forEach(
+      (x) => { tempArray.push(new Socio(x)); }
+    );
+    this._obs.next(tempArray);
+  }
+
+  updateSingleObs(value){
+    let temp: Socio = new Socio(value);
+    this._singleObs.next(temp);
+  }
 
   getSoci(): Observable<Socio[]> {
+    this.http.get<Socio[]>(REST_ENDPOINT).subscribe(
+      (value) => { this.updateObs(value); }
+    )
     return this._obs;
   }
 
   getSocioById(id: number): Observable<Socio> {
-    return this._obs.map<Socio[], Socio[]>(
-      (input: Socio[]) => { return input.filter( (el: Socio) => { return el.id === id } ) }
-    ).map<Socio[], Socio>(
-      (input: Socio[]) => { 
-        if(input.length == 1){
-          return input[0]
-        }else{
-          throw new Error("Socio non presente");
-        }
-       }
-    );
+    this.http.get<Socio>(REST_ENDPOINT + '/' + id).subscribe(
+      (value) => { this.updateSingleObs(value); }
+    )
+    return this._singleObs;
   }
 
   updateSocio(newSocio: Socio) {
-    let index = SOCI.findIndex((temp: Socio) => { return temp.id == newSocio.id });
-    if (index !== -1) {
-      SOCI[index].reinit(newSocio);
-      this._obs.next(SOCI);
-    }
+    this.http.post<Socio>(REST_ENDPOINT + '/' + newSocio.id, newSocio).subscribe(
+      (value) => { this.updateSingleObs(value); }
+    )
   }
 
   addSocio(newSocio: Socio) {
-    let index = SOCI.findIndex((temp: Socio) => { return temp.id == newSocio.id });
-    let maxId = Math.max.apply(null, SOCI.map(socio => socio.id));
-    if (index == -1) {
-      newSocio.id = maxId + 1;
-      SOCI.push(newSocio);
-      this._obs.next(SOCI);
-    }
+    this.http.post<Socio[]>(REST_ENDPOINT, newSocio).subscribe(
+      (value) => { this.updateObs(value); }
+    )
   }
 }

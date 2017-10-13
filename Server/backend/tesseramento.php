@@ -4,15 +4,15 @@
 	
 	class Tesseramento extends RESTItem{
 		
-		protected function do_get($body){
+		protected function do_get(){
 			$stmt = $this->db->prepare('SELECT * FROM Tesseramento');
-			$stmt->execute();
+			if( ! $stmt->execute() ){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+			}
 			$stmt->bind_result($id, $anno, $attivo);
 			$res = array();
-			$i = 0;
 			while($stmt->fetch()){
-				$res[$i] = array('id' => $id, 'anno' => $anno, 'attivo' => $attivo);
-				$i++;
+				$res[] = array('id' => $id, 'anno' => $anno, 'attivo' => $attivo);
 			}
 			return $res;
 		}
@@ -29,18 +29,14 @@
 			$valid_format = $valid_open || $valid_close;
 			if($valid_format){
 				$stmt = $this->db->prepare('UPDATE Tesseramento SET Aperto = 0 WHERE Aperto = 1');
-				$stmt->execute();
+				if( ! $stmt->execute() ){
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				}
 				if($valid_open){
-					//check if anno already exists, to ensure idempotence
-					$stmt2 = $this->db->prepare('SELECT * FROM Tesseramento WHERE Anno = ?');
-					$stmt2->bind_param('s', $data['anno']);
-					$stmt2->execute();
-					$check = $stmt2->num_rows <= 0;
-					$stmt2->close();
-					if( $check ){
-						$stmt3 = $this->db->prepare("INSERT INTO Tesseramento(Anno, Aperto) VALUES ( ?, 1)");
-						$stmt3->bind_param('s', $data['anno']);
-						$stmt3->execute();
+					$stmt3 = $this->db->prepare("INSERT INTO Tesseramento(Anno, Aperto) VALUES ( ?, 1)");
+					$stmt3->bind_param('s', $data['anno']);
+					if( ! $stmt3->execute() ){
+						throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
 					}
 				}
 				return $this->do_get();
@@ -49,7 +45,7 @@
 			}
 		}
 
-		protected function do_del($data){
+		protected function do_del(){
 			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
 		}
 	}

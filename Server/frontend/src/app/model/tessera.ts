@@ -7,7 +7,12 @@ export class Tessera{
     anno: Tesseramento;
 
     constructor(fields?: Partial<Tessera>){
-        if(fields) Object.assign(this, fields);
+        if(fields) {
+            Object.assign(this, fields);
+            if(fields.anno){
+                this.anno = new Tesseramento(fields.anno);
+            }
+        }
     }
 
     contains(needle: string): boolean {
