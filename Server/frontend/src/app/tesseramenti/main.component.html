@@ -15,18 +15,18 @@
             <mat-cell *cdkCellDef="let row"> {{row.anno}} </mat-cell>
         </ng-container>
 
-        <ng-container cdkColumnDef="attivo">
+        <ng-container cdkColumnDef="aperto">
             <mat-header-cell *cdkHeaderCellDef> Stato </mat-header-cell>
             <mat-cell *cdkCellDef="let row">
-                <span *ngIf="row.attivo">Aperto</span>
-                <span *ngIf="!row.attivo">Chiuso</span>
+                <span *ngIf="row.aperto">Aperto</span>
+                <span *ngIf="!row.aperto">Chiuso</span>
             </mat-cell>
         </ng-container>
 
         <ng-container cdkColumnDef="azioni">
             <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
             <mat-cell *cdkCellDef="let row">
-                <button *ngIf="row.attivo" mat-icon-button (click)="closeCallback()">
+                <button *ngIf="row.aperto" mat-icon-button (click)="closeCallback()">
                             <mat-icon matTooltip="Chiudi" matTooltipPosition="right">close</mat-icon>
                         </button>
             </mat-cell>

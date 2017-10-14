@@ -3,7 +3,7 @@ export class Tesseramento {
     id: number;
 
     anno: string;
-    attivo: boolean;
+    aperto: boolean;
 
     constructor(fields?: Partial<Tesseramento>) {
         if (fields) Object.assign(this, fields);
@@ -15,7 +15,7 @@ export class Tesseramento {
 
     toString(): string {
         let toReturn: string = this.anno;
-        if (!this.attivo) toReturn += " (chiuso)"
+        if (!this.aperto) toReturn += " (chiuso)"
         return toReturn
     }
 }

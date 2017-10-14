@@ -28,7 +28,7 @@ export class AggiuntaSocioComponent implements OnInit {
     ngOnInit() {
         this.model = new Socio({
             nome: "", cognome: "", email: "", cellulare: "", facebook: "",
-            tessere: [new Tessera({ numero: '' })],
+            tessere: [new Tessera({ numero: null })],
             carriere: [new Carriera({ matricola: '', studente: false })]
         });
         this._corsisrv.getCorsi().subscribe(

@@ -11,6 +11,7 @@ import { CorsiService } from '../corsi/main.service'
 import { SociService } from './main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
+import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk/table';
 
@@ -27,6 +28,8 @@ import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
 })
 export class DettagliSocioComponent implements OnInit {
 
+
+    private loaded = false;
     //related to having this component in a MatDialog or as a main component or a Route
     private in_dialog: boolean = false; // true is it is in a dialog
     private form_style: string = "in_route" //style for the form, to assure a good visualization
@@ -41,12 +44,12 @@ export class DettagliSocioComponent implements OnInit {
     allCdL: CdL[];
 
     //properties for carriere table
-    carriereSource: BehaviorSubjectDataSource<Carriera>; //data source, definition down in this file
+    carriereSource: SubjectDataSource<Carriera>; //data source, definition down in this file
     carriereColumns: string[] = ['studente', 'dettagli']; // showed columns
     carriereEditing = {}; // map to enable editing of a single row
 
     //properties for tessere table
-    tessereSource: BehaviorSubjectDataSource<Tessera>; //data source, definition down in this file
+    tessereSource: SubjectDataSource<Tessera>; //data source, definition down in this file
     tessereColumns: string[] = ['numero', 'anno'];  // showed columns
     tessereEditing = {}; // map to enable editing of a single row
 
@@ -62,6 +65,31 @@ export class DettagliSocioComponent implements OnInit {
         private _dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
         @Optional() private diagref: MatDialogRef<DettagliSocioComponent>) {
+        this.carriereSource = new SubjectDataSource<Carriera>();
+        this.tessereSource = new SubjectDataSource<Tessera>();
+        if (this.diagref) { //if injected reference is not null, we are in a dialog
+            this.in_dialog = true;
+            this.form_style = "in_dialog";
+        }
+        if (this.in_dialog && this.data) { //if we are in a dialog and data have been given to us, use them
+            this._socisrv.getSocioById(this.data.socio.id).subscribe(
+                socio => { this.initData(socio); },
+                (x) => { this._router.navigate(['/soci']) }
+            );
+        } // otherwise we are not in a dialog, get the id from the params and retrieve the correct socio
+        this._corsisrv.getCorsi().subscribe(
+            (corsi: CdL[]) => { this.allCdL = corsi } //retrieve the array of CdL for use in the form
+        )
+        this._route.params.subscribe(
+            (params) => {
+                this.id = +params['id'];
+                this._socisrv.getSocioById(+params['id']).subscribe(
+                    socio => { this.initData(socio); },
+                    (x) => { this._router.navigate(['/soci']) }
+                );
+            }
+        );
+
     }
 
     /**
@@ -70,53 +98,32 @@ export class DettagliSocioComponent implements OnInit {
      */
 
     private initData(socio: Socio): void {
+        this.loaded = true;
         this.model = socio;
         this.model.carriere.forEach(
-            (carr: Carriera) => { this.carriereEditing[carr.id] = false; } //init single row editing in the map
+            //init single row editing in the map
+            (carr: Carriera) => { this.carriereEditing[carr.id] = false; }
         );
         this.model.tessere.forEach(
-            (tess: Tessera) => { 
+            (tess: Tessera) => {
                 this.tessereEditing[tess.id] = false;
                 this._tesssrv.getTesseramentoAttivo().subscribe(
-                    (tessAttivo) => { if(tess.anno.equals(tessAttivo)) this.hasTessera = true; },
-                    () => {}
+                    (tessAttivo) => { if (tess.anno.equals(tessAttivo)) this.hasTessera = true; },
+                    () => { }
                 )
             }
         );
-        this.carriereSource = new BehaviorSubjectDataSource<Carriera>(this.model.carriere);
-        this.tessereSource = new BehaviorSubjectDataSource<Tessera>(this.model.tessere);
+        this.carriereSource.update(this.model.carriere);
+        this.tessereSource.update(this.model.tessere);
+    }
+
+    private refreshData(socio: Socio): void {
+        this.model = socio;
+        this.carriereSource.update(this.model.carriere);
+        this.tessereSource.update(this.model.tessere);
     }
 
     ngOnInit() {
-        if (this.diagref) { //if injected reference is not null, we are in a dialog
-            this.in_dialog = true;
-            this.form_style = "in_dialog";
-        }
-        if (this.in_dialog && this.data) { //if we are in a dialog and data have been given to us, use them
-            this.initData(this.data.socio);
-        } else if (this.in_dialog) { // if we are in a dialog but no data, use a default model
-            this.initData(new Socio({
-                nome: "", cognome: "", email: "", cellulare: "", facebook: "",
-                tessere: [new Tessera({ id: 1, numero: '', anno: null })],
-                carriere: [new Carriera({ id: 1, studente: true, matricola: '', corso: null })]
-            })
-            );
-        } else { // otherwise we are not in a dialog, get the id from the params and retrieve the correct socio
-            this._corsisrv.getCorsi().subscribe(
-                (corsi: CdL[]) => { this.allCdL = corsi } //retrieve the array of CdL for use in the form
-            )
-            this.carriereSource = new BehaviorSubjectDataSource<Carriera>();
-            this.tessereSource = new BehaviorSubjectDataSource<Tessera>();
-            this._route.params.subscribe(
-                (params) => {
-                    this.id = +params['id'];
-                    this._socisrv.getSocioById(+params['id']).subscribe(
-                        socio => { this.initData(socio); },
-                        (x) => { this._router.navigate(['/soci']) }
-                    );
-                }
-            );
-        }
     }
     /**
      * 
@@ -171,9 +178,11 @@ export class DettagliSocioComponent implements OnInit {
      * @param form the form to revert
      */
     revert(form: any) {
-        this._socisrv.getSocioById(this.id);
-        this.carriereSource.update();
-        this.tessereSource.update();
+        this._socisrv.getSocioById(this.id).subscribe(
+            (socio) => {
+                this.refreshData(socio);
+            }
+        )
         this.disableEditing();
         return false; //to prevent Edge from reloading
     }
@@ -182,8 +191,11 @@ export class DettagliSocioComponent implements OnInit {
         this._dialog.open(CreateCarrieraDialog).afterClosed().subscribe(
             (new_carriera: Carriera) => {
                 if (new_carriera) {
+                    this.model.carriere.forEach(
+                        (carriera) => (carriera.attiva = false)
+                    )
                     this.model.carriere.unshift(new_carriera);
-                    this.carriereSource.update();
+                    this.carriereSource.update(this.model.carriere);
                 }
             }
         )
@@ -191,7 +203,7 @@ export class DettagliSocioComponent implements OnInit {
 
     deleteCarriera(ind: number) {
         this.model.carriere.splice(ind, 1);
-        this.carriereSource.update()
+        this.carriereSource.update(this.model.carriere);
     }
 
     addTessera() {
@@ -199,7 +211,7 @@ export class DettagliSocioComponent implements OnInit {
             (new_tessera: Tessera) => {
                 if (new_tessera) {
                     this.model.tessere.unshift(new_tessera);
-                    this.tessereSource.update();
+                    this.tessereSource.update(this.model.tessere);
                 }
             }
         )
@@ -207,20 +219,15 @@ export class DettagliSocioComponent implements OnInit {
 
 }
 
-class BehaviorSubjectDataSource<T> implements DataSource<T>{
+class SubjectDataSource<T> implements DataSource<T>{
 
-    _sub: BehaviorSubject<T[]>
+    _sub: Subject<T[]> = new BehaviorSubject<T[]>(null);
 
-    constructor(private source ?: T[]) {
-        if(source){
-            this._sub = new BehaviorSubject<T[]>(source);
-        }else{
-            this._sub = new BehaviorSubject<T[]>(null);
-        }
+    constructor() {
     }
 
-    update() {
-        this._sub.next(this.source);
+    update(value: T[]) {
+        this._sub.next(value);
     }
 
     connect(): Observable<T[]> {

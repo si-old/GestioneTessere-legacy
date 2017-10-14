@@ -22,7 +22,7 @@ import { Carriera } from '../model/all'
     ]
 })
 export class CreateCarrieraDialog{
-    private model: Carriera = new Carriera({id: -1, studente: false, professione: ''});
+    private model: Carriera = new Carriera({studente: false, professione: '', attiva: true});
 
     constructor(private _diagref: MatDialogRef<CreateCarrieraDialog>){
 

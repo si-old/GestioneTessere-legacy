@@ -13,7 +13,7 @@
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE User=? and Password=? ');
 			$stmt->bind_param('ss', $user, $password);
 			if( ! $stmt->execute() ){
-				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 			}
 			$stmt->bind_result($idr, $user, $pass, $socio);
 			if($stmt->fetch()){
@@ -33,9 +33,7 @@
 				$password = $data['password'];
 				$is_admin = strcasecmp($user, Login::$ADMIN_USER)==0 && strcmp($password, Login::$ADMIN_PSW)==0;
 				$successful = $is_admin || $this->check_login($user, $password);
-				return array(	'result' => $successful,
-								'admin' => $is_admin
-							);
+				return array('result' => $successful, 'admin' => $is_admin);
 			}else{
 				throw new RESTException(HttpStatusCode::$BAD_REQUEST);	
 			}

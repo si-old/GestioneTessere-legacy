@@ -7,12 +7,12 @@
 		protected function do_get(){
 			$stmt = $this->db->prepare('SELECT * FROM Tesseramento');
 			if( ! $stmt->execute() ){
-				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 			}
-			$stmt->bind_result($id, $anno, $attivo);
+			$stmt->bind_result($id, $anno, $aperto);
 			$res = array();
 			while($stmt->fetch()){
-				$res[] = array('id' => $id, 'anno' => $anno, 'attivo' => $attivo);
+				$res[] = array('id' => $id, 'anno' => $anno, 'aperto' => $aperto);
 			}
 			return $res;
 		}
@@ -30,13 +30,13 @@
 			if($valid_format){
 				$stmt = $this->db->prepare('UPDATE Tesseramento SET Aperto = 0 WHERE Aperto = 1');
 				if( ! $stmt->execute() ){
-					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 				}
 				if($valid_open){
 					$stmt3 = $this->db->prepare("INSERT INTO Tesseramento(Anno, Aperto) VALUES ( ?, 1)");
 					$stmt3->bind_param('s', $data['anno']);
 					if( ! $stmt3->execute() ){
-						throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+						throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 					}
 				}
 				return $this->do_get();

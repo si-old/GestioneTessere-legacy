@@ -1,4 +1,4 @@
-<div class="fontstyle">
+<div class="fontstyle" *ngIf="loaded">
     <div mat-dialog-title style="text-align:center">
         <button class="to_left" mat-icon-button (click)="exit()">
         <mat-icon matTooltip="Esci" matTooltipPosition="right">keyboard_arrow_left</mat-icon>
@@ -23,11 +23,11 @@
             </div>
             <div class="form_group">
                 <span class="label">Cellulare:</span>
-                <text-viewedit [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" required></text-viewedit>
+                <text-viewedit [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing"></text-viewedit>
             </div>
             <div class="form_group">
                 <span class="label">Facebook:</span>
-                <text-viewedit [(ngModel)]="model.facebook" name="facebook" [flag]="editing" required></text-viewedit>
+                <text-viewedit [(ngModel)]="model.facebook" name="facebook" [flag]="editing"></text-viewedit>
             </div>
             <div class="table-container">
                 <div class="label">
@@ -137,4 +137,8 @@
             </ng-container>
         </div>
     </form>
+</div>
+<div *ngIf="!loaded" class="centered">
+    <mat-spinner></mat-spinner>
+    <h3 style="padding: 10px 0">Loading...</h3>
 </div>

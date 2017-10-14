@@ -31,13 +31,17 @@
 					$res = $this->do_del();
 					break;
 				case 'OPTIONS':
+					// return to send an empty body
+					// as OPTION should 
 					return;
 				}
 				echo json_encode($res, JSON_UNESCAPED_UNICODE);
 			}catch(RESTException $ex){
 				http_response_code($ex->get_error_code());
+				echo $ex->getMessage();				
 			}catch(Exception $ex){
 				http_response_code(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				echo $ex->getMessage();
 			}
 		}		
 
@@ -51,13 +55,15 @@
 
 	class RESTException extends Exception{
 
-		function __construct($code){
+		function __construct($code, $message=""){
 			$this->code = $code;
+			$this->message = $message;
 		}
 
 		function get_error_code(){
 			return $this->code;
 		}
+
 	}
 
 	class HttpStatusCode{

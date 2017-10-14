@@ -3,7 +3,7 @@ import { Tesseramento } from './tesseramento'
 export class Tessera{
     id: number;
     
-    numero: string;
+    numero: number;
     anno: Tesseramento;
 
     constructor(fields?: Partial<Tessera>){
@@ -16,7 +16,7 @@ export class Tessera{
     }
 
     contains(needle: string): boolean {
-        return this.numero.toLowerCase().indexOf(needle) != -1;
+        return this.numero && this.numero.toString().indexOf(needle) != -1;
     }
 
     clone(): Tessera{

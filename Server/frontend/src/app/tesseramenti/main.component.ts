@@ -20,7 +20,7 @@ import { DataSource } from '@angular/cdk/table';
 })
 export class TesseramentiComponent implements OnInit {
 
-    displayedColumns: string[] = ['anno', 'attivo', 'azioni'];
+    displayedColumns: string[] = ['anno', 'aperto', 'azioni'];
     tessSource: TesseramentiDataSource;
 
     constructor(private _tessService: TesseramentiService,
