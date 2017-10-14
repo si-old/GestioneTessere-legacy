@@ -33,13 +33,13 @@ export class Socio {
   }
 
   contains(needle: string): boolean {
-    return this.nome.toLowerCase().indexOf(needle) != -1 ||
-      this.cognome.toLowerCase().indexOf(needle) != -1 ||
-      this.email.toLowerCase().indexOf(needle) != -1 ||
-      this.cellulare.toLowerCase().indexOf(needle) != -1 ||
-      this.facebook.toLowerCase().indexOf(needle) != -1 ||
-      (this.carriere[0].contains(needle)) ||
-      (this.tessere[0].contains(needle));
+    return (this.nome && this.nome.toLowerCase().indexOf(needle) != -1) ||
+      (this.cognome && this.cognome.toLowerCase().indexOf(needle) != -1) ||
+      (this.email && this.email.toLowerCase().indexOf(needle) != -1) ||
+      (this.cellulare && this.cellulare.toLowerCase().indexOf(needle) != -1) ||
+      (this.facebook && this.facebook.toLowerCase().indexOf(needle) != -1) ||
+      (this.carriere[0] && this.carriere[0].contains(needle)) ||
+      (this.tessere[0] && this.tessere[0].contains(needle));
   }
 
   compare(other: Socio, prop: string, order: string): number {

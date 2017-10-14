@@ -37,15 +37,15 @@ export class CorsiComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
 
-  constructor(private _corsisrv: CorsiService, 
-              private snackBar: MatSnackBar,
-              private changeDetector: ChangeDetectorRef,
-              private dialog: MatDialog) {
+  constructor(private _corsisrv: CorsiService,
+    private snackBar: MatSnackBar,
+    private changeDetector: ChangeDetectorRef,
+    private dialog: MatDialog) {
     this._corsisrv.getCorsi().subscribe(
       (corsi: CdL[]) => {
         corsi.forEach(
-          (element, index) => { 
-            this.editing[index] = false; 
+          (element, index) => {
+            this.editing[index] = false;
             this.initValues[index] = element.nome;
           }
         );
@@ -55,7 +55,7 @@ export class CorsiComponent implements OnInit {
 
   ngOnInit() {
     this.corsiSource = new CorsiDataSource(this._corsisrv);
-    this.changeDetector.detectChanges();    
+    this.changeDetector.detectChanges();
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -68,29 +68,31 @@ export class CorsiComponent implements OnInit {
     )
   }
 
-  revertCorso(corso: CdL, index: number){
+  revertCorso(corso: CdL, index: number) {
     corso.nome = this.initValues[index];
     this.editing[index] = false;
-  } 
-
-  addCorso(){
-    this.dialog.open(TextInputDialog, {
-      data : "nome"
-    }).afterClosed().subscribe(
-      (name) => { if (name) this._corsisrv.addCorso(name) }
-    );
   }
 
-  deleteCorso(corso: CdL){
+  addCorso() {
+    this.dialog.open(TextInputDialog, {
+      data: "nome"
+    }).afterClosed().subscribe(
+      (name) => { if (name) this._corsisrv.addCorso(name) }
+      );
+  }
+
+  deleteCorso(corso: CdL) {
     this.dialog.open(ConfirmDialog).afterClosed().subscribe(
-      (response) => { if(response) this._corsisrv.deleteCorso(corso); }
+      (response) => { if (response) this._corsisrv.deleteCorso(corso); }
     )
   }
 
   updateCorso(corso: CdL, index: number) {
     if (corso.nome) {
-      this._corsisrv.updateCorso(corso);
-      this.initValues[index] = corso.nome;
+      if (corso.nome != this.initValues[index]) {
+        this._corsisrv.updateCorso(corso);
+        this.initValues[index] = corso.nome;
+      }
       this.editing[index] = false;
     } else {
       this.snackBar.open("Tutti i campi sono obbligatori", "Chiudi", {

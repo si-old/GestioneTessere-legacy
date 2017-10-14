@@ -18,10 +18,10 @@ import { TesseramentiService } from '../tesseramenti/main.service'
                     <input type="text" name="numero" [(ngModel)]="numero" matInput required />
                 </mat-input-container>
                 <div mat-dialog-actions style="display: block">
-                    <button mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
+                    <button type="submit" mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
                         <mat-icon matTooltip="Conferma" matTooltipPosition="below">done</mat-icon>
                     </button>
-                    <button mat-icon-button mat-dialog-close class="to_right" >
+                    <button type="button" mat-icon-button mat-dialog-close class="to_right" >
                         <mat-icon matTooltip="Annulla" matTooltipPosition="below">close</mat-icon>
                     </button>
                 </div>

@@ -12,7 +12,8 @@ export class MembroDirettivo extends Socio {
     }
 
     contains(needle: string): boolean {
-        return (super.contains(needle) && this.user.toLowerCase().indexOf(needle) != -1);
+        return  super.contains(needle) || 
+                (this.user && this.user.toLowerCase().indexOf(needle) != -1);
     }
 
     toString(): string {

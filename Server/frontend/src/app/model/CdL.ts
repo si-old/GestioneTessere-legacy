@@ -7,7 +7,7 @@ export class CdL {
     }
 
     contains(needle: string): boolean {
-        return this.nome.toLowerCase().indexOf(needle) != -1;
+        return this.nome && this.nome.toLowerCase().indexOf(needle) != -1;
     }
 
     compare(other: CdL, prop: string, order: string): number {

@@ -37,3 +37,7 @@ div{
     width: 10%;
     vertical-align: top;
 }
+
+.mat-spinner{
+    margin: 0 auto;
+}

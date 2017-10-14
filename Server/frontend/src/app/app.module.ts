@@ -1,28 +1,14 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, forwardRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import {
-  MatButtonModule,
-  MatIconModule,
-  MatToolbarModule,
-  MatInputModule,
-  MatTableModule,
-  MatSortModule,
-  MatSnackBarModule,
-  MatDialogModule,
-  MatSlideToggleModule,
-  MatSelectModule,
-  MatTooltipModule
-} from '@angular/material';
-
 import { FormsModule } from '@angular/forms'
-import { CdkTableModule } from '@angular/cdk/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar.component'
 
 import { AppRoutingModule } from './app-routing.module';
 import { VieweditModule } from './viewedit/viewedit.module'
+import { MaterialModule } from './material.module'
 
 import { SociComponent } from './soci/main.component'
 import { AggiuntaSocioComponent } from './soci/aggiunta.component'
@@ -74,22 +60,11 @@ import { DialogErrorHandler } from './common/dialogErrorHandler'
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatTableModule,
-    MatSortModule,
-    CdkTableModule,
-    MatSlideToggleModule,
-    MatSelectModule,
     FormsModule,
     VieweditModule,
-    MatTooltipModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule
   ],
   providers: [
     SociService,

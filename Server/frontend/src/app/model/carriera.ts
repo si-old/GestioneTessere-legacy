@@ -8,6 +8,7 @@ export class Carriera {
 
     matricola: string;
     corso: CdL;
+    attiva: boolean;
 
     constructor(fields?: Partial<Carriera>) {
         if (fields) {
@@ -19,9 +20,9 @@ export class Carriera {
     }
 
     contains(needle: string): boolean {
-        return (!this.studente && this.professione.toLowerCase().indexOf(needle) != 1) ||
+        return (!this.studente && this.professione && this.professione.toLowerCase().indexOf(needle) != -1) ||
             (this.studente && this.corso.contains(needle)) ||
-            (this.studente && this.matricola.toLowerCase().indexOf(needle) != -1);
+            (this.studente && this.matricola && this.matricola.toLowerCase().indexOf(needle) != -1);
     }
 
     compare(other: Carriera, prop: string, order: string): number {

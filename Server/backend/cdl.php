@@ -7,7 +7,7 @@
 		protected function do_get(){
 			$stmt = $this->db->prepare('SELECT * FROM CdL ORDER BY ID ASC');
 			if( ! $stmt->execute() ){
-				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 			}
 			$stmt->bind_result($id, $nome);
 			$res = array();
@@ -29,7 +29,7 @@
 					$stmt->bind_param('s', $data['nome']);
 				}
 				if( ! $stmt->execute() ){
-					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 				}
 				return $this->do_get();
 			}else{
@@ -42,7 +42,7 @@
 				$stmt = $this->db->prepare('DELETE FROM CdL WHERE ID=?');
 				$stmt->bind_param('i', $this->id);
 				if( ! $stmt->execute() ){
-					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 				}
 				return $this->do_get();
 			}else{

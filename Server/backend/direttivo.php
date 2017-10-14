@@ -10,7 +10,7 @@
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE ID=?');
 			$stmt->bind_param('i', $id);
 			if( ! $stmt->execute() ){
-				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 			}
 			$stmt->bind_result($idr, $user, $pass, $socio);
 			if($stmt->fetch()){
@@ -23,7 +23,7 @@
 		protected function do_get(){
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo');
 			if( ! $stmt->execute() ){
-				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 			}
 			$stmt->bind_result($idr, $user, $pass, $socio);
 			$res = array();
@@ -52,7 +52,7 @@
 					$stmt->bind_param('ssi', $new_data['user'], $new_data['password'], $new_data['id']);
 				}
 				if( ! $stmt->execute() ){
-					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 				}
 				return $this->do_get();
 			}else{
@@ -61,11 +61,11 @@
 		}
 		
 		protected function do_del(){
-			if( $this->had_id ){
+			if( $this->has_id ){
 				$stmt = $this->db->prepare('DELETE FROM Direttivo WHERE ID=?');
 				$stmt->bind_param('i', $this->id );
 				if( ! $stmt->execute() ){
-					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+					throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 				}
 				return $this->do_get();
 			}else{
