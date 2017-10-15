@@ -13,21 +13,6 @@ import 'rxjs/add/operator/map';
 
 const REST_ENDPOINT: string = 'https://www.studentingegneria.it/socisi/backend/socio.php'
 
-const SOCI: Socio[] = [
-  new Socio({
-    id: 1, nome: 'nome', cognome: 'cognome', email: 'email', cellulare: 'cellulare',
-    facebook: 'fb', carriere: [new Carriera({ id: 1, studente: true, matricola: 'matr' }), new Carriera({ id: 2, studente: true, matricola: 'matr' }),
-    new Carriera({ id: 3, studente: true, matricola: 'matr' }), new Carriera({ id: 4, studente: true, matricola: 'matr' }),
-    new Carriera({ id: 5, studente: true, matricola: 'matr' })],
-    tessere: [new Tessera({ id: 1, numero: '0', anno: null })]
-  }),
-  new Socio({
-    id: 2, nome: 'nome', cognome: 'cognome', email: 'email', cellulare: 'cellulare', facebook: 'fb',
-    tessere: [new Tessera({ id: 2, numero: '1', anno: null }), new Tessera({ id: 3, numero: '1', anno: null }), new Tessera({ id: 4, numero: '1', anno: null })],
-    carriere: [new Carriera({ id: 6, studente: false, professione: 'prof' })]
-  })
-]
-
 @Injectable()
 export class SociService {
 

@@ -15,7 +15,7 @@ import { TesseramentiService } from '../tesseramenti/main.service'
                 Anno: {{activeTesseramento}}<br />
                 <label for="numero">Numero:</label>
                 <mat-input-container>
-                    <input type="text" name="numero" [(ngModel)]="numero" matInput required />
+                    <input type="text" name="numero" [(ngModel)]="numero" matInput required pattern="-?d+" />
                 </mat-input-container>
                 <div mat-dialog-actions style="display: block">
                     <button type="submit" mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
@@ -40,7 +40,7 @@ export class CreateTesseraDialog {
     error: boolean;
     activeTesseramento: Tesseramento;
 
-    numero: string;
+    numero: number;
 
     constructor( @Inject(MAT_DIALOG_DATA) private str: string,
         private dialogRef: MatDialogRef<CreateTesseraDialog>,
