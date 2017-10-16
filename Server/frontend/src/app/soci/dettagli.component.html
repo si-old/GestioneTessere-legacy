@@ -19,7 +19,7 @@
             </div>
             <div class="form_group">
                 <span class="label">E-Mail:</span>
-                <text-viewedit [(ngModel)]="model.email" name="email" [flag]="editing" required></text-viewedit>
+                <text-viewedit [(ngModel)]="model.email" name="email" [flag]="editing" required email></text-viewedit>
             </div>
             <div class="form_group">
                 <span class="label">Cellulare:</span>
@@ -96,7 +96,8 @@
                             </ng-container>
                             <ng-container *ngIf="tessereEditing[ind]">
                                 <mat-input-container>
-                                    <input type="text" [(ngModel)]="row.numero" name="numero" matInput/>
+                                    <input  type="text" [(ngModel)]="row.numero" name="numero"
+                                            matInput required [pattern]="PATTERN_NUMERO_TESSERA" />
                                 </mat-input-container>
                             </ng-container>
                         </mat-cell>

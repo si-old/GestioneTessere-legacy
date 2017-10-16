@@ -5,13 +5,15 @@
     <div class="formlist">
         <label for="user">Username: </label>
         <mat-input-container>
-            <input type="text" matInput name="user" required [(ngModel)]="user" />
+            <input  type="text" matInput name="user" required
+                    [(ngModel)]="user" [pattern]="PATTERN_USER" />
         </mat-input-container>
     </div>
     <div class="formlist">
         <label for="password">Password: </label>
         <mat-input-container>
-            <input type="password" matInput name="password" required [(ngModel)]="password" />
+            <input  type="password" matInput name="password" required
+                    [(ngModel)]="password" [pattern]="PATTERN_PASSWORD" />
         </mat-input-container>
     </div>
     <button mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">

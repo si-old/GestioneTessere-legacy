@@ -8,12 +8,19 @@ import { CorsiService } from '../corsi/main.service'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
+import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA } from '../common/patterns'
+
 @Component({
     selector: 'aggiunta-socio',
     templateUrl: './aggiunta.component.html',
     styleUrls: ['./aggiunta.component.css', '../common/style.css']
 })
 export class AggiuntaSocioComponent implements OnInit {
+
+    // fix: only import doesn't show in view, must define local variable
+    private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
+    private PATTERN_MATRICOLA = PATTERN_MATRICOLA;
+
 
     error: boolean;
     model: Socio;

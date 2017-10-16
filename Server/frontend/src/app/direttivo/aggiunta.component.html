@@ -15,13 +15,15 @@
     <div>
         <label for="user">Username: </label>
         <mat-input-container>
-            <input type="text" matInput name="user" required [(ngModel)]="user" />
+            <input  type="text" matInput name="user" required
+                    [(ngModel)]="user" [pattern]="PATTERN_USER" />
         </mat-input-container>
     </div>
     <div>
         <label for="password">Password: </label>
         <mat-input-container>
-            <input type="text" matInput name="password" required [(ngModel)]="password" />
+            <input  type="text" matInput name="password" required
+                    [(ngModel)]="password" [pattern]="PATTERN_PASSWORD"/>
         </mat-input-container>
     </div>
     <div mat-dialog-actions class="to_right">
