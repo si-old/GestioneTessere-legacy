@@ -21,6 +21,8 @@ import { BoolVieweditConfig, DisplayOptions } from '../viewedit/bool.component'
 import { CreateCarrieraDialog } from '../dialogs/createcarriera.dialog'
 import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
 
+import { PATTERN_NUMERO_TESSERA } from '../common/patterns'
+
 @Component({
     selector: 'dettagli-socio',
     templateUrl: './dettagli.component.html',
@@ -28,6 +30,8 @@ import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
 })
 export class DettagliSocioComponent implements OnInit {
 
+    // fix: only import doesn't show in view, must define local variable
+    private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
 
     private loaded = false;
     //related to having this component in a MatDialog or as a main component or a Route

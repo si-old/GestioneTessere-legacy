@@ -9,7 +9,7 @@
                     <label for="numero">Numero Tessera:</label>
                     <mat-input-container>
                         <input  type="text" name="numero" [(ngModel)]="model.tessere[0].numero" 
-                                matInput required pattern="-?\d+">
+                                matInput required [pattern]="PATTERN_NUMERO_TESSERA">
                     </mat-input-container>
                     <label for="anno">Anno: {{ model.tessere[0].anno }} </label>
                 </div>
@@ -51,8 +51,7 @@
                         <label for="matricola">Matricola:</label>
                         <mat-input-container>
                             <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" 
-                            matInput [required]="model.carriere[0].studente" pattern="0?\d{9}"
-                            />
+                            matInput [required]="model.carriere[0].studente" [pattern]="PATTERN_MATRICOLA" />
                         </mat-input-container>
                         <label for="cdl">Corso di laurea:</label>
                         <div class="mat-form-field">

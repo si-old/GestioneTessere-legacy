@@ -75,7 +75,10 @@ export class CorsiComponent implements OnInit {
 
   addCorso() {
     this.dialog.open(TextInputDialog, {
-      data: "nome"
+      data: {
+        nome: "nome",
+        pattern: ".*"
+      }
     }).afterClosed().subscribe(
       (name) => { if (name) this._corsisrv.addCorso(name) }
       );

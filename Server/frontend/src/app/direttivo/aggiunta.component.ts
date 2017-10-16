@@ -5,12 +5,18 @@ import { MatDialogRef } from '@angular/material'
 import { SociService } from '../soci/main.service'
 import { MembroDirettivo, Socio } from '../model/all'
 
+import { PATTERN_PASSWORD, PATTERN_USER} from '../common/patterns'
+
 @Component({
     selector: 'aggiunta-direttivo',
     templateUrl: './aggiunta.component.html',
     styleUrls: ['./aggiunta.component.css', '../common/style.css']
 })
 export class AggiuntaDirettivoComponent implements OnInit {
+
+    // fix: only import doesn't show in view, must define local variable
+    private PATTERN_PASSWORD = PATTERN_PASSWORD;
+    private PATTERN_USER = PATTERN_USER;
 
     allSoci: Socio[];
 

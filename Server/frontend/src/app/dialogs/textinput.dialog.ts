@@ -10,7 +10,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
         <div mat-dialog-content class="fontstyle">
             <label>Inserisci {{str}}:</label>
             <mat-input-container>
-                <input type="text" matInput name="anno" [(ngModel)]="testo" #input="ngModel" required/>
+                <input  type="text" matInput name="anno" [(ngModel)]="testo" 
+                        #input="ngModel" required [pattern]="pattern" />
             </mat-input-container>
         </div>
         <div mat-dialog-actions>
@@ -24,8 +25,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 export class TextInputDialog{
 
     testo: string;
-    constructor(@Inject(MAT_DIALOG_DATA) private str: string,
+    nome: string;
+    pattern: string;
+
+    constructor(@Inject(MAT_DIALOG_DATA) private data: {nome: string, pattern: string},
                 private dialogRef: MatDialogRef<TextInputDialog>){
+        if(data){
+            this.nome = data.nome;
+            this.pattern = data.pattern;
+        }
     }
 
     onSubmit(accept: boolean): boolean{

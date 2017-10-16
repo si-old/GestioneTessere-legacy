@@ -6,6 +6,8 @@ import { Tesseramento, Tessera } from '../model/all'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
+import { PATTERN_NUMERO_TESSERA } from '../common/patterns'
+
 @Component({
     selector: 'createtessera-dialog',
     template: `
@@ -15,7 +17,7 @@ import { TesseramentiService } from '../tesseramenti/main.service'
                 Anno: {{activeTesseramento}}<br />
                 <label for="numero">Numero:</label>
                 <mat-input-container>
-                    <input type="text" name="numero" [(ngModel)]="numero" matInput required pattern="-?d+" />
+                    <input type="text" name="numero" [(ngModel)]="numero" matInput required [pattern]="PATTERN_NUMERO_TESSERA" />
                 </mat-input-container>
                 <div mat-dialog-actions style="display: block">
                     <button type="submit" mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
@@ -36,6 +38,9 @@ import { TesseramentiService } from '../tesseramenti/main.service'
     styleUrls: ['../common/style.css']
 })
 export class CreateTesseraDialog {
+
+    // fix: only import doesn't show in view, must define local variable
+    private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
 
     error: boolean;
     activeTesseramento: Tesseramento;

@@ -8,6 +8,7 @@ import { TesseramentiService } from './main.service'
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
 import { TextInputDialog } from '../dialogs/textinput.dialog'
 
+import { PATTERN_ANNO_TESSERAMENTO } from '../common/patterns'
 
 import { Observable } from 'rxjs/Observable'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -43,7 +44,10 @@ export class TesseramentiComponent implements OnInit {
 
     newCallback() {
         let diagopened: MatDialogRef<TextInputDialog> = this.dialog.open(TextInputDialog, {
-            data: "anno"
+            data: {
+                nome: "anno",
+                pattern: PATTERN_ANNO_TESSERAMENTO
+            }
         });
         diagopened.afterClosed().subscribe(
             anno => { if (anno) this._tessService.attivaNuovoTesseramento(anno); }
