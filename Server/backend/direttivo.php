@@ -72,6 +72,11 @@
 				throw new RESTException(HttpStatusCode::$NOT_FOUND);
 			}
 		}
+
+		protected function isSessionAuthorized() {
+			return this->session->isValid();
+		}
+		
 	}
 	
 	//crea un oggetto direttivo e esegue la richiesta

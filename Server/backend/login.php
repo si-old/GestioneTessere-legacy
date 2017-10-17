@@ -33,6 +33,9 @@
 				$password = $data['password'];
 				$is_admin = strcasecmp($user, Login::$ADMIN_USER)==0 && strcmp($password, Login::$ADMIN_PSW)==0;
 				$successful = $is_admin || $this->check_login($user, $password);
+				if($successful){
+					this->session->create($is_admin);
+				}
 				return array('result' => $successful, 'admin' => $is_admin);
 			}else{
 				throw new RESTException(HttpStatusCode::$BAD_REQUEST);	
@@ -40,7 +43,7 @@
 		}
 		
 		protected function do_del(){
-			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
+			this->session->destroy();
 		}
 	}
 	
