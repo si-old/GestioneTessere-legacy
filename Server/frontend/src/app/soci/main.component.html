@@ -1,13 +1,14 @@
-<h2> Soci </h2>
-
-<div class="example-header">
-  <mat-input-container floatPlaceholder="never">
-    <input matInput #filter placeholder="Ricerca soci">
-  </mat-input-container>
-  <button mat-icon-button (click)="addSocio()">
-      <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
-    </button>
-</div>
+<titlebar>
+  <h2 center> Soci </h2>
+  <span right>
+    <mat-form-field floatPlaceholder="never">
+      <input matInput #filter placeholder="Ricerca soci">
+    </mat-form-field>
+    <button mat-icon-button (click)="addSocio()">
+        <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
+      </button>
+    </span>
+</titlebar>
 
 <div style="overflow-x: auto">
   <mat-table #table [dataSource]="sociSource" matSort>

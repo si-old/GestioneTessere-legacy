@@ -44,9 +44,9 @@ export class CorsiComponent implements OnInit {
     this._corsisrv.getCorsi().subscribe(
       (corsi: CdL[]) => {
         corsi.forEach(
-          (element, index) => {
-            this.editing[index] = false;
-            this.initValues[index] = element.nome;
+          (corso) => {
+            this.editing[corso.id] = false;
+            this.initValues[corso.id] = corso.nome;
           }
         );
       }
@@ -68,9 +68,9 @@ export class CorsiComponent implements OnInit {
     )
   }
 
-  revertCorso(corso: CdL, index: number) {
-    corso.nome = this.initValues[index];
-    this.editing[index] = false;
+  revertCorso(corso: CdL) {
+    corso.nome = this.initValues[corso.id];
+    this.editing[corso.id] = false;
   }
 
   addCorso() {
@@ -90,13 +90,13 @@ export class CorsiComponent implements OnInit {
     )
   }
 
-  updateCorso(corso: CdL, index: number) {
+  updateCorso(corso: CdL) {
     if (corso.nome) {
-      if (corso.nome != this.initValues[index]) {
+      if (corso.nome != this.initValues[corso.id]) {
         this._corsisrv.updateCorso(corso);
-        this.initValues[index] = corso.nome;
+        this.initValues[corso.id] = corso.nome;
       }
-      this.editing[index] = false;
+      this.editing[corso.id] = false;
     } else {
       this.snackBar.open("Tutti i campi sono obbligatori", "Chiudi", {
         duration: 1500

@@ -4,27 +4,45 @@
 <form #form="ngForm" mat-dialog-content>
     <div>
         <label for="socio">Socio: </label>
-        <mat-input-container>
+        <mat-form-field>
             <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio" [required]="inputRequired" name="socio">
                 <mat-option *ngFor="let soci of allSoci" [value]="soci">
                     {{soci.id}} - {{soci.nome}}
                 </mat-option>
             </mat-select>
-        </mat-input-container>
+        </mat-form-field>
     </div>
     <div>
         <label for="user">Username: </label>
-        <mat-input-container>
-            <input  type="text" matInput name="user" required
+        <mat-form-field>
+            <input  type="text" matInput name="user" required #inputUser="ngModel"
                     [(ngModel)]="user" [pattern]="PATTERN_USER" />
-        </mat-input-container>
+            <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
+                Il campo è obbligatorio!
+            </mat-error>
+            <mat-error *ngIf="inputUser.errors && inputUser.errors.pattern">
+                L'username deve contenere almeno 3 caratteri tra cifre e lettere.
+            </mat-error>
+            <mat-hint *ngIf="inputUser.untouched || !inputUser.value">
+                L'username deve contenere almeno 3 caratteri tra cifre e lettere.
+            </mat-hint>
+        </mat-form-field>
     </div>
     <div>
         <label for="password">Password: </label>
-        <mat-input-container>
-            <input  type="text" matInput name="password" required
+        <mat-form-field>
+            <input  type="text" matInput name="password" required #inputPass="ngModel"
                     [(ngModel)]="password" [pattern]="PATTERN_PASSWORD"/>
-        </mat-input-container>
+            <mat-error *ngIf="inputPass.errors && inputPass.errors.required">
+                Il campo è obbligatorio!
+            </mat-error>
+            <mat-error *ngIf="inputPass.errors && inputPass.errors.pattern">
+                La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+            </mat-error>
+            <mat-hint *ngIf="inputPass.untouched || !inputPass.value">
+                La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+            </mat-hint>
+        </mat-form-field>
     </div>
     <div mat-dialog-actions class="to_right">
         <button type="button" mat-icon-button mat-dialog-close>

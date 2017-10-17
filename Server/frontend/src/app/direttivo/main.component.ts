@@ -35,12 +35,12 @@ export class DirettivoComponent {
     let obs = this._dirsrv.getDirettivo();
     this.direttivoSource = new ObservableDataSource(obs);
     obs.subscribe(
-      (x: MembroDirettivo[]) => {
+      (direttivo: MembroDirettivo[]) => {
         console.log("received new direttivo");
-        x.forEach((v, i) => {
-          this.editing[i] = false
-          this.initValuesUser[i] = v.user;
-          this.initValuesPass[i] = v.password;
+        direttivo.forEach((membro) => {
+          this.editing[membro.id] = false
+          this.initValuesUser[membro.id] = membro.user;
+          this.initValuesPass[membro.id] = membro.password;
         })
       }
     );
@@ -59,18 +59,18 @@ export class DirettivoComponent {
     )
   }
 
-  commitChanges(m: MembroDirettivo, ind: number) {
-    if (this.initValuesPass[ind] != m.password || this.initValuesUser[ind] != m.user) {
+  commitChanges(m: MembroDirettivo) {
+    if (this.initValuesPass[m.id] != m.password || this.initValuesUser[m.id] != m.user) {
       this._dirsrv.changeMembro(m);
     }
-    this.editing[ind] = false;
+    this.editing[m.id] = false;
   }
 
-  revertChanges(m: MembroDirettivo, ind: number) {
-    if (this.initValuesPass[ind] != m.password || this.initValuesUser[ind] != m.user) {      
+  revertChanges(m: MembroDirettivo) {
+    if (this.initValuesPass[m.id] != m.password || this.initValuesUser[m.id] != m.user) {      
       this._dirsrv.getDirettivo();
     }
-    this.editing[ind] = false;
+    this.editing[m.id] = false;
   }
 }
 

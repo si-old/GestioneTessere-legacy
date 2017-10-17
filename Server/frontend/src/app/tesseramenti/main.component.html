@@ -1,9 +1,9 @@
-<div>
-    <h2 style="display: inline-block"> Tesseramenti </h2>
-    <button mat-icon-button style="float: right; margin: 0.83em 0" (click)="newCallback()">
-            <mat-icon matTooltip="Apri" matTooltipPosition="left">add</mat-icon>
-        </button>
-</div>
+<titlebar>
+    <h2 center> Tesseramenti </h2>
+    <button right mat-icon-button (click)="newCallback()">
+        <mat-icon matTooltip="Apri" matTooltipPosition="left">add</mat-icon>
+    </button>
+</titlebar>
 <div style="overflow-x: auto">
     <mat-table #table [dataSource]="tessSource">
 
