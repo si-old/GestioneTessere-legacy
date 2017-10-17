@@ -1,36 +1,36 @@
-<div>
-    <h2 style="display: inline-block"> Direttivo </h2>
-    <button mat-icon-button style="float: right; margin: 0.83em 0" (click)="addMembro()">
+<titlebar>
+    <h2 center> Direttivo </h2>
+    <button right mat-icon-button (click)="addMembro()">
         <mat-icon matTooltip="Apri" matTooltipPosition="above">add</mat-icon>
     </button>
-</div>
+</titlebar>
 <mat-table [dataSource]="direttivoSource">
 
     <ng-container cdkColumnDef="user">
         <mat-header-cell *cdkHeaderCellDef> Username </mat-header-cell>
-        <mat-cell *cdkCellDef="let row; let ind=index">
+        <mat-cell *cdkCellDef="let row">
             <!--{{row.user}}-->
-            <text-viewedit [(ngModel)]="row.user" [flag]="editing[ind]"></text-viewedit>
+            <text-viewedit [(ngModel)]="row.user" [flag]="editing[row.id]"></text-viewedit>
         </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="password">
         <mat-header-cell *cdkHeaderCellDef> Password </mat-header-cell>
-        <mat-cell *cdkCellDef="let row; let ind=index">
-            <text-viewedit [(ngModel)]="row.password" [flag]="editing[ind]"></text-viewedit>
+        <mat-cell *cdkCellDef="let row">
+            <text-viewedit [(ngModel)]="row.password" [flag]="editing[row.id]"></text-viewedit>
         </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="azioni">
         <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
-        <mat-cell *cdkCellDef="let row; let ind = index">
-            <button mat-icon-button (click)="editing[ind] = true" *ngIf="!editing[ind]">
+        <mat-cell *cdkCellDef="let row">
+            <button mat-icon-button (click)="editing[row.id] = true" *ngIf="!editing[row.id]">
                 <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
             </button>
-            <button mat-icon-button (click)="revertChanges(row, ind)" *ngIf="editing[ind]">
+            <button mat-icon-button (click)="revertChanges(row)" *ngIf="editing[row.id]">
                 <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
             </button>
-            <button mat-icon-button (click)="commitChanges(row, ind)" *ngIf="editing[ind]">
+            <button mat-icon-button (click)="commitChanges(row)" *ngIf="editing[row.id]">
                 <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
             </button>
             <a mat-icon-button routerLink="/soci/{{row.id}}" *ngIf="row.id>=0">

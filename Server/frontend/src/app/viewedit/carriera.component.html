@@ -5,7 +5,7 @@
     <ng-container *ngIf="content && content.studente">
         <corsi-viewedit [(ngModel)]="content.corso" [flag]="true" [required]="inputRequired"></corsi-viewedit>
     </ng-container>
-    <mat-input-container *ngIf="content && !content.studente">
+    <mat-form-field *ngIf="content && !content.studente">
         <input type="text" [(ngModel)]="content" [name]="content" matInput [required]="inputRequired" class="full_cell" />
-    </mat-input-container>
+    </mat-form-field>
 </ng-container>

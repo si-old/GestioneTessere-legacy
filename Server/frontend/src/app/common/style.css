@@ -1,11 +1,11 @@
 .to_left{
-  display: block;
   float: left;
+  margin-right: auto;
 }
 
 .to_right{
-  display: block;
   float: right;
+  margin-left: auto;
 }
 
 .centered{

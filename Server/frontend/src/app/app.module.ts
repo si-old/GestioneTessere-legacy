@@ -4,7 +4,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './toolbar.component'
+
+
+import { ToolbarComponent } from './common/toolbar.component'
+import { TitleBarComponent } from './common/titlebar.component'
 
 import { AppRoutingModule } from './app-routing.module';
 import { VieweditModule } from './viewedit/viewedit.module'
@@ -53,6 +56,7 @@ import { DialogErrorHandler } from './common/dialogErrorHandler'
     CreateTesseraDialog,
     LoginComponent,
     ToolbarComponent,
+    TitleBarComponent,
     AggiuntaDirettivoComponent,
     EqualFieldsValidatorDirective,
     MessageDialog

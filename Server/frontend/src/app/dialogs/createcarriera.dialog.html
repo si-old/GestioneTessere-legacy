@@ -6,24 +6,39 @@
     <mat-slide-toggle [(ngModel)]="model.studente" name="studente" color="primary" required></mat-slide-toggle>
     <ng-container *ngIf="model.studente">
         <div>
-            <label for="matricola">Matricola:</label>
-            <mat-input-container>
-                <input  type="text" name="matricola" [(ngModel)]="model.matricola" 
-                        matInput [required]="model.studente" [pattern]="PATTERN_MATRICOLA"/>
-            </mat-input-container>
             <label for="cdl">Corso di laurea:</label>
             <div class="mat-form-field">
                 <corsi-viewedit [(ngModel)]="model.corso" [flag]="true" required name="corso"></corsi-viewedit>
             </div>
+        </div>
+        <div>
+            <label for="matricola">Matricola:</label>
+            <mat-form-field>
+                <input  type="text" name="matricola" [(ngModel)]="model.matricola" #inputMatricola="ngModel"
+                        matInput [required]="model.studente" [pattern]="PATTERN_MATRICOLA"/>
+                <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.required">
+                    Il campo è obbligatorio!
+                </mat-error>
+                <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.pattern">
+                    La matricola è di 10 cifre, di cui lo zero iniziale può essere omesso.
+                </mat-error>
+                <mat-hint *ngIf="inputMatricola.untouched || !inputMatricola.value">
+                    La matricola è di 10 cifre, di cui lo zero iniziale può essere omesso.
+                </mat-hint>
+            </mat-form-field>
         </div>
     </ng-container>
 
     <ng-container *ngIf="!model.studente">
         <div>
             <label for="professione">Professione:</label>
-            <mat-input-container>
-                <input type="text" name="professione" [(ngModel)]="model.professione" matInput [required]="!model.studente" />
-            </mat-input-container>
+            <mat-form-field>
+                <input type="text" name="professione" #inputProfessione="ngModel"
+                        [(ngModel)]="model.professione" matInput [required]="!model.studente" />
+                <mat-error *ngIf="inputProfessione.errors && inputProfessione.errors.required">
+                    Il campo è obbligatorio!
+                </mat-error>
+            </mat-form-field>
         </div>
     </ng-container>
 </form>

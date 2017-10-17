@@ -49,6 +49,7 @@ export class TextVieweditComponent implements ControlValueAccessor{
 
     @Input() placeholder: string = 'Placeholder';
     @Input('required') inputRequired: boolean = false
+    @Input() pattern: string = "";
     @Input() name: string;
 
     @Input() flag: boolean;

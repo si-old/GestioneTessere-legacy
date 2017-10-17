@@ -8,11 +8,20 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
         <p mat-dialog-title color="primary" class="centered">Conferma</p>
         <form>
         <div mat-dialog-content class="fontstyle">
-            <label>Inserisci {{str}}:</label>
-            <mat-input-container>
+            <label>Inserisci {{nome}}:</label>
+            <mat-form-field>
                 <input  type="text" matInput name="anno" [(ngModel)]="testo" 
                         #input="ngModel" required [pattern]="pattern" />
-            </mat-input-container>
+                <mat-error *ngIf="input.errors && input.errors.required">
+                    Il campo è obbligatorio!
+                </mat-error>
+                <mat-error *ngIf="input.errors && input.errors.pattern">
+                    Il campo non rispetta il formato.
+                </mat-error>
+                <mat-hint *ngIf="suggerimento && ( input.untouched || !input.value )">
+                    {{suggerimento}}
+                </mat-hint>
+            </mat-form-field>
         </div>
         <div mat-dialog-actions>
             <button type="button" mat-button color="primary" (click)="onSubmit(false)" class="half-size" >No</button>
@@ -27,12 +36,14 @@ export class TextInputDialog{
     testo: string;
     nome: string;
     pattern: string;
+    suggerimento: string;
 
-    constructor(@Inject(MAT_DIALOG_DATA) private data: {nome: string, pattern: string},
+    constructor(@Inject(MAT_DIALOG_DATA) private data: any,
                 private dialogRef: MatDialogRef<TextInputDialog>){
         if(data){
             this.nome = data.nome;
             this.pattern = data.pattern;
+            this.suggerimento = data.suggerimento;
         }
     }
 

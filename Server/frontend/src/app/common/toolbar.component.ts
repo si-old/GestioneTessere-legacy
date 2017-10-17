@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
 import { Router } from '@angular/router'
-import { LoginService } from './login/main.service'
+import { LoginService } from '../login/main.service'
 
 @Component({
     selector: 'toolbar',

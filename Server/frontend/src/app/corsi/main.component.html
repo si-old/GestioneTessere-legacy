@@ -1,12 +1,14 @@
-﻿<h2> Corsi </h2>
-<div class="example-header">
-  <mat-input-container floatPlaceholder="never">
-    <input matInput #filter placeholder="Ricerca corsi">
-  </mat-input-container>
-  <button mat-icon-button (click)="addCorso()">
-        <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
-      </button>
-</div>
+﻿<titlebar>
+  <h2 center > Corsi </h2>
+  <div right>
+    <mat-form-field floatPlaceholder="never">
+      <input matInput #filter placeholder="Ricerca corsi">
+    </mat-form-field>
+    <button mat-icon-button (click)="addCorso()">
+      <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
+    </button>
+  </div>
+</titlebar>
 
 <mat-table #table [dataSource]="corsiSource" matSort>
   <!--- Note that these columns can be defined in any order.
@@ -18,22 +20,22 @@
 
   <ng-container cdkColumnDef="nome">
     <mat-header-cell *cdkHeaderCellDef mat-sort-header> Nome </mat-header-cell>
-    <mat-cell *cdkCellDef="let row; let ind = index">
-      <text-viewedit [flag]="editing[ind]" [(ngModel)]="row.nome" placeholder="Nome"></text-viewedit>
+    <mat-cell *cdkCellDef="let row">
+      <text-viewedit [flag]="editing[row.id]" [(ngModel)]="row.nome" placeholder="Nome" required></text-viewedit>
     </mat-cell>
   </ng-container>
 
   <ng-container cdkColumnDef="azioni">
     <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
-    <mat-cell *cdkCellDef="let row; let ind = index">
-      <button mat-icon-button (click)="editing[ind] = true" *ngIf="!editing[ind]">
+    <mat-cell *cdkCellDef="let row">
+      <button mat-icon-button (click)="editing[row.id] = true" *ngIf="!editing[row.id]">
           <mat-icon matTooltip="Modifica" matTooltipPosition="right">mode_edit</mat-icon>
         </button>
-      <ng-container *ngIf="editing[ind]">
-        <button mat-icon-button (click)="revertCorso(row, ind)">
+      <ng-container *ngIf="editing[row.id]">
+        <button mat-icon-button (click)="revertCorso(row)">
             <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
           </button>
-        <button mat-icon-button (click)="updateCorso(row, ind)">
+        <button mat-icon-button (click)="updateCorso(row)">
             <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
           </button>
       </ng-container>

@@ -21,7 +21,7 @@ import { BoolVieweditConfig, DisplayOptions } from '../viewedit/bool.component'
 import { CreateCarrieraDialog } from '../dialogs/createcarriera.dialog'
 import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
 
-import { PATTERN_NUMERO_TESSERA } from '../common/patterns'
+import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE } from '../common/patterns'
 
 @Component({
     selector: 'dettagli-socio',
@@ -32,6 +32,7 @@ export class DettagliSocioComponent implements OnInit {
 
     // fix: only import doesn't show in view, must define local variable
     private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
+    private PATTERN_CELLULARE = PATTERN_CELLULARE;
 
     private loaded = false;
     //related to having this component in a MatDialog or as a main component or a Route
@@ -80,20 +81,20 @@ export class DettagliSocioComponent implements OnInit {
                 socio => { this.initData(socio); },
                 (x) => { this._router.navigate(['/soci']) }
             );
+        }else{
+            this._route.params.subscribe(
+                (params) => {
+                    this.id = +params['id'];
+                    this._socisrv.getSocioById(+params['id']).subscribe(
+                        socio => { this.initData(socio); },
+                        (x) => { this._router.navigate(['/soci']) }
+                    );
+                }
+            );
         } // otherwise we are not in a dialog, get the id from the params and retrieve the correct socio
         this._corsisrv.getCorsi().subscribe(
             (corsi: CdL[]) => { this.allCdL = corsi } //retrieve the array of CdL for use in the form
         )
-        this._route.params.subscribe(
-            (params) => {
-                this.id = +params['id'];
-                this._socisrv.getSocioById(+params['id']).subscribe(
-                    socio => { this.initData(socio); },
-                    (x) => { this._router.navigate(['/soci']) }
-                );
-            }
-        );
-
     }
 
     /**

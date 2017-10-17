@@ -10,7 +10,13 @@ const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/l
 const LSItemKey_admin: string = 'admin';
 const LSItemKey_user: string = 'username';
 const LSItemKey_expiration: string = 'admin_expiration';
-const duration: number = 24 * 60 * 60 * 1000 // 24h * 60m * 60s * 1000ms
+const duration: number = 20 * 60 * 1000 // 24h * 60m * 60s * 1000ms
+
+
+interface LoginAnswer {
+    result: boolean
+    admin: boolean
+}
 
 @Injectable()
 export class LoginService {
@@ -39,11 +45,13 @@ export class LoginService {
         localStorage.clear();
     }
 
-    check_expiration() {
+    private check_expiration() {
         let old_time = JSON.parse(localStorage.getItem(LSItemKey_expiration));
         let new_time = new Date().getTime();
         if (old_time && (new_time - old_time) > duration) {
             localStorage.clear();
+        }else if (old_time){ // if not expired, refresh
+            localStorage.setItem(LSItemKey_expiration, JSON.stringify(new Date().getTime()));
         }
     }
 
@@ -58,6 +66,7 @@ export class LoginService {
     }
 
     getUsername(): string{
+        this.check_expiration();
         return this.isLoggedIn() ? JSON.parse(localStorage.getItem(LSItemKey_user)) : "";
     }
 }
@@ -93,9 +102,4 @@ export class AdminGuard implements CanActivate {
         }
         return toReturn
     }
-}
-
-interface LoginAnswer {
-    result: boolean
-    admin: boolean
 }

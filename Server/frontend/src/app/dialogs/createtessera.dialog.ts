@@ -16,9 +16,19 @@ import { PATTERN_NUMERO_TESSERA } from '../common/patterns'
             <form #form="ngForm" mat-dialog-content>
                 Anno: {{activeTesseramento}}<br />
                 <label for="numero">Numero:</label>
-                <mat-input-container>
-                    <input type="text" name="numero" [(ngModel)]="numero" matInput required [pattern]="PATTERN_NUMERO_TESSERA" />
-                </mat-input-container>
+                <mat-form-field>
+                    <input  type="text" name="numero" [(ngModel)]="numero" #inputNumero="ngModel"
+                            matInput required [pattern]="PATTERN_NUMERO_TESSERA" />
+                    <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
+                        Il campo è obbligatorio!
+                    </mat-error>
+                    <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
+                        Devi inserire un numero (anche negativo).
+                    </mat-error>
+                    <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
+                        Devi inserire un numero (anche negativo).
+                    </mat-hint>
+                </mat-form-field>
                 <div mat-dialog-actions style="display: block">
                     <button type="submit" mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
                         <mat-icon matTooltip="Conferma" matTooltipPosition="below">done</mat-icon>
