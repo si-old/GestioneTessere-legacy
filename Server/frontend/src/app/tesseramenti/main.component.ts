@@ -8,7 +8,7 @@ import { TesseramentiService } from './main.service'
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
 import { TextInputDialog } from '../dialogs/textinput.dialog'
 
-import { PATTERN_ANNO_TESSERAMENTO } from '../common/patterns'
+import { PATTERN_ANNO_TESSERAMENTO } from '../common/all'
 
 import { Observable } from 'rxjs/Observable'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';

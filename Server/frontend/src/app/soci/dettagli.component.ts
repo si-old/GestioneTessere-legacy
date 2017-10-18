@@ -21,7 +21,7 @@ import { BoolVieweditConfig, DisplayOptions } from '../viewedit/bool.component'
 import { CreateCarrieraDialog } from '../dialogs/createcarriera.dialog'
 import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE } from '../common/patterns'
+import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE } from '../common/all'
 
 @Component({
     selector: 'dettagli-socio',
@@ -34,7 +34,7 @@ export class DettagliSocioComponent implements OnInit {
     private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
     private PATTERN_CELLULARE = PATTERN_CELLULARE;
 
-    private loaded = false;
+    public loaded = false;
     //related to having this component in a MatDialog or as a main component or a Route
     private in_dialog: boolean = false; // true is it is in a dialog
     private form_style: string = "in_route" //style for the form, to assure a good visualization

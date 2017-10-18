@@ -1,19 +1,29 @@
 
-form{
-    align-content: center
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
 }
 
-.formlist{
-    display: block;
-    width: 30%;
-    margin-left: 35%;
+.form-field{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
 }
 
-.formlist label{
+.form-field label{
     display: inline-block;
     width: 20%;
     text-align: right;
 }
-.formlist mat-form-field{
-    width: 75%
+.form-field mat-form-field{
+    width: 60%
+}
+.form-field button{
+    margin: auto;
 }

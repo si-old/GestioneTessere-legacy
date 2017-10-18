@@ -2,7 +2,7 @@
     <h2 style="width: 100%"> Login </h2>
 </mat-toolbar>
 <form #form="ngForm" class="fontstyle">
-    <div class="formlist">
+    <div class="form-field">
         <label for="user">Username: </label>
         <mat-form-field>
             <input  type="text" matInput name="user" required #inputUser="ngModel"
@@ -18,7 +18,7 @@
             </mat-hint>
         </mat-form-field>
     </div>
-    <div class="formlist">
+    <div class="form-field">
         <label for="password">Password: </label>
         <mat-form-field>
             <input  type="password" matInput name="password" required #inputPass="ngModel"
@@ -34,7 +34,9 @@
             </mat-hint>
         </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
-        Login
-    </button>
+    <div class="form-field">        
+        <button mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
+            Login
+        </button>
+    </div>
 </form>

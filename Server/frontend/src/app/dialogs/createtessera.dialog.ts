@@ -6,7 +6,7 @@ import { Tesseramento, Tessera } from '../model/all'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { PATTERN_NUMERO_TESSERA } from '../common/patterns'
+import { PATTERN_NUMERO_TESSERA } from '../common/all'
 
 @Component({
     selector: 'createtessera-dialog',

@@ -1,13 +1,12 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, forwardRef } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import { FormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
-
-import { ToolbarComponent } from './common/toolbar.component'
-import { TitleBarComponent } from './common/titlebar.component'
 
 import { AppRoutingModule } from './app-routing.module';
 import { VieweditModule } from './viewedit/viewedit.module'
@@ -28,10 +27,8 @@ import { CorsiService } from './corsi/main.service'
 import { TesseramentiService } from './tesseramenti/main.service'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 
-import { EqualFieldsValidatorDirective } from './common/all'
-
 import { LoginComponent } from './login/main.component'
-import { LoginService, LoggedinGuard, AdminGuard }  from './login/main.service'
+import { LoginService, LoggedinGuard, AdminGuard } from './login/main.service'
 
 import { ConfirmDialog } from './dialogs/confirm.dialog'
 import { TextInputDialog } from './dialogs/textinput.dialog'
@@ -39,7 +36,11 @@ import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
 import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
 import { MessageDialog } from './dialogs/message.dialog'
 
-import { DialogErrorHandler } from './common/dialogErrorHandler'
+import { ToolbarComponent } from './toolbar.component'
+import { TitleBarComponent } from './titlebar.component'
+
+
+import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common/all'
 
 @NgModule({
   declarations: [
@@ -78,10 +79,7 @@ import { DialogErrorHandler } from './common/dialogErrorHandler'
     LoginService,
     LoggedinGuard,
     AdminGuard,
-    {
-      provide: ErrorHandler, 
-      useClass: DialogErrorHandler
-    }
+    { provide: ErrorHandler, useClass: DialogErrorHandler }
   ],
   entryComponents: [
     AggiuntaSocioComponent,

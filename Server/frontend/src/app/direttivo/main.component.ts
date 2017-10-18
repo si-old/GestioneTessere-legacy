@@ -36,7 +36,6 @@ export class DirettivoComponent {
     this.direttivoSource = new ObservableDataSource(obs);
     obs.subscribe(
       (direttivo: MembroDirettivo[]) => {
-        console.log("received new direttivo");
         direttivo.forEach((membro) => {
           this.editing[membro.id] = false
           this.initValuesUser[membro.id] = membro.user;
