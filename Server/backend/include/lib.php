@@ -6,6 +6,7 @@
 			$this->db = $db;
 			$this->has_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
 			$this->id = $_GET['id'];
+			$this->session = new Session();
 		}
 
 		public function dispatch(){
@@ -16,32 +17,35 @@
 			header("Access-Control-Allow-Origin: *");
 			header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
 			header("Access-Control-Allow-Headers: Content-Type");
-			
-			try{
-				$body = json_decode(file_get_contents('php://input'), true);
-				header("Content-Type: application/json");				
-				switch($_SERVER['REQUEST_METHOD']){
-				case 'GET': 
-					$res = $this->do_get();
-					break;
-				case 'POST':
-					$res = $this->do_post($body);
-					break;
-				case 'DELETE':
-					$res = $this->do_del();
-					break;
-				case 'OPTIONS':
-					// return to send an empty body
-					// as OPTION should 
-					return;
+			if(isSessionAuthorized()){
+				try{
+					$body = json_decode(file_get_contents('php://input'), true);
+					header("Content-Type: application/json");				
+					switch($_SERVER['REQUEST_METHOD']){
+					case 'GET': 
+						$res = $this->do_get();
+						break;
+					case 'POST':
+						$res = $this->do_post($body);
+						break;
+					case 'DELETE':
+						$res = $this->do_del();
+						break;
+					case 'OPTIONS':
+						// return to send an empty body
+						// as OPTION should 
+						return;
+					}
+					echo json_encode($res, JSON_UNESCAPED_UNICODE);
+				}catch(RESTException $ex){
+					http_response_code($ex->get_error_code());
+					echo $ex->getMessage();				
+				}catch(Exception $ex){
+					http_response_code(HttpStatusCode::$INTERNAL_SERVER_ERROR);
+					echo $ex->getMessage();
 				}
-				echo json_encode($res, JSON_UNESCAPED_UNICODE);
-			}catch(RESTException $ex){
-				http_response_code($ex->get_error_code());
-				echo $ex->getMessage();				
-			}catch(Exception $ex){
-				http_response_code(HttpStatusCode::$INTERNAL_SERVER_ERROR);
-				echo $ex->getMessage();
+			} else {
+				throw new RESTException(HttpStatusCode::$UNAUTHORIZED);
 			}
 		}		
 
@@ -50,6 +54,8 @@
 		abstract protected function do_post($body);
 
 		abstract protected function do_del();
+
+		abstract protected function isSessionAuthorized();
 
 	};
 

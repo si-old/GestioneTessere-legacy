@@ -240,6 +240,11 @@
 		protected function do_del(){
 			throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
 		}
+
+		protected function isSessionAuthorized() {
+			return this->session->isValid();
+		}
+		
 	}
 
 	$temp = new Socio($db);
