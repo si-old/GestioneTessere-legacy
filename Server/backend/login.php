@@ -34,16 +34,21 @@
 				$is_admin = strcasecmp($user, Login::$ADMIN_USER)==0 && strcmp($password, Login::$ADMIN_PSW)==0;
 				$successful = $is_admin || $this->check_login($user, $password);
 				if($successful){
-					this->session->create($is_admin);
+					$this->session->create($is_admin);
 				}
-				return array('result' => $successful, 'admin' => $is_admin);
+				return array('login' => $successful, 'admin' => $is_admin);
 			}else{
 				throw new RESTException(HttpStatusCode::$BAD_REQUEST);	
 			}
 		}
 		
 		protected function do_del(){
-			this->session->destroy();
+			$this->session->destroy();
+			return array('login' => false, 'admin' => false);			
+		}
+
+		protected function is_session_authorized(){
+			return true;
 		}
 	}
 	
