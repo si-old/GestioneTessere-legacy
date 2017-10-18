@@ -1,0 +1,7 @@
+- parlare con cricca
+- aggiustare gestione errori mostrando un dialog (appena capisco cosa non funziona)
+- aggiungere TAB per soci tesserati / non tesserati (forse?)
+- aggiungere form email
+- controllare gestione utente admin
+- gestione numeri di tessera usati / disponibili
+- paginazione soci
