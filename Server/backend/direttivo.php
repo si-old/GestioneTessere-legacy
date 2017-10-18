@@ -73,8 +73,8 @@
 			}
 		}
 
-		protected function isSessionAuthorized() {
-			return this->session->isValid();
+		protected function is_session_authorized() {
+			return $this->session->is_valid() && $this->session->is_admin();
 		}
 		
 	}

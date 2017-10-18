@@ -49,6 +49,10 @@
 				throw new RESTException(HttpStatusCode::$NOT_FOUND);
 			}
 		}
+
+		protected function is_session_authorized() {
+			return $this->session->is_valid();
+		}
 	}
 	
 	$temp = new CdL($db);
