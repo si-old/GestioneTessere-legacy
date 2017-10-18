@@ -5,9 +5,6 @@
 	require_once('include/lib.php');
 	
 	class Login extends RESTItem{
-
-		private static $ADMIN_USER = "admin";
-		private static $ADMIN_PSW = "studentingegneria";
 		
 		private function check_login($user, $password){
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE User=? and Password=? ');
@@ -31,7 +28,7 @@
 			if(isset($data['user']) && isset($data['password'])){
 				$user = $data['user'];
 				$password = $data['password'];
-				$is_admin = strcasecmp($user, Login::$ADMIN_USER)==0 && strcmp($password, Login::$ADMIN_PSW)==0;
+				$is_admin = strcasecmp($user, $ADMIN_USER)==0 && strcmp($password, $ADMIN_PSW)==0;
 				$successful = $is_admin || $this->check_login($user, $password);
 				if($successful){
 					$this->session->create($is_admin);
