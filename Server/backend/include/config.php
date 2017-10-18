@@ -4,6 +4,8 @@
 //fix to help internet explorer remember form variables
 header("Cache-control: private"); //IE 6 fix
 //needs to be completed
+$ADMIN_USER = "admin";
+$ADMIN_PSW = "studentingegneria";
 $host= "62.149.150.123";
 $user="Sql382891";
 $pass="29c4aea7";
