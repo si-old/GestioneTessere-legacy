@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material'
 
 import { LoginService } from './main.service'
 
-import { PATTERN_PASSWORD, PATTERN_USER } from '../common/patterns'
+import { PATTERN_PASSWORD, PATTERN_USER } from '../common/all'
 
 @Component({
     selector: 'login',
@@ -16,8 +16,8 @@ import { PATTERN_PASSWORD, PATTERN_USER } from '../common/patterns'
 export class LoginComponent implements OnInit {
 
     // fix: only import doesn't show in view, must define local variable
-    private PATTERN_PASSWORD = PATTERN_PASSWORD;
-    private PATTERN_USER = PATTERN_USER;
+    public PATTERN_PASSWORD = PATTERN_PASSWORD;
+    public PATTERN_USER = PATTERN_USER;
 
     user: string
     password: string

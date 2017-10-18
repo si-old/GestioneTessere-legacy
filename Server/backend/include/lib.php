@@ -19,11 +19,17 @@ abstract class RESTItem
         error_reporting(E_ALL);
 
         //to allow CORS
-        header("Access-Control-Allow-Origin: *");
+        $headers = apache_request_headers();
+        if(isset($headers['Origin'])){
+            header("Access-Control-Allow-Origin: ".$headers['Origin']);
+        }else{
+            header("Access-Control-Allow-Origin: *");
+        }
         header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
+        header("Access-Control-Allow-Credentials: true");
         header("Access-Control-Allow-Headers: Content-Type");
         try {
-            if ($this->is_session_authorized() || true) {
+            if ($this->is_session_authorized()) {
                     $body = json_decode(file_get_contents('php://input'), true);
                     header("Content-Type: application/json");
                 switch ($_SERVER['REQUEST_METHOD']) {

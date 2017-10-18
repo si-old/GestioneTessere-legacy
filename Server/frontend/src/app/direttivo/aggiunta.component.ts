@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material'
 import { SociService } from '../soci/main.service'
 import { MembroDirettivo, Socio } from '../model/all'
 
-import { PATTERN_PASSWORD, PATTERN_USER} from '../common/patterns'
+import { PATTERN_PASSWORD, PATTERN_USER} from '../common/all'
 
 @Component({
     selector: 'aggiunta-direttivo',
@@ -15,8 +15,8 @@ import { PATTERN_PASSWORD, PATTERN_USER} from '../common/patterns'
 export class AggiuntaDirettivoComponent implements OnInit {
 
     // fix: only import doesn't show in view, must define local variable
-    private PATTERN_PASSWORD = PATTERN_PASSWORD;
-    private PATTERN_USER = PATTERN_USER;
+    public PATTERN_PASSWORD = PATTERN_PASSWORD;
+    public PATTERN_USER = PATTERN_USER;
 
     allSoci: Socio[];
 

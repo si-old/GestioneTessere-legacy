@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 
 import { Router } from '@angular/router'
-import { LoginService } from '../login/main.service'
+import { LoginService } from './login/main.service'
+
+import { HttpClient } from '@angular/common/http'
 
 @Component({
     selector: 'toolbar',
@@ -13,6 +15,7 @@ import { LoginService } from '../login/main.service'
         <ng-container *ngIf="isAdmin">
             <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
         </ng-container>
+        <!--<a mat-raised-button class="custom-button" color="accent" (click)="dostuff()">Cose</a>-->
         <div class="full-size">
             <div class="to-right">
                 Ciao {{username}}
@@ -25,17 +28,26 @@ import { LoginService } from '../login/main.service'
     `,
     styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent{
+export class ToolbarComponent {
 
-    get isAdmin(){
+
+    constructor(private _loginsrv: LoginService, private _router: Router,
+        private http: HttpClient) {
+    }
+
+    dostuff() {
+        this.http.post('https://www.studentingegneria.it/socisi/backend/tessera.php', {
+            code: 500,
+            message: 'cose'
+        }).subscribe();
+    }
+
+    get isAdmin() {
         return this._loginsrv.isAdmin();
     }
 
-    get username(){
-        return this._loginsrv.getUsername();        
-    }
-
-    constructor(private _loginsrv: LoginService, private _router: Router) {
+    get username() {
+        return this._loginsrv.getUsername();
     }
 
     logout() {

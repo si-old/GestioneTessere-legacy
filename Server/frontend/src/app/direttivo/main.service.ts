@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http'
 
 import { MembroDirettivo, Carriera, Tessera } from '../model/all'
 
+import { HTTP_GLOBAL_OPTIONS } from '../common/all'
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -28,26 +30,26 @@ export class DirettivoService {
     }
 
     getDirettivo(): Observable<MembroDirettivo[]> {
-        this.http.get<MembroDirettivo[]>(REST_ENDPOINT).subscribe(
+        this.http.get<MembroDirettivo[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(
             (value) => this.updateSub(value)
         )
         return this._obs;
     }
 
     deleteMembro(m: MembroDirettivo) {
-        this.http.delete<MembroDirettivo[]>(REST_ENDPOINT + '/' + m.id_direttivo).subscribe(
+        this.http.delete<MembroDirettivo[]>(REST_ENDPOINT + '/' + m.id_direttivo, HTTP_GLOBAL_OPTIONS).subscribe(
             (value) => { this.updateSub(value); }
         )
     }
 
     addMembro(m: MembroDirettivo) {
-        this.http.post<MembroDirettivo[]>(REST_ENDPOINT, m).subscribe(
+        this.http.post<MembroDirettivo[]>(REST_ENDPOINT, m, HTTP_GLOBAL_OPTIONS).subscribe(
             (value) => {this.updateSub(value);}
         )
     }
 
     changeMembro(m: MembroDirettivo) {
-        this.http.post<MembroDirettivo[]>(REST_ENDPOINT, m).subscribe(
+        this.http.post<MembroDirettivo[]>(REST_ENDPOINT, m, HTTP_GLOBAL_OPTIONS).subscribe(
             (value) => {this.updateSub(value);}
         )
     }

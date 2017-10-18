@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core'
 
 import { Socio, Carriera, Tessera, CdL, Tesseramento } from '../model/all'
 
+import { HTTP_GLOBAL_OPTIONS } from '../common/all'
+
 import { HttpClient } from '@angular/common/http'
 
 import { CorsiService } from '../corsi/main.service'
@@ -38,27 +40,27 @@ export class SociService {
   }
 
   getSoci(): Observable<Socio[]> {
-    this.http.get<Socio[]>(REST_ENDPOINT).subscribe(
+    this.http.get<Socio[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(
       (value) => { this.updateObs(value); }
     )
     return this._obs;
   }
 
   getSocioById(id: number): Observable<Socio> {
-    this.http.get<Socio>(REST_ENDPOINT + '/' + id).subscribe(
+    this.http.get<Socio>(REST_ENDPOINT + '/' + id, HTTP_GLOBAL_OPTIONS).subscribe(
       (value) => { this.updateSingleObs(value); }
     )
     return this._singleObs;
   }
 
   updateSocio(newSocio: Socio) {
-    this.http.post<Socio>(REST_ENDPOINT + '/' + newSocio.id, newSocio).subscribe(
+    this.http.post<Socio>(REST_ENDPOINT + '/' + newSocio.id, newSocio, HTTP_GLOBAL_OPTIONS).subscribe(
       (value) => { this.updateSingleObs(value); }
     )
   }
 
   addSocio(newSocio: Socio) {
-    this.http.post<Socio[]>(REST_ENDPOINT, newSocio).subscribe(
+    this.http.post<Socio[]>(REST_ENDPOINT, newSocio, HTTP_GLOBAL_OPTIONS).subscribe(
       (value) => { this.updateObs(value); }
     )
   }

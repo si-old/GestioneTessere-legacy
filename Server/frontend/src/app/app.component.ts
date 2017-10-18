@@ -9,6 +9,6 @@ import { LoginService } from './login/main.service'
 export class AppComponent {
   title = 'app';
 
-  constructor(private _login: LoginService){
+  constructor(public _login: LoginService){
   }
 }

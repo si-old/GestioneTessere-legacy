@@ -5,11 +5,14 @@
     <div>
         <label for="socio">Socio: </label>
         <mat-form-field>
-            <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio" [required]="inputRequired" name="socio">
+            <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio" required name="socio" #inputSocio="ngModel" >
                 <mat-option *ngFor="let soci of allSoci" [value]="soci">
                     {{soci.id}} - {{soci.nome}}
                 </mat-option>
             </mat-select>
+            <mat-error *ngIf="inputSocio.errors && inputSocio.error.required" >
+                Il campo è obbligatorio!
+            </mat-error>
         </mat-form-field>
     </div>
     <div>

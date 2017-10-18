@@ -2,6 +2,10 @@
 import { HttpClient } from '@angular/common/http'
 
 import { Tesseramento } from '../model/all'
+
+import { HTTP_GLOBAL_OPTIONS } from '../common/all'
+
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
@@ -38,7 +42,7 @@ export class TesseramentiService {
     }
 
     getTesseramenti(): Observable<Tesseramento[]> {
-        this.http.get<Tesseramento[]>(REST_ENDPOINT).subscribe(
+        this.http.get<Tesseramento[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(
             (value) => { this.updateSub(value) }
         );
         return this.tesseramentiSub;
@@ -47,7 +51,8 @@ export class TesseramentiService {
     chiudiTesseramento(): void {
         this.http.post<Tesseramento[]>(
             REST_ENDPOINT,
-            { action: 'close' }
+            { action: 'close' },
+            HTTP_GLOBAL_OPTIONS
         ).subscribe(
             (value) => { this.updateSub(value) },
         );
@@ -56,7 +61,8 @@ export class TesseramentiService {
     attivaNuovoTesseramento(nuovoAnno: string): void {
         this.http.post<Tesseramento[]>(
             REST_ENDPOINT,
-            { action: 'open', anno: nuovoAnno }
+            { action: 'open', anno: nuovoAnno },
+            HTTP_GLOBAL_OPTIONS
         ).subscribe(
             (value) => { this.updateSub(value) }
         );

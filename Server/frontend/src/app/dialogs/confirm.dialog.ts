@@ -16,7 +16,7 @@ import { MatDialogRef } from '@angular/material'
 })
 export class ConfirmDialog{
 
-    constructor(private dialogRef: MatDialogRef<ConfirmDialog>){
+    constructor(public dialogRef: MatDialogRef<ConfirmDialog>){
 
     }
 }

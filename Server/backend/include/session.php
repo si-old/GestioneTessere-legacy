@@ -16,6 +16,7 @@ class Session
     {
         $_SESSION[$this->isAdmin] = $isAdmin;
         $_SESSION[$this->time] = time();
+        session_write_close();
     }
 
     // distrugge la sessione
@@ -23,6 +24,8 @@ class Session
     {
         session_unset();
         session_destroy();
+        setcookie(session_name(), "", time()-3600);
+        session_write_close();
     }
 
     //true se l'utente loggato è admin
@@ -36,11 +39,13 @@ class Session
     {
         $new_time = time();
         $has_old_time  = isset($_SESSION[$this->time]);
+        $status = session_status();
         if ($has_old_time && ($new_time - $_SESSION[$this->time]) > $this->duration) {
             $this->destroy();
             return false;
         } elseif ($has_old_time) {
             $_SESSION[$this->time] = $new_time;
+            session_write_close();
             return true;
         } else {
             return false;

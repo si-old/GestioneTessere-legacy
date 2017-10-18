@@ -43,8 +43,8 @@
 		}
 		
 		protected function do_del(){
-			$this->session->destroy();
-			return array('login' => false, 'admin' => false);			
+			$res = $this->session->destroy();
+			return array('login' => !$res, 'admin' => false);
 		}
 
 		protected function is_session_authorized(){
