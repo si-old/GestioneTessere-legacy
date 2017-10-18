@@ -5,3 +5,4 @@
 - controllare gestione utente admin
 - gestione numeri di tessera usati / disponibili
 - paginazione soci
+- aggiungere dati reali
