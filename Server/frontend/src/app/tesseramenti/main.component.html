@@ -12,7 +12,9 @@
 
         <ng-container cdkColumnDef="anno">
             <mat-header-cell *cdkHeaderCellDef> Anno </mat-header-cell>
-            <mat-cell *cdkCellDef="let row"> {{row.anno}} </mat-cell>
+            <mat-cell *cdkCellDef="let row"> 
+                <text-viewedit [(ngModel)]="row.anno" required nome="anno" [flag]="editing[row.id]"></text-viewedit>
+            </mat-cell>
         </ng-container>
 
         <ng-container cdkColumnDef="aperto">
@@ -26,9 +28,18 @@
         <ng-container cdkColumnDef="azioni">
             <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
             <mat-cell *cdkCellDef="let row">
+                <button *ngIf="!editing[row.id]" mat-icon-button (click)="editing[row.id]=true">
+                    <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
+                </button>
+                <button *ngIf="editing[row.id]" mat-icon-button (click)="commitChanges(row)">
+                    <mat-icon matTooltip="Conferma" matTooltipPosition="left">done</mat-icon>
+                </button>
+                <button *ngIf="editing[row.id]" mat-icon-button (click)="revertChanges(row)">
+                    <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
+                </button>
                 <button *ngIf="row.aperto" mat-icon-button (click)="closeCallback()">
-                            <mat-icon matTooltip="Chiudi" matTooltipPosition="right">close</mat-icon>
-                        </button>
+                    <mat-icon matTooltip="Chiudi" matTooltipPosition="right">lock</mat-icon>
+                </button>
             </mat-cell>
         </ng-container>
 

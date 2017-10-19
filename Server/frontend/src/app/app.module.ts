@@ -30,17 +30,13 @@ import { TesseramentiComponent } from './tesseramenti/main.component'
 import { LoginComponent } from './login/main.component'
 import { LoginService, LoggedinGuard, AdminGuard } from './login/main.service'
 
-import { ConfirmDialog } from './dialogs/confirm.dialog'
-import { TextInputDialog } from './dialogs/textinput.dialog'
-import { CreateCarrieraDialog } from './dialogs/createcarriera.dialog'
-import { CreateTesseraDialog } from './dialogs/createtessera.dialog'
-import { MessageDialog } from './dialogs/message.dialog'
+import { ConfirmDialog, TextInputDialog, CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from './dialogs'
 
 import { ToolbarComponent } from './toolbar.component'
 import { TitleBarComponent } from './titlebar.component'
 
 
-import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common/all'
+import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common'
 
 @NgModule({
   declarations: [

@@ -55,6 +55,12 @@
 			}
 			$res_socio = fetch_results($stmt_socio);
 
+			if (count($res_socio) > 1){
+				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, "More than one socio with the same ID: ".$id);
+			}else  if(count($res_socio) == 0){
+				throw new RESTException(HttpStatusCode::$NOT_FOUND);
+			}
+
 			$stmt_tessere = $this->db->prepare($query_tessere_socio);
 			$stmt_tessere->bind_param('i', $id);
 			if( ! $stmt_tessere->execute() ){
@@ -68,10 +74,6 @@
 				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
 			}			
 			$res_carriere = fetch_results($stmt_carriere);
-
-			if (count($res_socio) != 1){
-				throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR);
-			}
 
 			$carriere = [];
 			foreach($res_carriere as $carriera){
@@ -245,7 +247,9 @@
 			return $this->session->is_valid();
 		}
 	}
-
+	
+	// $db ho dovuto portarla dentro col costruttore di RESTItem
+	// è definita in config.php
 	$temp = new Socio($db);
 	$temp->dispatch();
 ?>

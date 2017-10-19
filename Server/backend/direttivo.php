@@ -79,9 +79,8 @@
 		
 	}
 	
-	//crea un oggetto direttivo e esegue la richiesta
-	//$_GET è global, non c'è bisogno di fare nulla
-	//$db ho dovuto portarla dentro col costruttore di RESTItem
+	// $db ho dovuto portarla dentro col costruttore di RESTItem
+	// è definita in config.php
 	$temp = new Direttivo($db);
 	$temp->dispatch();
 ?>

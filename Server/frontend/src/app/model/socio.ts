@@ -1,8 +1,10 @@
-import { CdL } from './CdL'
+import { Comparable, Searchable } from '../common'
+
+import { Corso } from './corso'
 import { Carriera } from './carriera'
 import { Tessera } from './tessera'
 
-export class Socio {
+export class Socio implements Comparable<Socio>, Searchable{
   id: number;
   nome: string;
   cognome: string;

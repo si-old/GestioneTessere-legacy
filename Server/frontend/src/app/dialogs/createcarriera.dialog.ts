@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 
 import { MatDialogRef } from '@angular/material'
 
-import { Carriera } from '../model/all'
+import { Carriera } from '../model'
 
 @Component({
     selector: 'create-carriera-dialog',

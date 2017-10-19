@@ -1,6 +1,8 @@
+import { Searchable } from '../common'
+
 import { Tesseramento } from './tesseramento'
 
-export class Tessera{
+export class Tessera implements Searchable{
     id: number;
     
     numero: number;

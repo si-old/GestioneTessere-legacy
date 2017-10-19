@@ -1,8 +1,10 @@
-export class CdL {
+import { Comparable, Searchable } from '../common'
+
+export class Corso implements Comparable<Corso>, Searchable{
     id: number;
     nome: string;
 
-    constructor(fields?: Partial<CdL>) {
+    constructor(fields?: Partial<Corso>) {
         if (fields) Object.assign(this, fields);
     }
 
@@ -10,7 +12,7 @@ export class CdL {
         return this.nome && this.nome.toLowerCase().indexOf(needle) != -1;
     }
 
-    compare(other: CdL, prop: string, order: string): number {
+    compare(other: Corso, prop: string, order: string): number {
         let propertyA: any;
         let propertyB: any;
 
