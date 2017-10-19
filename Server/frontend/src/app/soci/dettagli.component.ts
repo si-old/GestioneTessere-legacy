@@ -68,7 +68,7 @@ export class DettagliSocioComponent implements OnInit {
         private _dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
         @Optional() private diagref: MatDialogRef<DettagliSocioComponent>
-    ){
+    ) {
         if (this.diagref) { //if injected reference is not null, we are in a dialog
             this.in_dialog = true;
             this.form_style = "in_dialog";
@@ -76,13 +76,17 @@ export class DettagliSocioComponent implements OnInit {
         if (this.in_dialog && this.data) { //if we are in a dialog and data have been given to us, use them
             this._socisrv.getSocioById(this.data.socio.id).subscribe(
                 socio => { this.initData(socio); },
-                (x) => { 
-                    this._router.navigate(['/soci'])
-                    this._dialog.open(MessageDialog, {
-                        data: {
-                            message: "Nessun socio trovato con questo ID!"
-                        }
-                    })
+                (x) => {
+                    if (x.status && x.status == 404) {
+                        this.diagref.close();
+                        this._dialog.open(MessageDialog, {
+                            data: {
+                                message: "Nessun socio trovato con questo ID!"
+                            }
+                        })
+                    } else {
+                        throw x;
+                    }
                 }
             );
         } else {
@@ -91,13 +95,17 @@ export class DettagliSocioComponent implements OnInit {
                     this.id = +params['id'];
                     this._socisrv.getSocioById(+params['id']).subscribe(
                         socio => { this.initData(socio); },
-                        (x) => { 
-                            this._router.navigate(['/soci'])
-                            this._dialog.open(MessageDialog, {
-                                data: {
-                                    message: "Nessun socio trovato con questo ID!"
-                                }
-                            })
+                        (x) => {
+                            if (x.status && x.status == 404) {
+                                this._router.navigate(['/soci'])
+                                this._dialog.open(MessageDialog, {
+                                    data: {
+                                        message: "Nessun socio trovato con questo ID!"
+                                    }
+                                })
+                            }else{
+                                throw x;
+                            }
                         }
                     );
                 }

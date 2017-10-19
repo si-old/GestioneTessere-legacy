@@ -56,7 +56,7 @@
 				}
 				return $this->do_get();
 			}else{
-				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
 			}
 		}
 		
