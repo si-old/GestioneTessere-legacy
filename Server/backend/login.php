@@ -38,7 +38,7 @@
 				$user = $data['user'];
 				$password = $data['password'];
 				$is_admin = strcasecmp($user, $this->admin_user)==0;
-				$successful = $is_admin && $this->check_login($user, $password);
+				$successful = $this->check_login($user, $password);
 				if($successful){
 					$this->session->create($is_admin);
 				}
