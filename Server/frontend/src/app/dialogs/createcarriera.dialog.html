@@ -6,7 +6,7 @@
     <mat-slide-toggle [(ngModel)]="model.studente" name="studente" color="primary" required></mat-slide-toggle>
     <ng-container *ngIf="model.studente">
         <div>
-            <label for="cdl">Corso di laurea:</label>
+            <label for="corso">Corso di laurea:</label>
             <div class="mat-form-field">
                 <corsi-viewedit [(ngModel)]="model.corso" [flag]="true" required name="corso"></corsi-viewedit>
             </div>

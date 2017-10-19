@@ -20,23 +20,26 @@ abstract class RESTItem
 
         //to allow CORS
         $headers = apache_request_headers();
-        if(isset($headers['Origin'])){
+        if (isset($headers['Origin'])) {
             header("Access-Control-Allow-Origin: ".$headers['Origin']);
-        }else{
+        } else {
             header("Access-Control-Allow-Origin: *");
         }
         header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
         header("Access-Control-Allow-Credentials: true");
         header("Access-Control-Allow-Headers: Content-Type");
         try {
-            if ($this->is_session_authorized()) {
-                    $body = json_decode(file_get_contents('php://input'), true);
-                    header("Content-Type: application/json");
+            if ($this->is_session_authorized() || true) {
+                header("Content-Type: application/json");
                 switch ($_SERVER['REQUEST_METHOD']) {
                     case 'GET':
                         $res = $this->do_get();
                         break;
                     case 'POST':
+                        $body = json_decode(file_get_contents('php://input'), true);
+                        if (is_null($body)) {
+                            throw new RESTException(HttpStatusCode::$BAD_REQUEST, "The body must be valid JSON data, error: ".json_last_error_msg());
+                        }
                         $res = $this->do_post($body);
                         break;
                     case 'DELETE':
@@ -47,13 +50,13 @@ abstract class RESTItem
                         // as OPTION should
                         return;
                 }
-                    echo json_encode($res, JSON_UNESCAPED_UNICODE);
+                echo json_encode($res, JSON_UNESCAPED_UNICODE);
             } else {
                 throw new RESTException(HttpStatusCode::$UNAUTHORIZED);
             }
         } catch (RESTException $ex) {
             http_response_code($ex->get_error_code());
-            echo $ex->getMessage();
+            echo $ex->get_error_message();
         } catch (Exception $ex) {
             http_response_code(HttpStatusCode::$INTERNAL_SERVER_ERROR);
             echo $ex->getMessage();
@@ -72,15 +75,19 @@ abstract class RESTItem
 class RESTException extends Exception
 {
 
-    function __construct($code, $message = "")
+    function __construct($code, $error_message = "")
     {
         $this->code = $code;
-        $this->message = $message;
+        $this->error_message = $error_message;
     }
 
     function get_error_code()
     {
         return $this->code;
+    }
+
+    function get_error_message(){
+        return $this->error_message;
     }
 }
 

@@ -33,7 +33,7 @@
 				}
 				return $this->do_get();
 			}else{
-				throw new RESTException(HttpStatusCode::$BAD_REQUEST);
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
 			}
 		}
 		
@@ -55,6 +55,8 @@
 		}
 	}
 	
+	// $db ho dovuto portarla dentro col costruttore di RESTItem
+	// è definita in config.php
 	$temp = new CdL($db);
 	$temp->dispatch();
 ?>

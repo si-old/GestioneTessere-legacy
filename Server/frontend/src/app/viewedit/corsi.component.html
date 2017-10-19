@@ -3,7 +3,7 @@
 </ng-container>
 <ng-container *ngIf="flag">
     <mat-select [@flyInOut] placeholder="Corsi di Laurea" [(ngModel)]="content" selected="content" [required]="inputRequired" matInput>
-        <mat-option *ngFor="let corso of allCdL" [value]="corso">
+        <mat-option *ngFor="let corso of allCorsi" [value]="corso">
             {{corso.nome}}
         </mat-option>
     </mat-select>
