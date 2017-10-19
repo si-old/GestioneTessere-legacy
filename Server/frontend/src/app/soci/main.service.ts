@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 
-import { Socio, Carriera, Tessera, CdL, Tesseramento } from '../model/all'
+import { Socio, Carriera, Tessera, Corso, Tesseramento } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common/all'
+import { HTTP_GLOBAL_OPTIONS } from '../common'
 
 import { HttpClient } from '@angular/common/http'
 

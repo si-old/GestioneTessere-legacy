@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material'
 
 import { Observable } from 'rxjs/Observable'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common/all'
+import { HTTP_GLOBAL_OPTIONS } from '../common'
 
 import { MessageDialog } from '../dialogs/message.dialog'
 

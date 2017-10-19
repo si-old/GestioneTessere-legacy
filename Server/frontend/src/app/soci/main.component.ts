@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
 
-import { Socio } from '../model/all'
-import { TableChangeData } from '../common/all'
+import { Socio } from '../model'
+import { TableChangeData } from '../common'
 import { SociService } from './main.service'
 import { AggiuntaSocioComponent } from './aggiunta.component'
 import { DettagliSocioComponent } from './dettagli.component'

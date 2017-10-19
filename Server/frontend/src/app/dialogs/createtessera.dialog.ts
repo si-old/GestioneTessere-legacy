@@ -2,11 +2,11 @@ import { Component, Inject } from '@angular/core'
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 
-import { Tesseramento, Tessera } from '../model/all'
+import { Tesseramento, Tessera } from '../model'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { PATTERN_NUMERO_TESSERA } from '../common/all'
+import { PATTERN_NUMERO_TESSERA } from '../common'
 
 @Component({
     selector: 'createtessera-dialog',

@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core'
 import { MatDialogRef } from '@angular/material'
 
 import { SociService } from '../soci/main.service'
-import { MembroDirettivo, Socio } from '../model/all'
+import { MembroDirettivo, Socio } from '../model'
 
-import { PATTERN_PASSWORD, PATTERN_USER} from '../common/all'
+import { PATTERN_PASSWORD, PATTERN_USER} from '../common'
 
 @Component({
     selector: 'aggiunta-direttivo',

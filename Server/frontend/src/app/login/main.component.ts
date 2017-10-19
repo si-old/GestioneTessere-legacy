@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material'
 
 import { LoginService } from './main.service'
 
-import { PATTERN_PASSWORD, PATTERN_USER } from '../common/all'
+import { PATTERN_PASSWORD, PATTERN_USER } from '../common'
 
 @Component({
     selector: 'login',

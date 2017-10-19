@@ -17,3 +17,6 @@ export const PATTERN_PASSWORD: string = "[\\S]{6,}";
 
 // user: almeno 3 tra caratteri e cifre
 export const PATTERN_USER: string = "[\\d\\w]{3,}";
+
+// options object for very http request
+export const HTTP_GLOBAL_OPTIONS = { withCredentials: true };

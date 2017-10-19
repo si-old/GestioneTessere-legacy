@@ -3,12 +3,12 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 
 import { MatDialogRef, MatSnackBar } from '@angular/material'
 
-import { Socio, Tessera, Carriera, CdL, Tesseramento } from '../model/all'
+import { Socio, Tessera, Carriera, Corso, Tesseramento } from '../model'
 import { CorsiService } from '../corsi/main.service'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE } from '../common/all'
+import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE } from '../common'
 
 @Component({
     selector: 'aggiunta-socio',
@@ -25,7 +25,7 @@ export class AggiuntaSocioComponent implements OnInit {
 
     error: boolean;
     model: Socio;
-    allCdL: CdL[];
+    allCorsi: Corso[];
 
     constructor(private _corsisrv: CorsiService,
         private _tessserv: TesseramentiService,
@@ -40,7 +40,7 @@ export class AggiuntaSocioComponent implements OnInit {
             carriere: [new Carriera({ matricola: '', studente: false })]
         });
         this._corsisrv.getCorsi().subscribe(
-            (x: CdL[]) => { this.model.carriere[0].corso = x[0]; },
+            (x: Corso[]) => { this.model.carriere[0].corso = x[0]; },
         )
         this._tessserv.getTesseramentoAttivo().subscribe(
             (x: Tesseramento) => {

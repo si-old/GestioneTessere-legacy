@@ -1,20 +1,22 @@
-import { CdL } from './CdL'
+import { Searchable, Comparable} from '../common'
 
-export class Carriera {
+import { Corso } from './corso'
+
+export class Carriera implements Searchable, Comparable<Carriera>{
     id: number;
 
     studente: boolean;
     professione: string;
 
     matricola: string;
-    corso: CdL;
+    corso: Corso;
     attiva: boolean;
 
     constructor(fields?: Partial<Carriera>) {
         if (fields) {
             Object.assign(this, fields);
             if (fields.corso) {
-                this.corso = new CdL(fields.corso);
+                this.corso = new Corso(fields.corso);
             }
         }
     }
