@@ -11,10 +11,10 @@
                 Il campo è obbligatorio!
             </mat-error>
             <mat-error *ngIf="inputUser.errors && inputUser.errors.pattern">
-                L'username deve contenere almeno 3 caratteri tra cifre e lettere.
+                L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
             </mat-error>
             <mat-hint *ngIf="inputUser.untouched || inputUser.valid">
-                L'username deve contenere almeno 3 caratteri tra cifre e lettere.
+                L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
             </mat-hint>
         </mat-form-field>
     </div>
