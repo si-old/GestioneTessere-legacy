@@ -18,13 +18,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
 export class MessageDialog {
 
     message: string = "cose";
-    callback: () => void;
+    callback: () => void = () => {};
 
     constructor( @Inject(MAT_DIALOG_DATA) private data,
         private diagref: MatDialogRef<MessageDialog>) {
         if (data) {
             this.message = data.message;
-            this.callback = data.callback;
+            if(data.callback){
+                this.callback = data.callback;
+            }
         }
     }
 

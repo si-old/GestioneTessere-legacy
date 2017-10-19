@@ -7,6 +7,7 @@ import { HTTP_GLOBAL_OPTIONS } from '../common'
 
 
 import { Observable } from 'rxjs/Observable';
+import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 
@@ -19,6 +20,10 @@ export class TesseramentiService {
 
     constructor(private http: HttpClient) { }
 
+    private httpObserver: NextObserver<Tesseramento[]> | ErrorObserver<Tesseramento[]> = {
+        next: (value) => { this.updateSub(value); },
+        error: (error) => { this.tesseramentiSub.error(error); }
+    }
 
     private updateSub(value: Tesseramento[]): void {
         let temp : Tesseramento[] = [];
@@ -42,9 +47,7 @@ export class TesseramentiService {
     }
 
     getTesseramenti(): Observable<Tesseramento[]> {
-        this.http.get<Tesseramento[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(
-            (value) => { this.updateSub(value) }
-        );
+        this.http.get<Tesseramento[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver);
         return this.tesseramentiSub;
     }
 
@@ -53,9 +56,7 @@ export class TesseramentiService {
             REST_ENDPOINT,
             { action: 'close' },
             HTTP_GLOBAL_OPTIONS
-        ).subscribe(
-            (value) => { this.updateSub(value) },
-        );
+        ).subscribe(this.httpObserver);
     }
 
     attivaNuovoTesseramento(nuovoAnno: string): void {
@@ -63,9 +64,7 @@ export class TesseramentiService {
             REST_ENDPOINT,
             { action: 'open', anno: nuovoAnno },
             HTTP_GLOBAL_OPTIONS
-        ).subscribe(
-            (value) => { this.updateSub(value) }
-        );
+        ).subscribe(this.httpObserver);
     }
 
     modificaTesseramento(t: Tesseramento){
@@ -73,8 +72,6 @@ export class TesseramentiService {
             REST_ENDPOINT,
             { action: 'edit', anno: t.anno, id: t.id },
             HTTP_GLOBAL_OPTIONS
-        ).subscribe(
-            (value) => { this.updateSub(value) }
-        )
+        ).subscribe(this.httpObserver);
     }
 }
