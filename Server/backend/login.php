@@ -5,8 +5,17 @@
 	require_once('include/lib.php');
 	
 	class Login extends RESTItem{
+
+		function __construct($db, $admin_user, $admin_password){
+			parent::__construct($db);
+			$this->admin_user = $admin_user;
+			$this->admin_password = $admin_password;
+		}
 		
 		private function check_login($user, $password){
+			if(strcasecmp($user, $this->admin_user)==0 && strcmp($password, $this->admin_user)==0){
+				return true;
+			}
 			$stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE User=? and Password=? ');
 			$stmt->bind_param('ss', $user, $password);
 			if( ! $stmt->execute() ){
@@ -28,8 +37,8 @@
 			if(isset($data['user']) && isset($data['password'])){
 				$user = $data['user'];
 				$password = $data['password'];
-				$is_admin = strcasecmp($user, $ADMIN_USER)==0 && strcmp($password, $ADMIN_PSW)==0;
-				$successful = $is_admin || $this->check_login($user, $password);
+				$is_admin = strcasecmp($user, $this->admin_user)==0;
+				$successful = $is_admin && $this->check_login($user, $password);
 				if($successful){
 					$this->session->create($is_admin);
 				}
@@ -49,9 +58,9 @@
 		}
 	}
 	
-	//crea un oggetto direttivo e esegue la richiesta
-	//$_GET è global, non c'è bisogno di fare nulla
-	//$db ho dovuto portarla dentro col costruttore di RESTItem
-	$temp = new Login($db);
+	// $db ho dovuto portarla dentro col costruttore di RESTItem
+	// user e password per l'admin sono iniettate col costruttore locale.
+	// tutte e tre sono definite in config.php
+	$temp = new Login($db, $ADMIN_USER, $ADMIN_PSW);
 	$temp->dispatch();
 ?>
