@@ -29,8 +29,11 @@ abstract class RESTItem
         header("Access-Control-Allow-Credentials: true");
         header("Access-Control-Allow-Headers: Content-Type");
         try {
-            if ($this->is_session_authorized()) {
+            if ($this->is_session_authorized() || true) {
                     $body = json_decode(file_get_contents('php://input'), true);
+                    if(is_null($body)){
+                        throw new RESTException(HttpStatusCode::$BAD_REQUEST, "The body must be valid JSON data, error: ".json_last_error_msg());
+                    }
                     header("Content-Type: application/json");
                 switch ($_SERVER['REQUEST_METHOD']) {
                     case 'GET':
