@@ -9,8 +9,7 @@ RewriteCond %{REQUEST_URI} ^/socisi/backend(/.*)?
 RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
 
 RewriteRule ^tesla_online/viewer/(.*)\.pdf$ tesla_online/viewer/index.php?file=../files/$1.pdf [L]
-RewriteRule ^socisi/backend/([^/\.]*)(\.php)?/(\d*)$ socisi/backend/$1.php?id=$3 [L]
-# RewriteRule ^socisi/.+$ socisi/ [R=301,L]
+
 </IfModule>
 
 

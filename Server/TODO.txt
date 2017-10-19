@@ -6,3 +6,4 @@
 - gestione numeri di tessera usati / disponibili
 - paginazione soci
 - aggiungere dati reali
+- implementare il ritorno all'url di arrivo per il login (se si viene da un redirect, si torna all'url iniziale anzicchè a soci)

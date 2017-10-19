@@ -1,7 +1,8 @@
 <?php
-    //to avoid output
-    error_reporting(E_ALL);
 
+/* ----------------------- to debug frontend response to http errors ----------------------------- */
+/*    //to avoid output
+    error_reporting(E_ALL);
     //to allow CORS
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
@@ -18,4 +19,14 @@
             echo $body['message'];
         }
     }
-?>
+/**/
+    /* ---------------------- to debug htaccess problems -------------------- */
+/*    echo '<pre>';
+    //echo "SERVER <br />";
+    var_dump($_SERVER);
+    //echo "GET <br />";
+    var_dump($_GET);
+    //echo "POST <br />";
+    var_dump($_POST);
+    echo '</pre>';
+/**/
