@@ -3,7 +3,7 @@ import { Component, OnInit, Inject, Optional } from '@angular/core'
 import { Location } from '@angular/common'
 
 import { ActivatedRoute, Router } from "@angular/router";
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material'
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material'
 
 import { Socio, Tessera, Carriera, Corso } from '../model'
 
@@ -21,7 +21,8 @@ import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs/Observable';
 
 import { BoolVieweditConfig, DisplayOptions } from '../viewedit/bool.component'
-import { CreateCarrieraDialog, CreateTesseraDialog } from '../dialogs'
+
+import { CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from '../dialogs'
 
 
 @Component({
@@ -46,33 +47,28 @@ export class DettagliSocioComponent implements OnInit {
     id: number; //id of the requested Socio
     hasTessera: boolean = false; // true se ha una tessera dell'ultimo tesseramento, quello attivo
 
-    //array of Corso for use in select
-    allCorsi: Corso[];
-
     //properties for carriere table
-    carriereSource: SubjectDataSource<Carriera>; //data source, definition down in this file
+    carriereSource: SubjectDataSource<Carriera> = new SubjectDataSource<Carriera>();
     carriereColumns: string[] = ['studente', 'dettagli']; // showed columns
     carriereEditing = {}; // map to enable editing of a single row
 
     //properties for tessere table
-    tessereSource: SubjectDataSource<Tessera>; //data source, definition down in this file
+    tessereSource: SubjectDataSource<Tessera> = new SubjectDataSource<Tessera>();
     tessereColumns: string[] = ['numero', 'anno'];  // showed columns
     tessereEditing = {}; // map to enable editing of a single row
 
 
 
-    constructor(private _corsisrv: CorsiService,
+    constructor(
         private _socisrv: SociService,
         private _tesssrv: TesseramentiService,
-        private _snack: MatSnackBar,
         private _location: Location,
         private _route: ActivatedRoute,
         private _router: Router,
         private _dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
-        @Optional() private diagref: MatDialogRef<DettagliSocioComponent>) {
-        this.carriereSource = new SubjectDataSource<Carriera>();
-        this.tessereSource = new SubjectDataSource<Tessera>();
+        @Optional() private diagref: MatDialogRef<DettagliSocioComponent>
+    ){
         if (this.diagref) { //if injected reference is not null, we are in a dialog
             this.in_dialog = true;
             this.form_style = "in_dialog";
@@ -80,22 +76,33 @@ export class DettagliSocioComponent implements OnInit {
         if (this.in_dialog && this.data) { //if we are in a dialog and data have been given to us, use them
             this._socisrv.getSocioById(this.data.socio.id).subscribe(
                 socio => { this.initData(socio); },
-                (x) => { this._router.navigate(['/soci']) }
+                (x) => { 
+                    this._router.navigate(['/soci'])
+                    this._dialog.open(MessageDialog, {
+                        data: {
+                            message: "Nessun socio trovato con questo ID!"
+                        }
+                    })
+                }
             );
-        }else{
+        } else {
             this._route.params.subscribe(
                 (params) => {
                     this.id = +params['id'];
                     this._socisrv.getSocioById(+params['id']).subscribe(
                         socio => { this.initData(socio); },
-                        (x) => { this._router.navigate(['/soci']) }
+                        (x) => { 
+                            this._router.navigate(['/soci'])
+                            this._dialog.open(MessageDialog, {
+                                data: {
+                                    message: "Nessun socio trovato con questo ID!"
+                                }
+                            })
+                        }
                     );
                 }
             );
-        } // otherwise we are not in a dialog, get the id from the params and retrieve the correct socio
-        this._corsisrv.getCorsi().subscribe(
-            (corsi: Corso[]) => { this.allCorsi = corsi } //retrieve the array of Corso for use in the form
-        )
+        }
     }
 
     /**
@@ -171,10 +178,6 @@ export class DettagliSocioComponent implements OnInit {
         if (!form.invalid) {
             this.disableEditing();
             this._socisrv.updateSocio(this.model);
-        } else {
-            this._snack.open("Qualche campo non è stato compilato correttamente", "OK", {
-                duration: 1500
-            });
         }
         return false; //to prevent Edge from reloading
     }

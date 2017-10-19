@@ -18,7 +18,7 @@ export class ObservableDataSource<T> implements DataSource<T>{
 
 export class SubjectDataSource<T> implements DataSource<T>{
 
-    _sub: Subject<T[]> = new Subject<T[]>();
+    _sub: Subject<T[]> = new BehaviorSubject<T[]>(null);
 
     constructor() { }
 

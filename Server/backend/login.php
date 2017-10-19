@@ -44,7 +44,7 @@
 				}
 				return array('login' => $successful, 'admin' => $is_admin);
 			}else{
-				throw new RESTException(HttpStatusCode::$BAD_REQUEST);	
+				throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");	
 			}
 		}
 		

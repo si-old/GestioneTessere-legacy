@@ -10,6 +10,7 @@ import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
 import { Observable } from 'rxjs/Observable';
+import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
@@ -21,12 +22,22 @@ export class SociService {
   private _obs: Subject<Socio[]>;
   private _singleObs: Subject<Socio>;
 
+  private httpObserver: NextObserver<Socio[]> | ErrorObserver<Socio[]> = {
+    next: (value) => { this.updateSub(value); },
+    error: (error) => { this._obs.error(error); }
+  }
+
+  private httpSingleObserver: NextObserver<Socio> | ErrorObserver<Socio> = {
+    next: (value) => { this.updateSingleSub(value); },
+    error: (error) => { this._singleObs.error(error); }
+  }
+
   constructor(private http: HttpClient) {
     this._obs = new Subject<Socio[]>();
     this._singleObs = new Subject<Socio>();
   }
 
-  updateObs(value){
+  updateSub(value) {
     let tempArray: Socio[] = [];
     value.forEach(
       (x) => { tempArray.push(new Socio(x)); }
@@ -34,34 +45,26 @@ export class SociService {
     this._obs.next(tempArray);
   }
 
-  updateSingleObs(value){
+  updateSingleSub(value) {
     let temp: Socio = new Socio(value);
     this._singleObs.next(temp);
   }
 
   getSoci(): Observable<Socio[]> {
-    this.http.get<Socio[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(
-      (value) => { this.updateObs(value); }
-    )
+    this.http.get<Socio[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver)
     return this._obs;
   }
 
   getSocioById(id: number): Observable<Socio> {
-    this.http.get<Socio>(REST_ENDPOINT + '/' + id, HTTP_GLOBAL_OPTIONS).subscribe(
-      (value) => { this.updateSingleObs(value); }
-    )
+    this.http.get<Socio>(REST_ENDPOINT + '/' + id, HTTP_GLOBAL_OPTIONS).subscribe(this.httpSingleObserver)
     return this._singleObs;
   }
 
-  updateSocio(newSocio: Socio) {
-    this.http.post<Socio>(REST_ENDPOINT + '/' + newSocio.id, newSocio, HTTP_GLOBAL_OPTIONS).subscribe(
-      (value) => { this.updateSingleObs(value); }
-    )
+  updateSocio(newSocio: Socio): void {
+    this.http.post<Socio>(REST_ENDPOINT + '/' + newSocio.id, newSocio, HTTP_GLOBAL_OPTIONS).subscribe(this.httpSingleObserver)
   }
 
-  addSocio(newSocio: Socio) {
-    this.http.post<Socio[]>(REST_ENDPOINT, newSocio, HTTP_GLOBAL_OPTIONS).subscribe(
-      (value) => { this.updateObs(value); }
-    )
+  addSocio(newSocio: Socio): void {
+    this.http.post<Socio[]>(REST_ENDPOINT, newSocio, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver)
   }
 }
