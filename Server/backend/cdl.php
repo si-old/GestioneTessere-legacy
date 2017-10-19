@@ -55,6 +55,8 @@
 		}
 	}
 	
+	// $db ho dovuto portarla dentro col costruttore di RESTItem
+	// è definita in config.php
 	$temp = new CdL($db);
 	$temp->dispatch();
 ?>

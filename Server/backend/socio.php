@@ -245,7 +245,9 @@
 			return $this->session->is_valid();
 		}
 	}
-
+	
+	// $db ho dovuto portarla dentro col costruttore di RESTItem
+	// è definita in config.php
 	$temp = new Socio($db);
 	$temp->dispatch();
 ?>
