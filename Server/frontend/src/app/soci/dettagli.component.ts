@@ -5,7 +5,10 @@ import { Location } from '@angular/common'
 import { ActivatedRoute, Router } from "@angular/router";
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material'
 
-import { Socio, Tessera, Carriera, CdL } from '../model/all'
+import { Socio, Tessera, Carriera, Corso } from '../model'
+
+import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, SubjectDataSource } from '../common'
+
 
 import { CorsiService } from '../corsi/main.service'
 import { SociService } from './main.service'
@@ -18,10 +21,8 @@ import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs/Observable';
 
 import { BoolVieweditConfig, DisplayOptions } from '../viewedit/bool.component'
-import { CreateCarrieraDialog } from '../dialogs/createcarriera.dialog'
-import { CreateTesseraDialog } from '../dialogs/createtessera.dialog'
+import { CreateCarrieraDialog, CreateTesseraDialog } from '../dialogs'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE } from '../common/all'
 
 @Component({
     selector: 'dettagli-socio',
@@ -45,8 +46,8 @@ export class DettagliSocioComponent implements OnInit {
     id: number; //id of the requested Socio
     hasTessera: boolean = false; // true se ha una tessera dell'ultimo tesseramento, quello attivo
 
-    //array of CdLs for use in select
-    allCdL: CdL[];
+    //array of Corso for use in select
+    allCorsi: Corso[];
 
     //properties for carriere table
     carriereSource: SubjectDataSource<Carriera>; //data source, definition down in this file
@@ -93,7 +94,7 @@ export class DettagliSocioComponent implements OnInit {
             );
         } // otherwise we are not in a dialog, get the id from the params and retrieve the correct socio
         this._corsisrv.getCorsi().subscribe(
-            (corsi: CdL[]) => { this.allCdL = corsi } //retrieve the array of CdL for use in the form
+            (corsi: Corso[]) => { this.allCorsi = corsi } //retrieve the array of Corso for use in the form
         )
     }
 
@@ -224,22 +225,3 @@ export class DettagliSocioComponent implements OnInit {
 
 }
 
-class SubjectDataSource<T> implements DataSource<T>{
-
-    _sub: Subject<T[]> = new BehaviorSubject<T[]>(null);
-
-    constructor() {
-    }
-
-    update(value: T[]) {
-        this._sub.next(value);
-    }
-
-    connect(): Observable<T[]> {
-        return this._sub;
-    }
-
-    disconnect() {
-
-    }
-}

@@ -13,12 +13,11 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
-import { CdL, Carriera, } from '../model/all'
-import { TableChangeData } from '../common/all'
+import { Corso, Carriera, } from '../model'
+import { FilteredSortedDataSource } from '../common'
 import { CorsiService } from './main.service'
 
-import { TextInputDialog } from '../dialogs/textinput.dialog'
-import { ConfirmDialog } from '../dialogs/confirm.dialog'
+import { TextInputDialog, ConfirmDialog } from '../dialogs'
 
 
 @Component({
@@ -32,7 +31,7 @@ export class CorsiComponent implements OnInit {
   editing: boolean[] = [];
   initValues: string[] = [];
 
-  corsiSource: CorsiDataSource;
+  corsiSource: FilteredSortedDataSource<Corso>;
 
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
@@ -42,7 +41,7 @@ export class CorsiComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private dialog: MatDialog) {
     this._corsisrv.getCorsi().subscribe(
-      (corsi: CdL[]) => {
+      (corsi: Corso[]) => {
         corsi.forEach(
           (corso) => {
             this.editing[corso.id] = false;
@@ -54,7 +53,7 @@ export class CorsiComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.corsiSource = new CorsiDataSource(this._corsisrv);
+    this.corsiSource = new FilteredSortedDataSource(this._corsisrv.getCorsi());
     this.changeDetector.detectChanges();
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
@@ -68,7 +67,7 @@ export class CorsiComponent implements OnInit {
     )
   }
 
-  revertCorso(corso: CdL) {
+  revertCorso(corso: Corso) {
     corso.nome = this.initValues[corso.id];
     this.editing[corso.id] = false;
   }
@@ -84,13 +83,13 @@ export class CorsiComponent implements OnInit {
       );
   }
 
-  deleteCorso(corso: CdL) {
+  deleteCorso(corso: Corso) {
     this.dialog.open(ConfirmDialog).afterClosed().subscribe(
       (response) => { if (response) this._corsisrv.deleteCorso(corso); }
     )
   }
 
-  updateCorso(corso: CdL) {
+  updateCorso(corso: Corso) {
     if (corso.nome) {
       if (corso.nome != this.initValues[corso.id]) {
         this._corsisrv.updateCorso(corso);
@@ -103,47 +102,4 @@ export class CorsiComponent implements OnInit {
       })
     }
   }
-}
-
-
-class CorsiDataSource extends DataSource<CdL>{
-
-  _filterChange = new BehaviorSubject('');
-  set filter(filter: string) { this._filterChange.next(filter); }
-
-  _sortChange = new BehaviorSubject<Sort>({ active: '', direction: '' });
-  set sort(next: Sort) { this._sortChange.next(next); }
-
-  constructor(private corsisrv: CorsiService) {
-    super();
-  }
-
-  connect(): Observable<CdL[]> {
-    const displayDataChanges = [
-      this._filterChange,
-      this._sortChange,
-      this.corsisrv.getCorsi()
-    ];
-
-    return Observable.combineLatest(
-      ...displayDataChanges,
-      (filter_in: string, sort_in: Sort, input: CdL[]) => {
-        return { data: input, filter: filter_in, sort: sort_in }
-      }).map(
-      (input: TableChangeData<CdL[]>) => {
-        let data = input.data.slice().filter((item: CdL) => {
-          return item.contains(input.filter.toLowerCase());
-        })
-        if (!input.sort.active || input.sort.direction == '') {
-          return data;
-        } else {
-          return data.sort((a, b) => {
-            return a.compare(b, input.sort.active, input.sort.direction);
-          });
-        }
-
-      });
-  }
-
-  disconnect() { }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@ang
 
 import { trigger, state, style, animate, transition, group } from '@angular/animations';
 
-import { CdL } from '../model/all'
+import { Corso } from '../model'
 import { CorsiService } from '../corsi/main.service'
 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -46,21 +46,21 @@ export class CorsiVieweditComponent implements OnInit, ControlValueAccessor {
     @Input() flag: boolean;
     @Input('required') inputRequired: boolean = false
 
-    _content: CdL;
-    allCdL: CdL[];
+    _content: Corso;
+    allCorsi: Corso[];
 
     constructor(private _corsisrv: CorsiService) { }
 
     ngOnInit() {
         this._corsisrv.getCorsi().subscribe(
-            (corsi: CdL[]) => { this.allCdL = corsi }
+            (corsi: Corso[]) => { this.allCorsi = corsi }
         )
     }
 
     private onTouchedCallback: () => void = noop;
     private onChangeCallback: (_: any) => void = noop;
 
-    set content(in_content: CdL) {
+    set content(in_content: Corso) {
         if (this._content !== in_content) {
             this._content = in_content;
             this.onChangeCallback(this._content);

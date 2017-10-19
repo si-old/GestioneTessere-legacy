@@ -6,7 +6,9 @@ import { MatDialog } from '@angular/material'
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
 import { AggiuntaDirettivoComponent } from './aggiunta.component'
 
-import { MembroDirettivo } from '../model/all'
+import { MembroDirettivo } from '../model'
+import { ObservableDataSource } from '../common'
+
 import { DirettivoService } from './main.service'
 
 import { Observable } from 'rxjs/Observable'
@@ -70,20 +72,5 @@ export class DirettivoComponent {
       this._dirsrv.getDirettivo();
     }
     this.editing[m.id] = false;
-  }
-}
-
-class ObservableDataSource implements DataSource<MembroDirettivo>{
-
-  constructor(private _obs: Observable<MembroDirettivo[]>) {
-
-  }
-
-  connect(): Observable<MembroDirettivo[]> {
-    return this._obs;
-  }
-
-  disconnect() {
-
   }
 }

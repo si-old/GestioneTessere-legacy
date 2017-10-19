@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core'
 
 import { HttpClient } from '@angular/common/http'
 
-import { MembroDirettivo, Carriera, Tessera } from '../model/all'
+import { MembroDirettivo, Carriera, Tessera } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common/all'
+import { HTTP_GLOBAL_OPTIONS } from '../common'
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';

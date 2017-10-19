@@ -1,9 +1,9 @@
 ﻿import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 
-import { Tesseramento } from '../model/all'
+import { Tesseramento } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common/all'
+import { HTTP_GLOBAL_OPTIONS } from '../common'
 
 
 import { Observable } from 'rxjs/Observable';
@@ -35,7 +35,7 @@ export class TesseramentiService {
                 if (filtered.length == 1) {
                     return filtered[0];
                 } else {
-                    throw new Error("Nessun tesseramento attivo")
+                    throw new Error("Nessun tesseramento attivo");
                 }
             }
         )
@@ -66,5 +66,15 @@ export class TesseramentiService {
         ).subscribe(
             (value) => { this.updateSub(value) }
         );
+    }
+
+    modificaTesseramento(t: Tesseramento){
+        this.http.post<Tesseramento[]>(
+            REST_ENDPOINT,
+            { action: 'edit', anno: t.anno, id: t.id },
+            HTTP_GLOBAL_OPTIONS
+        ).subscribe(
+            (value) => { this.updateSub(value) }
+        )
     }
 }

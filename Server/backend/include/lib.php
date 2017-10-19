@@ -20,9 +20,9 @@ abstract class RESTItem
 
         //to allow CORS
         $headers = apache_request_headers();
-        if(isset($headers['Origin'])){
+        if (isset($headers['Origin'])) {
             header("Access-Control-Allow-Origin: ".$headers['Origin']);
-        }else{
+        } else {
             header("Access-Control-Allow-Origin: *");
         }
         header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
@@ -37,7 +37,7 @@ abstract class RESTItem
                         break;
                     case 'POST':
                         $body = json_decode(file_get_contents('php://input'), true);
-                        if(is_null($body)){
+                        if (is_null($body)) {
                             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "The body must be valid JSON data, error: ".json_last_error_msg());
                         }
                         $res = $this->do_post($body);

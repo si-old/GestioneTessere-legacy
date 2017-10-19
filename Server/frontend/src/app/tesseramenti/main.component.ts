@@ -2,13 +2,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 
 import { MatDialog, MatDialogRef } from '@angular/material'
 
-import { Tesseramento } from '../model/all'
+import { Tesseramento } from '../model'
 import { TesseramentiService } from './main.service'
 
-import { ConfirmDialog } from '../dialogs/confirm.dialog'
-import { TextInputDialog } from '../dialogs/textinput.dialog'
+import { ConfirmDialog, TextInputDialog } from '../dialogs'
 
-import { PATTERN_ANNO_TESSERAMENTO } from '../common/all'
+import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource } from '../common'
 
 import { Observable } from 'rxjs/Observable'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -22,7 +21,10 @@ import { DataSource } from '@angular/cdk/table';
 export class TesseramentiComponent implements OnInit {
 
     displayedColumns: string[] = ['anno', 'aperto', 'azioni'];
-    tessSource: TesseramentiDataSource;
+    tessSource: ObservableDataSource<Tesseramento>;
+
+    editing: boolean[] = [];
+    oldValues: string[] = [];
 
     constructor(private _tessService: TesseramentiService,
         private changeDetector: ChangeDetectorRef,
@@ -31,7 +33,18 @@ export class TesseramentiComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.tessSource = new TesseramentiDataSource(this._tessService);
+        let obs = this._tessService.getTesseramenti();
+        this.tessSource = new ObservableDataSource<Tesseramento>(obs);
+        obs.subscribe(
+            (values: Tesseramento[]) => {
+                values.forEach(
+                    (value: Tesseramento) => {
+                        this.editing[value.id] = false
+                        this.oldValues[value.id] = value.anno;
+                    }
+                )
+            }
+        )
         this.changeDetector.detectChanges();
     }
 
@@ -53,19 +66,16 @@ export class TesseramentiComponent implements OnInit {
             anno => { if (anno) this._tessService.attivaNuovoTesseramento(anno); }
         );
     }
-}
-class TesseramentiDataSource extends DataSource<Tesseramento>{
 
-    constructor(private _tessServ: TesseramentiService) {
-        super();
+    commitChanges(t: Tesseramento) {
+        if (t.anno != this.oldValues[t.id]) {
+            this._tessService.modificaTesseramento(t);
+        }
+        this.editing[t.id] = false;
     }
 
-    connect(): Observable<Tesseramento[]> {
-        return this._tessServ.getTesseramenti();
-    }
-
-    disconnect(): void {
-
+    revertChanges(t: Tesseramento) {
+        t.anno = this.oldValues[t.id];
+        this.editing[t.id] = false;
     }
 }
-
