@@ -32,11 +32,4 @@ hs_err_pid*
 
 # config file
 *config.php
-<<<<<<< e963d38d5918f33a7aaa80ce1c29a6f1720f4592
 *log4php
-=======
-
-# Composer file
-**/composer.phar
-**/vendor/
->>>>>>> add composer file and log4php dependency

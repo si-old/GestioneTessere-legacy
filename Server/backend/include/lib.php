@@ -1,6 +1,7 @@
 <?php
 
 require_once('session.php');
+require_once('config.php');
 
 abstract class RESTItem
 {
@@ -11,6 +12,7 @@ abstract class RESTItem
         $this->has_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
         $this->id = $_GET['id'];
         $this->session = new Session();
+        $this->logger = Logger::getLogger($this->get_class($this));
     }
 
     public function dispatch()
