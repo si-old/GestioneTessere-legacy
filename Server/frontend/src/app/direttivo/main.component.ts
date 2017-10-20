@@ -7,7 +7,7 @@ import { ConfirmDialog } from '../dialogs/confirm.dialog'
 import { AggiuntaDirettivoComponent } from './aggiunta.component'
 
 import { MembroDirettivo } from '../model'
-import { ObservableDataSource } from '../common'
+import { ObservableDataSource, PATTERN_USER, PATTERN_PASSWORD } from '../common'
 
 import { DirettivoService } from './main.service'
 
@@ -19,6 +19,10 @@ import { Observable } from 'rxjs/Observable'
   styleUrls: ['./main.component.css', '../common/mainroutes.style.css']
 })
 export class DirettivoComponent {
+
+  // reexpose pattern to allow template to access them
+  PATTERN_USER: string = PATTERN_USER;
+  PATTERN_PASSWORD: string = PATTERN_PASSWORD;
 
   direttivoColumns: string[] = ['user', 'password', 'azioni']
   direttivoSource = null;
@@ -39,9 +43,9 @@ export class DirettivoComponent {
     obs.subscribe(
       (direttivo: MembroDirettivo[]) => {
         direttivo.forEach((membro) => {
-          this.editing[membro.id] = false
-          this.initValuesUser[membro.id] = membro.user;
-          this.initValuesPass[membro.id] = membro.password;
+          this.editing[membro.id_direttivo] = false
+          this.initValuesUser[membro.id_direttivo] = membro.user;
+          this.initValuesPass[membro.id_direttivo] = membro.password;
         })
       }
     );
@@ -61,16 +65,19 @@ export class DirettivoComponent {
   }
 
   commitChanges(m: MembroDirettivo) {
-    if (this.initValuesPass[m.id] != m.password || this.initValuesUser[m.id] != m.user) {
+    if (this.initValuesPass[m.id_direttivo] != m.password ||
+        this.initValuesUser[m.id_direttivo] != m.user) {
       this._dirsrv.changeMembro(m);
     }
-    this.editing[m.id] = false;
+    this.editing[m.id_direttivo] = false;
   }
 
   revertChanges(m: MembroDirettivo) {
-    if (this.initValuesPass[m.id] != m.password || this.initValuesUser[m.id] != m.user) {      
-      this._dirsrv.getDirettivo();
+    if (this.initValuesPass[m.id_direttivo] != m.password ||
+        this.initValuesUser[m.id_direttivo] != m.user) {      
+      m.user = this.initValuesUser[m.id_direttivo];
+      m.password = this.initValuesPass[m.id_direttivo];
     }
-    this.editing[m.id] = false;
+    this.editing[m.id_direttivo] = false;
   }
 }
