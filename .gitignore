@@ -36,3 +36,6 @@ hs_err_pid*
 # Composer file
 **/composer.phar
 **/vendor/
+
+#log4php
+**/log4php/
