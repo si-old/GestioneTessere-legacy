@@ -8,4 +8,5 @@
 - implementare logging per tenere traccia di chi fa cosa.
 - export della lista soci e email come csv
 - modifica in layout responsive per visualizzazione da cellulare
+- gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
 - aggiungere dati reali
