@@ -87,9 +87,9 @@ class Mail extends RESTItem
 										JOIN ( $query_tessere_attive ) as t on t_socio = s.ID";
 		if($blacklist){
 			if($all){
-				$conditions = " WHERE s.Blacklist = 1";
+				$conditions = " WHERE s.Blacklist != 1";
 			}else{
-				$conditions = " WHERE s.Blacklist = 1 AND c_id IN ( ? )";
+				$conditions = " WHERE s.Blacklist != 1 AND c_id IN ( ? )";
 			}
 		}else{
 			if($all){
