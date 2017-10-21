@@ -30,6 +30,10 @@ import { TesseramentiComponent } from './tesseramenti/main.component'
 import { LoginComponent } from './login/main.component'
 import { LoginService, LoggedinGuard, AdminGuard } from './login/main.service'
 
+import { MainMailComponent } from './mail/main.component'
+import { MailFormComponent } from './mail/mail-form.component'
+import { BlacklistComponent } from './mail/blacklist.component'
+
 import { ConfirmDialog, TextInputDialog, CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from './dialogs'
 
 import { ToolbarComponent } from './toolbar.component'
@@ -55,6 +59,9 @@ import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common'
     ToolbarComponent,
     TitleBarComponent,
     AggiuntaDirettivoComponent,
+    MainMailComponent,
+    MailFormComponent,
+    BlacklistComponent,
     EqualFieldsValidatorDirective,
     MessageDialog
   ],
