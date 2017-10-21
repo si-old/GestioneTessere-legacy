@@ -1,0 +1,50 @@
+<form #form="ngForm" class="form-container">
+    <div class="form-left-col">
+        <div>
+            <label for="feedback">Indirizzo di feedback:</label>
+            <mat-form-field>
+                <input type="text" name="feedback" matInput />
+            </mat-form-field>
+        </div>
+        <div class="checkbox-area">
+            <div class="checkbox-list">
+                <div class="checkbox-container">
+                    <mat-checkbox color="primary" style="width: 100%">
+                        Tutti
+                    </mat-checkbox>
+                </div>
+                <div class="checkbox-container">
+                    <mat-checkbox color="primary" style="width: 100%">
+                        Lavoratori
+                    </mat-checkbox>
+                </div>
+                <div class="checkbox-container">
+                    <mat-checkbox color="primary" style="width: 100%">
+                        Escludi blacklist
+                    </mat-checkbox>
+                </div>
+            </div>
+            <div class="checkbox-list">
+                <div *ngFor="let corso of corsi" class="checkbox-container">
+                    <mat-checkbox color="primary" style="width: 100%">
+                        {{corso.nome}}
+                    </mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-right-col">
+        <div>
+            <label for="oggetto">Oggetto:</label>
+            <mat-form-field>
+                <input type="text" name="oggetto" matInput />
+            </mat-form-field>
+        </div>
+        <div>
+            <label id="label-contenuto" for="contenuto">Contenuto:</label>
+            <mat-form-field>
+                <textarea matInput name="contenuto" rows="10"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+</form>
