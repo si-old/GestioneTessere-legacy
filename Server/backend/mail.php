@@ -47,7 +47,6 @@ class Mail extends RESTItem
 			mail($admin_mail, $admin_subject, $email_body, $user_header);
 			if(isset($data['corsi'])){
 				$corsi = $data['corsi'];
-				$corsi = implode(',', $corsi);
 			}else{
 				$corsi = '';
 			}
@@ -90,25 +89,33 @@ class Mail extends RESTItem
 			if($all){
 				$conditions = " WHERE s.Blacklist != 1";
 			}else{
-				$conditions = " WHERE s.Blacklist != 1 AND c_id IN ( ? )";
+				$corsi = $this->get_list($cdl_whitelist);
+				$conditions = " WHERE s.Blacklist != 1 AND c_id IN ( $corsi )";
 			}
 		}else{
 			if($all){
 				$conditions = "";
 			}else{
-				$conditions = " WHERE c_id IN ( ? )";
+				$corsi = $this->get_list($cdl_whitelist);
+				$conditions = " WHERE c_id IN ( $corsi )";
 			}
 		}
         $query = $query.$conditions;
 		$stmt = $this->db->prepare($query);
-		if(!$all){
-			$stmt->bind_param('s', $cdl_whitelist);
-		}
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
         $results = fetch_results($stmt);
         return $results;
+    }
+
+    private function get_list($corsi) {
+    	$corsi_ids = '';
+    	foreach ($corsi as $id) {
+    		$corsi_ids = $corsi_ids.intval($id).', ';
+    	}
+    	$corsi_ids = substr($corsi_ids, 0, -2);
+    	return $corsi_ids;
     }
 
     private function send_mails($users, $subject, $email_body, $user_header)
