@@ -27,15 +27,15 @@ class Mail extends RESTItem
 			corpo: corpo dell'email, stringa
 			email_feedback: ulteriore indirizzo a cui inviare l'email, per controllo
 			blacklist: flag per indicare se vanno esclusi i membri della blacklist, bool
-			filtra_corsi: flag per indicare se filtrare per carriera, bool
-			corsi: lista separata da virgole di id dei corsi a cui inviare la mail
+			tutti: flag per indicare se filtrare per carriera, bool
+			corsi: arrauy di id dei corsi a cui inviare la mail
 		}
 	*/
 	protected function do_post($data)
     {
 		$valid = isset($data['oggetto']) && isset($data['corpo']) && isset($data['email_feedback']);
-		$valid = $valid && isset($data['blacklist']) && isset($data['filtra_corsi']);
-		$valid = ($valid && !$data['filtra_corsi']) && ($valid && $data['filtra_corsi'] && isset($data['corsi']));
+		$valid = $valid && isset($data['blacklist']) && isset($data['tutti']);
+		$valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
         if ($valid) {
             $user_header = $this->create_header();
             $subject_tmp = $data['oggetto'];
@@ -47,10 +47,11 @@ class Mail extends RESTItem
 			mail($admin_mail, $admin_subject, $email_body, $user_header);
 			if(isset($data['corsi'])){
 				$corsi = $data['corsi'];
+				$corsi = implode(',', $corsi);
 			}else{
 				$corsi = '';
 			}
-            $users = $this->get_users($data['blacklist'], $data['filtra_corsi'], $corsi);
+            $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi);
             return $this->send_mails($users, $subject, $email_body, $user_header);
         } else {
             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
