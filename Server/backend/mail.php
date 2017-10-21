@@ -27,15 +27,15 @@ class Mail extends RESTItem
 			corpo: corpo dell'email, stringa
 			email_feedback: ulteriore indirizzo a cui inviare l'email, per controllo
 			blacklist: flag per indicare se vanno esclusi i membri della blacklist, bool
-			filtra_corsi: flag per indicare se filtrare per carriera, bool
-			corsi: lista separata da virgole di id dei corsi a cui inviare la mail
+			tutti: flag per indicare se filtrare per carriera, bool
+			corsi: arrauy di id dei corsi a cui inviare la mail
 		}
 	*/
 	protected function do_post($data)
     {
 		$valid = isset($data['oggetto']) && isset($data['corpo']) && isset($data['email_feedback']);
-		$valid = $valid && isset($data['blacklist']) && isset($data['filtra_corsi']);
-		$valid = ($valid && !$data['filtra_corsi']) && ($valid && $data['filtra_corsi'] && isset($data['corsi']));
+		$valid = $valid && isset($data['blacklist']) && isset($data['tutti']);
+		$valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
         if ($valid) {
             $user_header = $this->create_header();
             $subject_tmp = $data['oggetto'];
@@ -50,7 +50,7 @@ class Mail extends RESTItem
 			}else{
 				$corsi = '';
 			}
-            $users = $this->get_users($data['blacklist'], $data['filtra_corsi'], $corsi);
+            $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi);
             return $this->send_mails($users, $subject, $email_body, $user_header);
         } else {
             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
@@ -89,25 +89,33 @@ class Mail extends RESTItem
 			if($all){
 				$conditions = " WHERE s.Blacklist != 1";
 			}else{
-				$conditions = " WHERE s.Blacklist != 1 AND c_id IN ( ? )";
+				$corsi = $this->get_list($cdl_whitelist);
+				$conditions = " WHERE s.Blacklist != 1 AND c_id IN ( $corsi )";
 			}
 		}else{
 			if($all){
 				$conditions = "";
 			}else{
-				$conditions = " WHERE c_id IN ( ? )";
+				$corsi = $this->get_list($cdl_whitelist);
+				$conditions = " WHERE c_id IN ( $corsi )";
 			}
 		}
         $query = $query.$conditions;
 		$stmt = $this->db->prepare($query);
-		if(!$all){
-			$stmt->bind_param('s', $cdl_whitelist);
-		}
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
         $results = fetch_results($stmt);
         return $results;
+    }
+
+    private function get_list($corsi) {
+    	$corsi_ids = '';
+    	foreach ($corsi as $id) {
+    		$corsi_ids = $corsi_ids.intval($id).', ';
+    	}
+    	$corsi_ids = substr($corsi_ids, 0, -2);
+    	return $corsi_ids;
     }
 
     private function send_mails($users, $subject, $email_body, $user_header)
