@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http'
         <a mat-raised-button class="custom-button" color="accent" routerLink="/soci">Soci</a>
         <a mat-raised-button class="custom-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
         <a mat-raised-button class="custom-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/mail">Mail</a>        
         <ng-container *ngIf="isAdmin">
             <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
         </ng-container>

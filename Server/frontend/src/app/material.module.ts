@@ -12,7 +12,9 @@ import {
     MatSlideToggleModule,
     MatSelectModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatCheckboxModule
   } from '@angular/material';
 
   import { CdkTableModule } from '@angular/cdk/table';
@@ -30,7 +32,9 @@ const INCLUDED_MODULES = [
     MatSlideToggleModule,
     MatSelectModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatCheckboxModule
 ]
 
 @NgModule({
