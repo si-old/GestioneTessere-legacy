@@ -4,6 +4,11 @@
     padding-top: 10px;
 }
 
+.button-container{
+    display: flex;
+    justify-content: space-around;
+}
+
 .form-left-col{
     width: 35%;
     display: flex;
