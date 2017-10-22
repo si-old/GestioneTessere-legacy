@@ -48,6 +48,6 @@ mat-form-field{
 }
 
 .checkbox-container{
-    margin-left: 30%;
+    padding-left: 30%;
     align-self: flex-start;
 }
