@@ -38,17 +38,17 @@
             <div>
                 <label for="oggetto">Oggetto:</label>
                 <mat-form-field>
-                    <input type="text" name="oggetto" matInput />
+                    <input type="text" name="oggetto" matInput [(ngModel)]="oggetto" />
                 </mat-form-field>
             </div>
             <div>
                 <label id="label-contenuto" for="contenuto">Contenuto:</label>
                 <mat-form-field>
-                    <textarea matInput name="contenuto" rows="10"></textarea>
+                    <textarea matInput name="contenuto" rows="10" [(ngModel)]="corpo"></textarea>
                 </mat-form-field>
             </div>
             <div class="button-container">
-                <button mat-raised-button color="primary">
+                <button mat-raised-button color="primary" (click)="sendEmail(form)">
                     Invia
                 </button>
             </div>
