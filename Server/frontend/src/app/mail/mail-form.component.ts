@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 
 import { CorsiService } from '../corsi/main.service'
 
-import { Corso } from '../model'
+import { Corso, MailRequest } from '../model'
 
 @Component({
     selector: 'mail-form',
@@ -50,5 +50,27 @@ export class MailFormComponent implements OnInit {
                 this.corsi_disabled[i] = this.tutti;
             }
         )
+    }
+
+    sendEmail(form){
+        if(!form.invalid){
+            let mailReq: MailRequest = {
+                oggetto: this.oggetto,
+                corpo: this.corpo,
+                email_feedback: this.email_feedback,
+                blacklist: this.blacklist,
+                tutti: this.tutti,
+            }
+            if(!this.tutti){
+                mailReq.lavoratori = this.lavoratori;
+                mailReq.corsi = [];
+                this.corsi_checked.forEach(
+                    (val: boolean, index: number) => { 
+                        if(val) mailReq.corsi.push(index);
+                    }
+                )
+            }
+            console.log(mailReq);
+        }
     }
 }
