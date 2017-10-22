@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core'
 
 import { CorsiService } from '../corsi/main.service'
+import { MailService } from './main.service'
 
-import { Corso, MailRequest } from '../model'
+import { MatDialog, MatDialogRef } from '@angular/material'
+
+import { LoadingDialog, MessageDialog } from '../dialogs'
+
+import { Corso, MailRequest, MailResponse } from '../model'
 
 @Component({
     selector: 'mail-form',
@@ -26,7 +31,9 @@ export class MailFormComponent implements OnInit {
     corsi_checked: boolean[] = [];
     corsi_disabled: boolean[] = [];
 
-    constructor(private corsisrv: CorsiService) {
+    constructor(private corsisrv: CorsiService,
+                private dialog: MatDialog,
+                private mailsrv: MailService) {
     }
 
     ngOnInit() {
@@ -59,10 +66,10 @@ export class MailFormComponent implements OnInit {
                 corpo: this.corpo,
                 email_feedback: this.email_feedback,
                 blacklist: this.blacklist,
+                lavoratori: this.lavoratori,
                 tutti: this.tutti,
             }
             if(!this.tutti){
-                mailReq.lavoratori = this.lavoratori;
                 mailReq.corsi = [];
                 this.corsi_checked.forEach(
                     (val: boolean, index: number) => { 
@@ -70,7 +77,20 @@ export class MailFormComponent implements OnInit {
                     }
                 )
             }
-            console.log(mailReq);
+            let loadRef: MatDialogRef<LoadingDialog>;
+            loadRef = this.dialog.open(LoadingDialog);
+            this.mailsrv.sendEmail(mailReq).subscribe(
+                (res: MailResponse) => {
+                    loadRef.close();
+                    this.dialog.open(MessageDialog, {
+                        data: {
+                            message: `
+                                Su un totale di ${res.ok+res.nok} email, ${res.ok} sono state inviate con successo. 
+                            `
+                        }
+                    })
+                }
+            )
         }
     }
 }

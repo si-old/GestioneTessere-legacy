@@ -4,8 +4,8 @@ export class MailRequest{
 
     email_feedback: string;
     blacklist: boolean;
+    lavoratori: boolean;
     tutti: boolean;
 
-    lavoratori?: boolean;
     corsi?: number[];
 }
