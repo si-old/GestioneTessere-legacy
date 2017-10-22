@@ -34,6 +34,7 @@ import { MainMailComponent } from './mail/main.component'
 import { MailFormComponent } from './mail/mail-form.component'
 import { BlacklistComponent } from './mail/blacklist.component'
 import { MailService } from './mail/main.service'
+import { BlacklistService } from './mail/blacklist.service'
 
 import {  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, 
           CreateTesseraDialog, MessageDialog, LoadingDialog } from './dialogs'
@@ -85,6 +86,7 @@ import {  EqualFieldsValidatorDirective, DialogErrorHandler,
     DirettivoService,
     LoginService,
     MailService,
+    BlacklistService,
     LoggedinGuard,
     AdminGuard,
     { provide: ErrorHandler, useClass: DialogErrorHandler }
