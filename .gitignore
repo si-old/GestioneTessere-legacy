@@ -32,3 +32,4 @@ hs_err_pid*
 
 # config file
 *config.php
+*log4php

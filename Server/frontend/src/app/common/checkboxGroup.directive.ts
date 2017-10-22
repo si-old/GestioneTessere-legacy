@@ -9,7 +9,6 @@ import { Validator, FormControl, NG_VALIDATORS, FormGroup } from '@angular/forms
 export class CheckboxGroupValidatorDirective implements Validator {
 
   validate(group: FormGroup): { [key: string]: any } {
-    console.log(group);
     let controls = group.controls;
     let checkboxes = Object.keys(controls);
     let valid: boolean = false;

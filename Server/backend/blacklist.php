@@ -3,30 +3,24 @@
     require_once('include/lib.php');
     
 class Blacklist extends RESTItem
-{
-
-    function __construct($db){
-        parent::__construct($db);
-        $this->allowed = isset($_GET['allowed']);
-    }
-        
+{        
     protected function do_get()
     {
-        $filter = 1;
-        if($this->allowed){
-            $filter = 0;
-        }
-        $stmt = $this->db->prepare('SELECT ID, Nome, Email FROM Socio WHERE Blacklist = ?');
-        $stmt->bind_param('i', $filter);
+        $stmt = $this->db->prepare('SELECT ID, Nome, Email, Blacklist FROM Socio');
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
-        $stmt->bind_result($id, $nome, $email);
-        $res = array();
+        $stmt->bind_result($id, $nome, $email, $blacklist_flag);
+        $allowed = array();
+        $blacklist = array();
         while ($stmt->fetch()) {
-            $res[] = array('id' => $id, 'nome' => $nome, 'email' => $email);
+            if($blacklist_flag){
+                $blacklist[] = array('id' => $id, 'nome' => $nome, 'email' => $email);
+            }else{
+                $allowed[] = array('id' => $id, 'nome' => $nome, 'email' => $email);
+            }
         }
-        return $res;
+        return array('blacklist' => $blacklist, 'allowed' => $allowed);
     }
 
 	/*
