@@ -26,7 +26,6 @@ export class MailFormComponent implements OnInit {
     tutti: boolean = false;
 
     lavoratori: boolean = false;
-    lavoratori_disabled: boolean = false;
 
     corsi_checked: boolean[] = [];
     corsi_disabled: boolean[] = [];
@@ -51,7 +50,6 @@ export class MailFormComponent implements OnInit {
     }
 
     tuttiCallback(){
-        this.lavoratori_disabled = this.tutti;
         this.corsi_disabled.forEach(
             (val: boolean, i: number) => {
                 this.corsi_disabled[i] = this.tutti;
@@ -78,19 +76,21 @@ export class MailFormComponent implements OnInit {
                 )
             }
             let loadRef: MatDialogRef<LoadingDialog>;
-            loadRef = this.dialog.open(LoadingDialog);
-            this.mailsrv.sendEmail(mailReq).subscribe(
-                (res: MailResponse) => {
-                    loadRef.close();
-                    this.dialog.open(MessageDialog, {
-                        data: {
-                            message: `
-                                Su un totale di ${res.ok+res.nok} email, ${res.ok} sono state inviate con successo. 
-                            `
-                        }
-                    })
-                }
-            )
+            loadRef = this.dialog.open(LoadingDialog, {
+                disableClose: true
+            });
+            // this.mailsrv.sendEmail(mailReq).subscribe(
+            //     (res: MailResponse) => {
+            //         loadRef.close();
+            //         this.dialog.open(MessageDialog, {
+            //             data: {
+            //                 message: `
+            //                     Su un totale di ${res.ok+res.nok} email, ${res.ok} sono state inviate con successo. 
+            //                 `
+            //             }
+            //         })
+            //     }
+            // )
         }
     }
 }

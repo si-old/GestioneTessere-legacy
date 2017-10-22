@@ -6,9 +6,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
     selector: 'loading-dialog',
     template: `
         <p mat-dialog-title color="primary" class="centered">In attesa di una risposta...</p>
-        <div mat-dialog-content><mat-spinner></mat-spinner></div>
+        <div mat-dialog-content class="spinner-div">
+            <mat-spinner></mat-spinner>
+        </div>
     `,
-    styleUrls: ['../common/style.css']
+    styles: [`
+        .spinner-div{
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+    `]
 })
 export class LoadingDialog {
 }
