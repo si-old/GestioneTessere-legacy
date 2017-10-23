@@ -59,13 +59,11 @@ abstract class RESTItem
             }
         } catch (RESTException $ex) {
             http_response_code($ex->get_error_code());
-            $message = LoggerFacade::prepare_message($this->session->get_user(), $ex->get_error_message());
-            $this->logger->log($message, LoggerLevel::getLevelError());
+            $this->logger->error($this->session>get_user(), $ex->get_error_message());
             echo $ex->get_error_message();
         } catch (Exception $ex) {
             http_response_code(HttpStatusCode::$INTERNAL_SERVER_ERROR);
-            $message = LoggerFacade::prepare_message($this->session->get_user(), $ex->get_error_message());
-            $this->logger->log($message, LoggerLevel::getLevelError());
+            $this->logger->error($this->session>get_user(), $ex->get_error_message());
             echo $ex->getMessage();
         }
     }

@@ -1,3 +1,4 @@
+
 <?php
     require_once('include/config.php');
     
@@ -52,7 +53,7 @@ class Login extends RESTItem
             $successful = $this->check_login($user, $password);
             if ($successful) {
                 $this->session->create($is_admin, $user);
-                $this->logger->info("Utente ".$user." si è loggato. Sessione creata.");
+                $this->logger->debug($user, 'Login. Sessione creata.');
             }
             return array('login' => $successful, 'admin' => $is_admin);
         } else {
@@ -63,7 +64,7 @@ class Login extends RESTItem
     protected function do_del()
     {
         $res = $this->session->destroy();
-        $this->logger->info("Logout dell'utente ".$this->session->get_user().".");
+        $this->logger->debug($this->session->get_user(), 'Logout');
         return array('login' => !$res, 'admin' => false);
     }
 
