@@ -16,6 +16,7 @@ class CdL extends RESTItem
         while ($stmt->fetch()) {
             $res[] = array('id' => $id, 'nome' => $nome);
         }
+        $this->logger->info("Utente: ".$this->session->get_user().". Ricerca di tutti i Corsi di Laurea.");
         return $res;
     }
         
@@ -40,6 +41,7 @@ class CdL extends RESTItem
             if (! $stmt->execute()) {
                 throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
             }
+            $this->logger->info("Utente: ".$this->session->get_user().". Aggiornato/Aggiunto Corso di Laurea.");
             return $this->do_get();
         } else {
             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
@@ -54,6 +56,7 @@ class CdL extends RESTItem
             if (! $stmt->execute()) {
                 throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
             }
+            $this->logger->info("Utente: ".$this->session->get_user().". Rimosso Corso di Laurea con id ".$this->id.".");
             return $this->do_get();
         } else {
             throw new RESTException(HttpStatusCode::$NOT_FOUND);
