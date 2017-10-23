@@ -15,7 +15,19 @@ class Tesseramento extends RESTItem
         $res = array();
         while ($stmt->fetch()) {
             $res[] = array('id' => $id, 'anno' => $anno, 'aperto' => $aperto);
+            if($aperto) {
+            	$count = count($res) - 1;
+            	$id_aperto = $id;
+            }
         }
+        $stmt = $this->db->query('SELECT Numero FROM Tessera WHERE Anno = '.$id_aperto);
+        $stmt->bind_result($numero);
+        $tessere = array();
+        while($stmt->fetch()) {
+        	$tessere[] = $numero;
+        }
+        $res[$count] = ('tessere' => $tessere);
+        $this->log_debug( 'Ricerca di tutti i Tesseramenti.');
         return $res;
     }
         
