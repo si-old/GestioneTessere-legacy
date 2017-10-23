@@ -29,10 +29,10 @@ class LoggerFacade {
         $this->logger->debug($log_message);
     }
 
-    public function get_log_messages(){
+    public function get_log_messages() {
         $results = $this->db->query('SELECT timestamp, logger, level, message FROM Log WHERE 1');
         $to_return = [];
-        while($row = $results->fetch_assoc()){
+        while($row = $results->fetch_assoc()) {
             $decoded = json_decode($row['message'], true);
             $to_return[] = [
                             'orario' => $row['timestamp'],
@@ -42,9 +42,10 @@ class LoggerFacade {
                             'messaggio' => $decoded['Messaggio']
                             ];
         }
+        return $to_return;
     }
 
-    public function clear_log(){
+    public function clear_log() {
         $starting_date = date("Y:m:d H:i:s", strtotime('-3 months'));
         $stmt = $this->db->prepare('DELETE FROM Log WHERE timestamp < ?');
         $stmt->bind_param('s', $starting_date);
