@@ -13,7 +13,7 @@ abstract class RESTItem
         $this->has_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
         $this->id = $_GET['id'];
         $this->session = new Session();
-        $this->logger = new LoggerFacade(get_class($this));
+        $this->logger = new LoggerFacade(get_class($this), $db);
     }
 
     public function dispatch()
@@ -77,6 +77,14 @@ abstract class RESTItem
     abstract protected function do_del();
 
     abstract protected function is_session_authorized();
+
+    protected function log_info($message){
+        $this->logger->info($this->session->get_user(), $message);
+    }
+
+    protected function log_error($message){
+        $this->logger->error($this->session->get_user(), $message);
+    }
 };
 
 class RESTException extends Exception
