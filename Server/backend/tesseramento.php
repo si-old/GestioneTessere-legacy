@@ -26,12 +26,8 @@ class Tesseramento extends RESTItem
         while($stmt->fetch()) {
         	$tessere[] = $numero;
         }
-<<<<<<< 7a9ce90df4add34ecb07edd400a6acdde328e549
-        $res[$count] = ('tessere' => $tessere);
+        $res[$count]['tessere'] = $tessere;
         $this->log_debug( 'Ricerca di tutti i Tesseramenti.');
-=======
-        $this->logger->info("Utente: ".$this->session->get_user().". Ricerca di tutti i Tesseramenti.");
->>>>>>> add facade pro logger
         return $res;
     }
         
@@ -55,20 +51,20 @@ class Tesseramento extends RESTItem
                 if (! $stmt->execute()) {
                     throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
                 }
-                $this->logger->info("Utente: ".$this->session->get_user().".Modifica anno tesseramento con id ".$data['id'].".");
+                $this->logger->info($this->session->get_user(), "Modifica anno tesseramento con id ".$data['id'].".");
             } else {
                 $stmt = $this->db->prepare('UPDATE Tesseramento SET Aperto = 0 WHERE Aperto = 1');
                 if (! $stmt->execute()) {
                     throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
                 }
-                $this->logger->info("Utente: ".$this->session->get_user().".Chiusura tesseramenti.");
+                $this->logger->info($this->session->get_user(), 'Chiusura tesseramenti.');
                 if ($valid_open) {
                     $stmt3 = $this->db->prepare("INSERT INTO Tesseramento(Anno, Aperto) VALUES ( ?, 1)");
                     $stmt3->bind_param('s', $data['anno']);
                     if (! $stmt3->execute()) {
                         throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
                     }
-                    $this->logger->info("Utente: ".$this->session->get_user().".Aperto tesseramento anno ".$data['anno'].".");
+                    $this->logger->info($this->session->get_user(), "Aperto tesseramento anno ".$data['anno'].".");
                 }
             }
             return $this->do_get();

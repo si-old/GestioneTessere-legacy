@@ -46,18 +46,14 @@ class Mail extends RESTItem
             $admin_mail = $data['email_feedback'];
             $admin_subject = "[admin] ".$subject;
 			mail($admin_mail, $admin_subject, $email_body, $user_header);
-			$this->logger->info("Utente: ".$this->session->get_user().". Invio e-mail all'indirizzo di feedback.");
+			$this->logger->info($this->session->get_user(), "Invio e-mail all'indirizzo di feedback.");
 			if(isset($data['corsi'])){
 				$corsi = $data['corsi'];
 			}else{
 				$corsi = '';
 			}
-<<<<<<< 7a9ce90df4add34ecb07edd400a6acdde328e549
             $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi, $data['lavoratori']);
-=======
-			$this->logger->info("Utente: ".$this->session->get_user().". Invio e-mail con i parametri: oggetto->".$data['oggetto'].", blacklist->".$data['blacklist'].", tutti->".$data['tutti'].", lavoratori->".".");
-            $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi);
->>>>>>> add facade pro logger
+            $this->log_info("Invio e-mail con i parametri: oggetto->".$data['oggetto'].", blacklist->".$data['blacklist'].", tutti->".$data['tutti'].", lavoratori->".".");
             return $this->send_mails($users, $subject, $email_body, $user_header);
         } else {
             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
@@ -137,7 +133,7 @@ class Mail extends RESTItem
                 $count_nok = $count_nok + 1;
             }
         }
-        $this->logger->info("Utente: ".$this->session->get_user().". Inviata e-mail a ".$count_ok." soci.");
+        $this->logger->info($this->session->get_user(), 'Inviata e-mail a $count_ok soci.');
         return array('ok' => $count_ok, 'nok' => $count_nok);
     }
 }

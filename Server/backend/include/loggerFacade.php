@@ -24,6 +24,11 @@ class LoggerFacade {
         $this->logger->error($log_message);
     }
 
+    public function debug($user, $message) {
+        $log_message = $this->prepare_message($user, $message);
+        $this->logger->debug($log_message);
+    }
+
     public function get_log_messages(){
         $results = $this->db->query('SELECT timestamp, logger, level, message FROM Log WHERE 1');
         $to_return = [];
