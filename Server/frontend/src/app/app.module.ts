@@ -30,13 +30,20 @@ import { TesseramentiComponent } from './tesseramenti/main.component'
 import { LoginComponent } from './login/main.component'
 import { LoginService, LoggedinGuard, AdminGuard } from './login/main.service'
 
-import { ConfirmDialog, TextInputDialog, CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from './dialogs'
+import { MainMailComponent } from './mail/main.component'
+import { MailFormComponent } from './mail/mail-form.component'
+import { BlacklistComponent } from './mail/blacklist.component'
+import { MailService } from './mail/main.service'
+import { BlacklistService } from './mail/blacklist.service'
+
+import {  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, 
+          CreateTesseraDialog, MessageDialog, LoadingDialog } from './dialogs'
 
 import { ToolbarComponent } from './toolbar.component'
 import { TitleBarComponent } from './titlebar.component'
 
-
-import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common'
+import {  EqualFieldsValidatorDirective, DialogErrorHandler, 
+          CheckboxGroupValidatorDirective } from './common'
 
 @NgModule({
   declarations: [
@@ -55,8 +62,13 @@ import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common'
     ToolbarComponent,
     TitleBarComponent,
     AggiuntaDirettivoComponent,
+    MainMailComponent,
+    MailFormComponent,
+    BlacklistComponent,
     EqualFieldsValidatorDirective,
-    MessageDialog
+    CheckboxGroupValidatorDirective,
+    MessageDialog,
+    LoadingDialog
   ],
   imports: [
     BrowserModule,
@@ -73,6 +85,8 @@ import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common'
     TesseramentiService,
     DirettivoService,
     LoginService,
+    MailService,
+    BlacklistService,
     LoggedinGuard,
     AdminGuard,
     { provide: ErrorHandler, useClass: DialogErrorHandler }
@@ -85,7 +99,8 @@ import { EqualFieldsValidatorDirective, DialogErrorHandler } from './common'
     TextInputDialog,
     CreateTesseraDialog,
     AggiuntaDirettivoComponent,
-    MessageDialog
+    MessageDialog,
+    LoadingDialog
   ],
   bootstrap: [AppComponent]
 })

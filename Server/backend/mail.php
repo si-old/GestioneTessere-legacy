@@ -28,13 +28,14 @@ class Mail extends RESTItem
 			email_feedback: ulteriore indirizzo a cui inviare l'email, per controllo
 			blacklist: flag per indicare se vanno esclusi i membri della blacklist, bool
 			tutti: flag per indicare se filtrare per carriera, bool
-			corsi: arrauy di id dei corsi a cui inviare la mail
+			corsi: array di id dei corsi a cui inviare la mail
+			lavoratori: flag per inviare la mail a chi ha come ultima carriera studente = false, bool
 		}
 	*/
 	protected function do_post($data)
     {
 		$valid = isset($data['oggetto']) && isset($data['corpo']) && isset($data['email_feedback']);
-		$valid = $valid && isset($data['blacklist']) && isset($data['tutti']);
+		$valid = $valid && isset($data['blacklist']) && isset($data['tutti']) && isset($data['lavoratori']);
 		$valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
         if ($valid) {
             $user_header = $this->create_header();
@@ -51,8 +52,8 @@ class Mail extends RESTItem
 			}else{
 				$corsi = '';
 			}
-			$this->logger->info($this->session->get_user(), "Invio e-mail con i parametri: oggetto->".$data['oggetto'].", blacklist->".$data['blacklist'].", tutti->".$data['tutti'].", lavoratori->".".");
-            $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi);
+			$this->logger->info($this->session->get_user(), "Invio e-mail con i parametri: oggetto->".$data['oggetto'].", blacklist->".$data['blacklist'].", tutti->".$data['tutti'].", lavoratori->".$data['lavoratori'].".");
+            $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi, $data['lavoratori']);
             return $this->send_mails($users, $subject, $email_body, $user_header);
         } else {
             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
@@ -80,26 +81,27 @@ class Mail extends RESTItem
 	// usiamo solo cdl, perchè farci passare tutto?
 	// meglio un booleano che ci dice se escludere la blacklist
 	// uno che ci dice se vuole tutti i corsi di laurea e la lista di cdl già pronta
-    private function get_users($blacklist, $all, $cdl_whitelist)
+    private function get_users($blacklist, $all, $cdl_whitelist, $workers)
     {
         $query_carriere_attive = $this->query_carriere.'WHERE ca.Attiva = 1';
         $query_tessere_attive = $this->query_tessere.'WHERE a.Aperto = 1';
         $query = "	SELECT	s.Email as s_email 
 						FROM Socio as s	LEFT JOIN ( $query_carriere_attive ) as c on ca_socio = s.ID
-										JOIN ( $query_tessere_attive ) as t on t_socio = s.ID";
-		if($blacklist){
-			if($all){
-				$conditions = " WHERE s.Blacklist != 1";
-			}else{
-				$corsi = $this->get_list($cdl_whitelist);
-				$conditions = " WHERE s.Blacklist != 1 AND c_id IN ( $corsi )";
+										JOIN ( $query_tessere_attive ) as t on t_socio = s.ID WHERE 1 = 1";
+		$conditions = "";
+		if ($blacklist) {
+			$conditions = " AND s.Blacklist != 1";
+		}
+		if (!$all) {
+			$corsi = $this->get_list($cdl_whitelist);
+			if ($workers) {
+				$conditions = $conditions." AND (c_id IN ( $corsi ) AND ca_studente = 1) OR ca_studente != 1";
+			} else {
+				$conditions = $conditions." AND c_id IN ( $corsi ) AND ca_studente = 1";
 			}
-		}else{
-			if($all){
-				$conditions = "";
-			}else{
-				$corsi = $this->get_list($cdl_whitelist);
-				$conditions = " WHERE c_id IN ( $corsi )";
+		} else {
+			if (!$workers) {
+				$conditions = $conditions." AND ca_studente = 1";
 			}
 		}
         $query = $query.$conditions;
