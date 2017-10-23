@@ -1,5 +1,8 @@
 <div class="main-container">
     <div class="list-container">
+        <div matSubheader>
+            <h4 class="list-header">Soci</h4>
+        </div>
         <mat-selection-list dense #allowedSelection>
             <mat-list-option *ngFor="let member of allowed">
                 {{member.nome}} - {{member.email}}
@@ -15,6 +18,9 @@
         </button>
     </div>
     <div class="list-container">
+        <div matSubheader>
+            <h4 class="list-header">Blacklist</h4>
+        </div>
         <mat-selection-list dense #blacklistSelection>
             <mat-list-option *ngFor="let member of blacklist" checkboxPosition="before">
                 {{member.nome}} - {{member.email}}
