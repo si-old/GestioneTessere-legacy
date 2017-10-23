@@ -8,12 +8,18 @@
     overflow-y: auto;
 }
 
+.list-header{
+    margin: 0 auto;
+}
+
 .button-container{
     width: 6%;
     margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-left: 1px #d4d4d4 solid;
+    border-right: 1px #d4d4d4 solid;
 }
 
 .button-container button{
