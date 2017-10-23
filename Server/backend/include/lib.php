@@ -2,6 +2,7 @@
 
 require_once('session.php');
 require_once('config.php');
+require_once('loggerFacade.php');
 
 abstract class RESTItem
 {
@@ -12,7 +13,7 @@ abstract class RESTItem
         $this->has_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
         $this->id = $_GET['id'];
         $this->session = new Session();
-        $this->logger = Logger::getLogger(get_class($this));
+        $this->logger = new LoggerFacade(get_class($this));
     }
 
     public function dispatch()
@@ -58,11 +59,13 @@ abstract class RESTItem
             }
         } catch (RESTException $ex) {
             http_response_code($ex->get_error_code());
-            $this->logger->error("Utente: ".$this->session->get_user()." Errore: ".$ex->get_error_message());
+            $message = LoggerFacade::prepare_message($this->session->get_user(), $ex->get_error_message());
+            $this->logger->log($message, LoggerLevel::getLevelError());
             echo $ex->get_error_message();
         } catch (Exception $ex) {
             http_response_code(HttpStatusCode::$INTERNAL_SERVER_ERROR);
-            $this->logger->error("Utente: ".$this->session->get_user()." Errore: ".$ex->get_error_message());
+            $message = LoggerFacade::prepare_message($this->session->get_user(), $ex->get_error_message());
+            $this->logger->log($message, LoggerLevel::getLevelError());
             echo $ex->getMessage();
         }
     }
