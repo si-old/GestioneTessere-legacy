@@ -1,0 +1,13 @@
+<mat-form-field *ngIf="flag" floatPlaceholder="never" [@flyInOut]="'in'">
+    <input  type="text"  [(ngModel)]="content" [pattern]="pattern"
+            [name]="name" matInput [required]="inputRequired"/>
+    <mat-error>
+        <ng-content select="mat-error"></ng-content>
+    </mat-error>
+    <mat-hint>
+        <ng-content select="mat-hint"></ng-content>
+    </mat-hint>
+</mat-form-field>
+<ng-container [@flyInOut]="'in'" *ngIf="!flag">
+        <p class="full_cell">{{content}}</p>
+</ng-container>

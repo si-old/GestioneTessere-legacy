@@ -1,0 +1,42 @@
+<mat-toolbar color="primary">
+    <h2 style="width: 100%"> Login </h2>
+</mat-toolbar>
+<form #form="ngForm" class="fontstyle">
+    <div class="form-field">
+        <label for="user">Username: </label>
+        <mat-form-field>
+            <input  type="text" matInput name="user" required #inputUser="ngModel"
+                    [(ngModel)]="user" [pattern]="PATTERN_USER" />
+             <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
+                Il campo è obbligatorio!
+            </mat-error>
+            <mat-error *ngIf="inputUser.errors && inputUser.errors.pattern">
+                L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
+            </mat-error>
+            <mat-hint *ngIf="inputUser.untouched || inputUser.valid">
+                L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
+            </mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="form-field">
+        <label for="password">Password: </label>
+        <mat-form-field>
+            <input  type="password" matInput name="password" required #inputPass="ngModel"
+                    [(ngModel)]="password" [pattern]="PATTERN_PASSWORD" />
+            <mat-error *ngIf="inputPass.errors && inputPass.errors.required">
+                Il campo è obbligatorio!
+            </mat-error>
+            <mat-error *ngIf="inputPass.errors && inputPass.errors.pattern">
+                La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+            </mat-error>
+            <mat-hint *ngIf="inputPass.untouched || inputPass.valid">
+                La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+            </mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="form-field">        
+        <button mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
+            Login
+        </button>
+    </div>
+</form>

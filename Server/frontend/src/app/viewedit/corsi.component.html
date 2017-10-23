@@ -1,0 +1,16 @@
+<ng-container *ngIf="!flag" [@flyInOut]>
+    {{content.nome}}
+</ng-container>
+<mat-form-field *ngIf="flag" [@flyInOut]>
+    <mat-select placeholder="Corsi di Laurea" [(ngModel)]="content" selected="content" [required]="inputRequired" matInput>
+        <mat-option *ngFor="let corso of allCorsi" [value]="corso">
+            {{corso.nome}}
+        </mat-option>
+    </mat-select>
+    <mat-error>
+        <ng-content select="mat-error"></ng-content>
+    </mat-error>
+    <mat-hint>
+        <ng-content select="mat-hint"></ng-content>
+    </mat-hint>
+</mat-form-field>

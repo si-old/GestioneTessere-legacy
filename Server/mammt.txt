@@ -1,0 +1,1 @@
+[{"id":"44","laboratorio":"Aula 107 (ing)","inizio":"08.30","fine":"18.30","giorno":"3"},{"id":"69","laboratorio":"Lab Composizione (solo Edile)","inizio":"08.30","fine":"14.30","giorno":"3"},{"id":"50","laboratorio":"Aula 136 (ing)","inizio":"11.30","fine":"13.30","giorno":"3"}]

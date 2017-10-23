@@ -1,0 +1,27 @@
+.to_left{
+  float: left;
+  margin-right: auto;
+}
+
+.to_right{
+  float: right;
+  margin-left: auto;
+}
+
+.centered{
+  text-align: center;
+}
+
+.half-size{
+  width: 48%;
+  padding: 0 1%
+}
+
+.fontstyle{
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.main-container{
+  text-align: center;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

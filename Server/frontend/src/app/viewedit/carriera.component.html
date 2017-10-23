@@ -1,0 +1,11 @@
+<ng-container *ngIf="!flag" [@flyInOut]>
+    {{content}}
+</ng-container>
+<ng-container *ngIf="flag" [@flyInOut]>
+    <ng-container *ngIf="content && content.studente">
+        <corsi-viewedit [(ngModel)]="content.corso" [flag]="true" [required]="inputRequired"></corsi-viewedit>
+    </ng-container>
+    <mat-form-field *ngIf="content && !content.studente">
+        <input type="text" [(ngModel)]="content" [name]="content" matInput [required]="inputRequired" class="full_cell" />
+    </mat-form-field>
+</ng-container>

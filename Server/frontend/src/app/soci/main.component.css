@@ -1,0 +1,18 @@
+.mat-cell, .mat-header-cell {
+    text-align: initial;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.mat-column-tessera{
+    max-width: 5%;
+}
+
+.mat-column-nome, .mat-column-cognome, .mat-column-cellulare{
+    max-width: 10%;
+}
+
+.mat-column-azioni{
+    max-width: 10%;
+    text-align: center;
+}
