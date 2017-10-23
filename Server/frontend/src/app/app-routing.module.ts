@@ -42,28 +42,7 @@ const routes: Routes = [
   {
     path: "mail",
     canActivate: [LoggedinGuard],
-
-    children:[
-      {
-        path: "send",
-        component: MainMailComponent,
-        data:{
-          tab: "mail"
-        }
-      },
-      {
-        path: "blacklist",
-        component: MainMailComponent,
-        data:{
-          tab: "blacklist"
-        }
-      },
-      {
-        path:'',
-        redirectTo: 'send',
-        pathMatch: 'full' 
-    },
-    ]
+    component: MainMailComponent,
   },
   {
     path: "login",
