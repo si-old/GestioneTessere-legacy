@@ -2,12 +2,12 @@
     require_once('include/config.php');
     require_once('include/lib.php');
     
-class Log extends RESTItem
-{
+class Log extends RESTItem {
         
     protected function do_get() {
-    	$this->log_debug( 'Ricerca di tutti i log.');
-    	return $this->logger->get_log_messages();
+    	$to_return = $this->logger->get_log_messages();
+    	$this->log_debug('Ricerca di tutti i log.');
+    	return $to_return;
     }
         
     protected function do_post($data) {
@@ -15,12 +15,14 @@ class Log extends RESTItem
     }
         
     protected function do_del() {
-    	$this->log_info( 'Eliminazione di tutti i log più vecchi di tre mesi.');
-    	return $this->logger->clear_log();
+    	if(!$this->logger->clear_log()) {
+    		throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+    	}
+    	$this->log_info('Eliminazione di tutti i log più vecchi di tre mesi.');
+    	return $this->do_get();
     }
 
-    protected function is_session_authorized()
-    {
+    protected function is_session_authorized() {
         return $this->session->is_valid();
     }
 }
