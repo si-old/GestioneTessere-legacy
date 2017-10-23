@@ -46,13 +46,13 @@ class Mail extends RESTItem
             $admin_mail = $data['email_feedback'];
             $admin_subject = "[admin] ".$subject;
 			mail($admin_mail, $admin_subject, $email_body, $user_header);
-			$this->logger->info($this->session->get_user(), "Invio e-mail all'indirizzo di feedback.");
+			$this->log_info( "Invio e-mail all'indirizzo di feedback.");
 			if(isset($data['corsi'])){
 				$corsi = $data['corsi'];
 			}else{
 				$corsi = '';
 			}
-			$this->logger->info($this->session->get_user(), "Invio e-mail con i parametri: oggetto->".$data['oggetto'].", blacklist->".$data['blacklist'].", tutti->".$data['tutti'].", lavoratori->".$data['lavoratori'].".");
+			$this->log_info( "Invio e-mail con i parametri: oggetto->".$data['oggetto'].", blacklist->".$data['blacklist'].", tutti->".$data['tutti'].", lavoratori->".$data['lavoratori'].".");
             $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi, $data['lavoratori']);
             return $this->send_mails($users, $subject, $email_body, $user_header);
         } else {
@@ -133,7 +133,7 @@ class Mail extends RESTItem
                 $count_nok = $count_nok + 1;
             }
         }
-        $this->logger->info($this->session->get_user(), 'Inviata e-mail a $count_ok soci.');
+        $this->log_info( "Inviata e-mail a $count_ok soci.");
         return array('ok' => $count_ok, 'nok' => $count_nok);
     }
 }

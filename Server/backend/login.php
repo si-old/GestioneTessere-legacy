@@ -64,7 +64,7 @@ class Login extends RESTItem
     protected function do_del()
     {
         $res = $this->session->destroy();
-        $this->logger->debug($this->session->get_user(), 'Logout');
+        $this->log_debug( 'Logout');
         return array('login' => !$res, 'admin' => false);
     }
 

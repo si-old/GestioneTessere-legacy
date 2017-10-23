@@ -59,11 +59,11 @@ abstract class RESTItem
             }
         } catch (RESTException $ex) {
             http_response_code($ex->get_error_code());
-            $this->logger->error($this->session>get_user(), $ex->get_error_message());
+            $this->log_error($ex->get_error_message());
             echo $ex->get_error_message();
         } catch (Exception $ex) {
             http_response_code(HttpStatusCode::$INTERNAL_SERVER_ERROR);
-            $this->logger->error($this->session>get_user(), $ex->get_error_message());
+            $this->log_error($ex->get_error_message());
             echo $ex->getMessage();
         }
     }
@@ -82,6 +82,10 @@ abstract class RESTItem
 
     protected function log_error($message){
         $this->logger->error($this->session->get_user(), $message);
+    }
+
+    protected function log_debug($message){
+        $this->logger->debug($this->session->get_user(), $message);
     }
 };
 

@@ -33,7 +33,7 @@ class Direttivo extends RESTItem
         while ($stmt->fetch()) {
             $res[] = array('id_direttivo' => $idr, 'user' => $user, 'password' => $pass, 'id' => $socio);
         }
-        $this->logger->debug($this->session->get_user(), 'Elenco del direttivo.');
+        $this->log_debug( 'Elenco del direttivo.');
         return $res;
     }
 
@@ -67,7 +67,7 @@ class Direttivo extends RESTItem
             if (! $stmt->execute()) {
                 throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
             }
-            $this->logger->info($this->session->get_user(), 'Aggiornato/aggiunto membro del direttivo.');
+            $this->log_info( 'Aggiornato/aggiunto membro del direttivo.');
             return $this->do_get();
         } else {
             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
@@ -82,7 +82,7 @@ class Direttivo extends RESTItem
             if (! $stmt->execute()) {
                 throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
             }
-            $this->logger->info($this->session->get_user(),'Rimosso membro del direttivo con id $this->id.');
+            $this->log_info("Rimosso membro del direttivo con id $this->id.");
             return $this->do_get();
         } else {
             throw new RESTException(HttpStatusCode::$NOT_FOUND);
