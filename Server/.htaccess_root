@@ -1,0 +1,26 @@
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{HTTPS} !=on [NC]
+RewriteCond %{REQUEST_URI} ^/socisi/backend(/.*)?
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
+
+RewriteRule ^tesla_online/viewer/(.*)\.pdf$ tesla_online/viewer/index.php?file=../files/$1.pdf [L]
+
+</IfModule>
+
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress

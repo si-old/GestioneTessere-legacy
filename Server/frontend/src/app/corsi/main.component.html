@@ -1,0 +1,54 @@
+﻿<titlebar>
+  <h2 center > Corsi </h2>
+  <div right>
+    <mat-form-field floatPlaceholder="never">
+      <input matInput #filter placeholder="Ricerca corsi">
+    </mat-form-field>
+    <button mat-icon-button (click)="addCorso()">
+      <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
+    </button>
+  </div>
+</titlebar>
+
+<mat-table #table [dataSource]="corsiSource" matSort>
+  <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+  <ng-container cdkColumnDef="id">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header> Id </mat-header-cell>
+    <mat-cell *cdkCellDef="let row"> {{row.id}} </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="nome">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header> Nome </mat-header-cell>
+    <mat-cell *cdkCellDef="let row;">
+      <text-viewedit [flag]="editing[row.id]" [(ngModel)]="row.nome" placeholder="Nome" required #inputNome="ngModel">
+        <mat-error *ngIf="inputNome.errors && inputNome.errors.required" >
+          Il campo è obbligatorio!
+        </mat-error>
+      </text-viewedit>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="azioni">
+    <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
+    <mat-cell *cdkCellDef="let row;">
+      <button mat-icon-button (click)="editing[row.id] = true" *ngIf="!editing[row.id]">
+          <mat-icon matTooltip="Modifica" matTooltipPosition="right">mode_edit</mat-icon>
+        </button>
+      <ng-container *ngIf="editing[row.id]">
+        <button mat-icon-button (click)="revertCorso(row)">
+            <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
+          </button>
+        <button mat-icon-button (click)="updateCorso(row)" [disabled]="inputNome.invalid" >
+            <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
+          </button>
+      </ng-container>
+      <button mat-icon-button (click)="deleteCorso(row)">
+        <mat-icon matTooltip="Elimina" matTooltipPosition="right">delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

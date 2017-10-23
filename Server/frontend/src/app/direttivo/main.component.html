@@ -1,0 +1,69 @@
+<titlebar>
+    <h2 center> Direttivo </h2>
+    <button right mat-icon-button (click)="addMembro()">
+        <mat-icon matTooltip="Apri" matTooltipPosition="above">add</mat-icon>
+    </button>
+</titlebar>
+<mat-table [dataSource]="direttivoSource">
+
+    <ng-container cdkColumnDef="user">
+        <mat-header-cell *cdkHeaderCellDef> Username </mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            <text-viewedit  [(ngModel)]="row.user" [flag]="editing[row.id_direttivo]" 
+                            required [pattern]="PATTERN_USER" #inputUser="ngModel">
+                <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
+                    Il campo è obbligatorio!
+                </mat-error>
+                <mat-error *ngIf="inputUser.errors && inputUser.errors.pattern">
+                    L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
+                </mat-error>
+                <mat-hint *ngIf="inputUser.untouched || !inputUser.value">
+                    L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
+                </mat-hint>
+            </text-viewedit>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="password">
+        <mat-header-cell *cdkHeaderCellDef> Password </mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            <text-viewedit  [(ngModel)]="row.password" [flag]="editing[row.id_direttivo]"
+                            required [pattern]="PATTERN_PASSWORD" #inputPass="ngModel">
+                <mat-error *ngIf="inputPass.errors && inputPass.errors.required">
+                    Il campo è obbligatorio!
+                </mat-error>
+                <mat-error *ngIf="inputPass.errors && inputPass.errors.pattern">
+                    La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+                </mat-error>
+                <mat-hint *ngIf="inputPass.untouched || !inputPass.value">
+                    La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+                </mat-hint>
+            </text-viewedit>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="azioni">
+        <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            <button mat-icon-button (click)="editing[row.id_direttivo] = true" *ngIf="!editing[row.id_direttivo]">
+                <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="revertChanges(row)" *ngIf="editing[row.id_direttivo]">
+                <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
+            </button>
+            <button mat-icon-button (click)="commitChanges(row)" *ngIf="editing[row.id_direttivo]">
+                <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
+            </button>
+            <a mat-icon-button routerLink="/soci/{{row.id_direttivo}}" *ngIf="row.id_direttivo>=0">
+                <mat-icon matTooltip="Dettagli" matTooltipPosition="below">link</mat-icon>
+            </a>
+            <button mat-icon-button (click)="deleteMembro(row)">
+                <mat-icon matTooltip="Elimina" matTooltipPosition="right">delete</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *cdkHeaderRowDef="direttivoColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: direttivoColumns;"></mat-row>
+
+</mat-table>

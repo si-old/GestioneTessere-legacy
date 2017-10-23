@@ -1,0 +1,8 @@
+.full_cell{
+    display: inline-block;
+    min-width: 21%;
+}
+
+div.form_group{
+    display: inline-block;
+}

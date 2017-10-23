@@ -1,0 +1,12 @@
+- gestione numeri di tessera usati / disponibili
+- aggiungere form email (selezione di uno o più tra i cdl + non studenti)
+- implementare blacklist per le email
+- aggiustare gestione errori mostrando un dialog (appena capisco cosa non funziona)
+- aggiungere TAB per soci tesserati / non tesserati
+- implementare il ritorno all'url di arrivo per il login (se si viene da un redirect, si torna all'url iniziale anzicchè a soci)
+- paginazione soci
+- implementare logging per tenere traccia di chi fa cosa.
+- export della lista soci e email come csv
+- modifica in layout responsive per visualizzazione da cellulare
+- gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
+- aggiungere dati reali

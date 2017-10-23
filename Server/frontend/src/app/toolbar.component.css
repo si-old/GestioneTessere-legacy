@@ -1,0 +1,12 @@
+.custom-button{
+  margin-left: 0.5em;
+}
+
+.to-right{
+  display: inline-block;
+  float: right
+}
+
+.full-size{
+  flex-grow: 1;
+}

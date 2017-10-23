@@ -1,0 +1,30 @@
+<div class="main-container">
+    <div class="list-container">
+        <div matSubheader>
+            <h4 class="list-header">Soci</h4>
+        </div>
+        <mat-selection-list dense #allowedSelection>
+            <mat-list-option *ngFor="let member of allowed">
+                {{member.nome}} - {{member.email}}
+            </mat-list-option>
+        </mat-selection-list>
+    </div>
+    <div class="button-container">
+        <button mat-icon-button (click)="changeBlacklist(allowedSelection, allowed, true)">
+            <mat-icon matTooltip="Aggiungi" matTooltipPosition="above">keyboard_arrow_right</mat-icon>
+        </button>
+        <button mat-icon-button (click)="changeBlacklist(blacklistSelection, blacklist, false)">
+            <mat-icon matTooltip="Rimuovi" matTooltipPosition="below">keyboard_arrow_left</mat-icon>
+        </button>
+    </div>
+    <div class="list-container">
+        <div matSubheader>
+            <h4 class="list-header">Blacklist</h4>
+        </div>
+        <mat-selection-list dense #blacklistSelection>
+            <mat-list-option *ngFor="let member of blacklist" checkboxPosition="before">
+                {{member.nome}} - {{member.email}}
+            </mat-list-option>
+        </mat-selection-list>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<titlebar>
+  <h2 center> Soci </h2>
+  <span right>
+    <mat-form-field floatPlaceholder="never">
+      <input matInput #filter placeholder="Ricerca soci">
+    </mat-form-field>
+    <button mat-icon-button (click)="addSocio()">
+        <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
+      </button>
+    </span>
+</titlebar>
+
+<div style="overflow-x: auto">
+  <mat-table #table [dataSource]="sociSource" matSort>
+
+    <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+    <ng-container cdkColumnDef="id">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="tessera">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Tessera </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.getTessera().numero }} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="nome">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Nome </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.nome}} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="cognome">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Cognome </mat-header-cell>
+      <mat-cell *cdkCellDef="let row">{{row.cognome}}</mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="email">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Email </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.email}} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="carriera">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Carriera </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{ row.getCarrieraAttiva() }} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="facebook">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Facebook </mat-header-cell>
+      <mat-cell *cdkCellDef="let row">{{row.facebook}}</mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="cellulare">
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Cellulare </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.cellulare}}</mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="azioni">
+      <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
+      <mat-cell *cdkCellDef="let row">
+        <button mat-icon-button (click)="editSocio(row)">
+              <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
+            </button>
+        <a mat-icon-button routerLink="{{row.id}}">
+          <mat-icon matTooltip="Dettagli" matTooltipPosition="right">link</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
