@@ -31,18 +31,10 @@ export class BlacklistService{
         return this.blacklistSub;
     }
 
-    private changeBlacklist(ids: number[], blacklist: boolean){
+    editBlacklist(ids: number[], blacklist: boolean){
         this.http.post<BlacklistResponse>(REST_ENDPOINT, {
             id: ids,
             blacklist: blacklist
         }).subscribe(this.blacklistObserver);
-    }
-
-    addToBlacklist(ids: number[]){
-        this.changeBlacklist(ids, true);
-    }
-
-    removeFromBlacklist(ids: number[]){
-        this.changeBlacklist(ids, false);
     }
 }

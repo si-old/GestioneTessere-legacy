@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
+import { MatSelectionList, MatListOption } from  '@angular/material'
+
 import { BlacklistMember } from '../model'
 
 import { BlacklistService, BlacklistResponse } from './blacklist.service'
@@ -23,6 +25,14 @@ export class BlacklistComponent implements OnInit{
                 this.blacklist = res.blacklist;
             }
         );
+    }
+
+    changeBlacklist(list: MatSelectionList, modelList: BlacklistMember[], blacklist: boolean){
+        let selected_ids: number[] = [];
+        list.options.forEach(
+            (opt: MatListOption, index: number) => { if(opt.selected) selected_ids.push(modelList[index].id) }
+        )
+        this.blacklistsrv.editBlacklist(selected_ids, blacklist);
     }
 
 }
