@@ -40,8 +40,10 @@ class LoggerFacade {
     }
 
     public function clear_log(){
-        // TODO far entrare la datetime nel modo giusto
+        $starting_date = date("Y:m:d H:i:s", strtotime('-3 months'));
         $stmt = $this->db->prepare('DELETE FROM Log WHERE timestamp < ?');
+        $stmt->bind_param('s', $starting_date);
+        return $stmt->execute();
     }
 
 }
