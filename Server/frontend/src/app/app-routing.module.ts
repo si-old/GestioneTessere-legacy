@@ -7,6 +7,7 @@ import { DirettivoComponent } from './direttivo/main.component'
 import { CorsiComponent } from './corsi/main.component'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 import { LoginComponent } from './login/main.component'
+import { MainMailComponent } from './mail/main.component'
 
 import { LoggedinGuard, AdminGuard } from './login/main.service'
 
@@ -37,6 +38,25 @@ const routes: Routes = [
     path: "soci",
     component: SociComponent,
     canActivate: [LoggedinGuard]
+  },
+  {
+    path: "mail",
+    canActivate: [LoggedinGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'send',
+        pathMatch: 'full'
+      },
+      {
+        path: 'send',
+        component: MainMailComponent,
+      },
+      {
+        path: 'blacklist',
+        component: MainMailComponent
+      }
+    ]
   },
   {
     path: "login",

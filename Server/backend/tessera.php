@@ -21,7 +21,7 @@
     }
 /**/
     /* ---------------------- to debug htaccess problems -------------------- */
-/*    echo '<pre>';
+    echo '<pre>';
     //echo "SERVER <br />";
     var_dump($_SERVER);
     //echo "GET <br />";
