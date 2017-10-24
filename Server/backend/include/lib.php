@@ -19,7 +19,7 @@ abstract class RESTItem
     public function dispatch()
     {
         //to avoid output
-        error_reporting(E_ALL);
+        // error_reporting(E_ALL);
 
         //to allow CORS
         $headers = apache_request_headers();

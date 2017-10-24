@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  backend: 'https://bracco23.altervista.it/socisi/backend/'  
+  backend: 'http://bracco23.altervista.org/socisi/backend/'  
 };

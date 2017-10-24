@@ -1,0 +1,39 @@
+<titlebar>
+    <h2 center> Log </h2>
+</titlebar>
+<div style="overflow-x: auto">
+    <mat-table #table [dataSource]="logSource">
+
+        <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+        <ng-container cdkColumnDef="orario">
+            <mat-header-cell *cdkHeaderCellDef> Orario </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.orario}}</mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="origine">
+            <mat-header-cell *cdkHeaderCellDef> Origine </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.origine}}</mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="livello">
+            <mat-header-cell *cdkHeaderCellDef> Livello </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.livello}}</mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="utente">
+            <mat-header-cell *cdkHeaderCellDef> Utente </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.utente}}</mat-cell>
+        </ng-container>
+
+        
+        <ng-container cdkColumnDef="messaggio">
+            <mat-header-cell *cdkHeaderCellDef> Messaggio </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.messaggio}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>

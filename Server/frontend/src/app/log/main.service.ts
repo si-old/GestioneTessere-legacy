@@ -22,9 +22,9 @@ export class LogService {
     logEntrySub: Subject<LogEntry[]> = new Subject<LogEntry[]>();
 
     httpObserver: Observer<LogEntry[]> = {
-        next: (value: LogEntry[]) => { this.logEntrySub.next(value) },
+        next: (value: LogEntry[]) => { this.logEntrySub.next(value); },
         error: (err: any) => { this.logEntrySub.error(err) },
-        complete: () => { this.logEntrySub.complete() }
+        complete: () => {}
     }
 
     constructor(private http: HttpClient) {

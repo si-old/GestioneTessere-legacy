@@ -30,7 +30,7 @@ class LoggerFacade {
     }
 
     public function get_log_messages() {
-        $results = $this->db->query('SELECT timestamp, logger, level, message FROM Log WHERE 1');
+        $results = $this->db->query('SELECT timestamp, logger, level, message FROM Log ORDER BY timestamp DESC');
         $to_return = [];
         while($row = $results->fetch_assoc()) {
             $decoded = json_decode($row['message'], true);
