@@ -64,7 +64,7 @@ class ImportData extends RESTItem {
 
     private function is_carriera_exist($carriere, $new_carriera) {
         foreach ($carriere as $carriera) {
-            if($carriera['studente'] && $new_carriera['studente'] && $carriera['corso']==$new_carriera['corso'] && $carriera['matricola']==$new_carriera['matricola'] && $carriera['professione']==$new_carriera['professione']) {
+            if(strcasecmp($carriera['matricola'],$new_carriera['matricola'])==0) {
                 return true;
             }
         }
