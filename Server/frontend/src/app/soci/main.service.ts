@@ -14,7 +14,7 @@ import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-const REST_ENDPOINT: string = BACKEND_SERVER + "socio.php'
+const REST_ENDPOINT: string = BACKEND_SERVER + "socio.php";
 
 @Injectable()
 export class SociService {
