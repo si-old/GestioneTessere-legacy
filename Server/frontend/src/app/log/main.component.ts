@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, DoCheck } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 
 import { MatDialog, MatDialogRef } from '@angular/material'
 
@@ -13,7 +13,7 @@ import { ObservableDataSource } from '../common'
     templateUrl: './main.component.html',
     styleUrls: ['../common/style.css', '../common/mainroutes.style.css']
 })
-export class LogComponent implements OnInit, DoCheck {
+export class LogComponent implements OnInit {
 
     displayedColumns: string[] = ['orario', 'utente', 'livello', 'origine', 'messaggio'];
     logSource: ObservableDataSource<LogEntry>;
@@ -29,7 +29,7 @@ export class LogComponent implements OnInit, DoCheck {
         this.changeDetector.detectChanges();
     }
 
-    ngDoCheck(){
-        this.changeDetector.detectChanges();
+    clearLog(){
+        this._logsrv.clearLog();
     }
 }

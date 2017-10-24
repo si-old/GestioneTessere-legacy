@@ -11,7 +11,7 @@ class LoggerFacade {
 
     private function prepare_message($user, $message) {
         $array = array("Utente" => $user, "Messaggio" => $message);
-        return json_encode($array, JSON_UNESCAPED_UNICODE);
+        return json_encode($array);
     }
 
     public function info($user, $message) {

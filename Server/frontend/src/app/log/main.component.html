@@ -1,5 +1,8 @@
 <titlebar>
     <h2 center> Log </h2>
+    <button right mat-icon-button (click)="clearLog()">
+        <mat-icon matTooltip="Pulisci il log" matTooltipPosition="below">delete_sweep</mat-icon>
+    </button>
 </titlebar>
 <div style="overflow-x: auto">
     <mat-table #table [dataSource]="logSource">
@@ -27,7 +30,7 @@
             <mat-cell *cdkCellDef="let row">{{row.utente}}</mat-cell>
         </ng-container>
 
-        
+
         <ng-container cdkColumnDef="messaggio">
             <mat-header-cell *cdkHeaderCellDef> Messaggio </mat-header-cell>
             <mat-cell *cdkCellDef="let row">{{row.messaggio}}</mat-cell>
