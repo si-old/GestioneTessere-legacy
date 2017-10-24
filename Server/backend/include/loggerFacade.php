@@ -29,20 +29,40 @@ class LoggerFacade {
         $this->logger->debug($log_message);
     }
 
-    public function get_log_messages() {
-        $results = $this->db->query('SELECT timestamp, logger, level, message FROM Log ORDER BY timestamp DESC');
+    public function get_log_messages($paginate = false, $offset = 0, $limit = 10) {
+        if($paginate){
+            $stmt = $this->db->prepare('SELECT timestamp, logger, level, message FROM Log ORDER BY timestamp DESC LIMIT ? OFFSET ?');
+            $stmt->bind_param('ii', $limit, $offset);
+        }else{
+            $stmt = $this->db->prepare('SELECT timestamp, logger, level, message FROM Log ORDER BY timestamp DESC');
+        }
+        $stmt->execute();
+        $stmt->bind_result($timestamp, $logger, $level, $message);
         $to_return = [];
-        while($row = $results->fetch_assoc()) {
-            $decoded = json_decode($row['message'], true);
+        while($stmt->fetch()) {
+            $decoded = json_decode($message, true);
             $to_return[] = [
-                            'orario' => $row['timestamp'],
-                            'origine' => $row['logger'],
-                            'livello' => $row['level'],
+                            'orario' => $timestamp,
+                            'origine' => $logger,
+                            'livello' => $level,
                             'utente' => $decoded['Utente'],
                             'messaggio' => $decoded['Messaggio']
                             ];
         }
-        return $to_return;
+        if($paginate){
+            $res = $this->db->query('SELECT COUNT(*) FROM Log');
+            while($row = $res->fetch_row()){
+                $size = $row[0];
+            }
+            $to_return2 = array(
+                                'totale' => $size,
+                                'offset' => $offset,
+                                'limit' => $limit,
+                                'results' => $to_return );
+            return $to_return2;
+        }else{
+            return $to_return;
+        }
     }
 
     public function clear_log() {
