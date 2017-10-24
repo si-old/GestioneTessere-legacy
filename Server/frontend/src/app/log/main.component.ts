@@ -11,7 +11,7 @@ import { ObservableDataSource } from '../common'
 @Component({
     selector: 'log-component',
     templateUrl: './main.component.html',
-    styleUrls: ['../common/style.css', '../common/mainroutes.style.css']
+    styleUrls: ['./main.component.css']
 })
 export class LogComponent implements OnInit {
 
