@@ -5,6 +5,7 @@
     require_once('include/utils.php');
 
 class Socio extends RESTItem
+
 {
 
     private $query_carriere = '	SELECT	ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente, 
@@ -16,7 +17,7 @@ class Socio extends RESTItem
 											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
 									FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID ';
 
-    private function get_list()
+    private function get_list($tesserati)
     {
         $query_carriere_attive = $this->query_carriere.'WHERE ca.Attiva = 1';
         $query_tessere_attive = $this->query_tessere.'WHERE a.Aperto = 1';
@@ -26,6 +27,15 @@ class Socio extends RESTItem
 								c_nome, t_id, t_numero, a_id, a_anno, a_aperto
 						FROM Socio as s	LEFT JOIN ( $query_carriere_attive ) as c on ca_socio = s.ID
 										LEFT JOIN ( $query_tessere_attive ) as t on t_socio = s.ID";
+        $conditions = '';
+        if(isset($tesserati)) {
+            if(strcasecmp($tesserati,'true') == 0) {
+                $conditions = ' WHERE t_numero IS NOT NULL';
+            } else {
+                $conditions = ' WHERE t_numero IS NULL';
+            }
+        }
+        $query = $query.$conditions;
         $stmt = $this->db->prepare($query);
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
@@ -102,7 +112,7 @@ class Socio extends RESTItem
         if ($this->has_id) {
             return $this->get_full_socio($this->id);
         } else {
-            return $this->get_list();
+            return $this->get_list($_GET['tesserati']);
         }
     }
 
