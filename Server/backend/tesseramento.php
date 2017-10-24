@@ -26,10 +26,7 @@ class Tesseramento extends RESTItem
         while($stmt->fetch()) {
         	$tessere[] = $numero;
         }
-<<<<<<< 1402b15793b2b4d6f58fddbf7b015bccd49ed350
         $res[$count]['tessere'] = $tessere;
-=======
->>>>>>> adattati con richiamo a funzioni di comodo di lib per il logging
         $this->log_debug( 'Ricerca di tutti i Tesseramenti.');
         return $res;
     }
