@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 
-import { MatDialog, MatDialogRef } from '@angular/material'
+import { MatDialog, MatDialogRef, PageEvent } from '@angular/material'
 
 import { LogEntry, LogService } from './main.service'
 
@@ -21,7 +21,7 @@ export class LogComponent implements OnInit {
     constructor(private _logsrv: LogService,
         private changeDetector: ChangeDetectorRef,
         private dialog: MatDialog) {
-
+            this._logsrv.paginate = true;
     }
 
     ngOnInit() {
@@ -31,5 +31,11 @@ export class LogComponent implements OnInit {
 
     clearLog(){
         this._logsrv.clearLog();
+    }
+
+    pageChange(event: PageEvent){
+        this._logsrv.index = event.pageIndex;
+        this._logsrv.limit = event.pageSize;
+        this._logsrv.getLogEntries();
     }
 }

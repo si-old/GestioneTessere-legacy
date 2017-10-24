@@ -13,7 +13,7 @@ class Log extends RESTItem {
         
     protected function do_get() {
     	$to_return = $this->logger->get_log_messages($this->paginate, $this->offset, $this->limit);
-    	$this->log_debug('Ricerca di tutti i log.');
+    	// $this->log_debug('Ricerca di tutti i log.');
     	return $to_return;
     }
         

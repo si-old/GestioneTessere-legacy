@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 
 import { HttpClient } from '@angular/common/http'
 
-import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER, PaginableService, PaginatedResults } from '../common'
 
 import { Observable, Subject, Observer } from 'rxjs'
 
@@ -17,27 +17,48 @@ export class LogEntry {
 }
 
 @Injectable()
-export class LogService {
+export class LogService extends PaginableService {
 
     logEntrySub: Subject<LogEntry[]> = new Subject<LogEntry[]>();
 
     httpObserver: Observer<LogEntry[]> = {
         next: (value: LogEntry[]) => { this.logEntrySub.next(value); },
         error: (err: any) => { this.logEntrySub.error(err) },
-        complete: () => {}
+        complete: () => { }
+    }
+
+    httpPaginatedObserver: Observer<PaginatedResults<LogEntry>> = {
+        next: (value: PaginatedResults<LogEntry>) => { 
+            this.logEntrySub.next(value.results); 
+            this.length = value.totale;
+        },
+        error: (err: any) => { this.logEntrySub.error(err) },
+        complete: () => { }
     }
 
     constructor(private http: HttpClient) {
-
+        super();
     }
 
     getLogEntries(): Observable<LogEntry[]> {
-        this.http.get<LogEntry[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver);
+        let observer: any;
+        if(this.paginate){
+            observer = this.httpPaginatedObserver
+        }else{
+            observer = this.httpObserver;
+        }
+        this.http.get<LogEntry[]>(REST_ENDPOINT + '?' + this.paginationQuery, HTTP_GLOBAL_OPTIONS).subscribe(observer);
         return this.logEntrySub;
     }
 
     clearLog(): void {
-        this.http.delete<LogEntry[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver);
+        let observer: any;
+        if(this.paginate){
+            observer = this.httpPaginatedObserver
+        }else{
+            observer = this.httpObserver;
+        }
+        this.http.delete<LogEntry[]>(REST_ENDPOINT + '?' + this.paginationQuery, HTTP_GLOBAL_OPTIONS).subscribe(observer);
     }
 }
 
