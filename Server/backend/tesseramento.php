@@ -26,7 +26,7 @@ class Tesseramento extends RESTItem
         while($stmt->fetch()) {
         	$tessere[] = $numero;
         }
-        $res[$count] = ('tessere' => $tessere);
+        $res[$count]['tessere'] = $tessere;
         $this->log_debug( 'Ricerca di tutti i Tesseramenti.');
         return $res;
     }
@@ -51,17 +51,20 @@ class Tesseramento extends RESTItem
                 if (! $stmt->execute()) {
                     throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
                 }
+                $this->log_info( "Modifica anno tesseramento con id ".$data['id'].".");
             } else {
                 $stmt = $this->db->prepare('UPDATE Tesseramento SET Aperto = 0 WHERE Aperto = 1');
                 if (! $stmt->execute()) {
                     throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
                 }
+                $this->log_info( 'Chiusura tesseramenti.');
                 if ($valid_open) {
                     $stmt3 = $this->db->prepare("INSERT INTO Tesseramento(Anno, Aperto) VALUES ( ?, 1)");
                     $stmt3->bind_param('s', $data['anno']);
                     if (! $stmt3->execute()) {
                         throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
                     }
+                    $this->log_info( "Aperto tesseramento anno ".$data['anno'].".");
                 }
             }
             return $this->do_get();

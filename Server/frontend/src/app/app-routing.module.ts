@@ -8,6 +8,7 @@ import { CorsiComponent } from './corsi/main.component'
 import { TesseramentiComponent } from './tesseramenti/main.component'
 import { LoginComponent } from './login/main.component'
 import { MainMailComponent } from './mail/main.component'
+import { LogComponent } from './log/main.component'
 
 import { LoggedinGuard, AdminGuard } from './login/main.service'
 
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: "direttivo",
     component: DirettivoComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: "log",
+    component: LogComponent,
     canActivate: [AdminGuard]
   },
   {

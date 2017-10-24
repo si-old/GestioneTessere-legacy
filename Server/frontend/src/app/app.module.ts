@@ -36,6 +36,9 @@ import { BlacklistComponent } from './mail/blacklist.component'
 import { MailService } from './mail/main.service'
 import { BlacklistService } from './mail/blacklist.service'
 
+import { LogService } from './log/main.service'
+import { LogComponent } from './log/main.component'
+
 import {  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, 
           CreateTesseraDialog, MessageDialog, LoadingDialog } from './dialogs'
 
@@ -65,6 +68,7 @@ import {  EqualFieldsValidatorDirective, DialogErrorHandler,
     MainMailComponent,
     MailFormComponent,
     BlacklistComponent,
+    LogComponent,
     EqualFieldsValidatorDirective,
     CheckboxGroupValidatorDirective,
     MessageDialog,
@@ -87,6 +91,7 @@ import {  EqualFieldsValidatorDirective, DialogErrorHandler,
     LoginService,
     MailService,
     BlacklistService,
+    LogService,
     LoggedinGuard,
     AdminGuard,
     { provide: ErrorHandler, useClass: DialogErrorHandler }

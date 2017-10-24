@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http'
         <a mat-raised-button class="custom-button" color="accent" routerLink="/mail">Mail</a>        
         <ng-container *ngIf="isAdmin">
             <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
+            <a mat-raised-button class="custom-button" color="accent" routerLink="/log">Log</a>            
         </ng-container>
         <!--<a mat-raised-button class="custom-button" color="accent" (click)="dostuff()">Cose</a>-->
         <div class="full-size">

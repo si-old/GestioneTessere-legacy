@@ -110,9 +110,15 @@ class Socio extends RESTItem
     protected function do_get()
     {
         if ($this->has_id) {
+            $this->log_debug( "Ricerca socio con id $this->id.");
             return $this->get_full_socio($this->id);
         } else {
+<<<<<<< HEAD
             return $this->get_list($_GET['tesserati']);
+=======
+            $this->logger->debug(this->session->get_user(), 'Ricerca tutti i soci.');
+            return $this->get_list();
+>>>>>>> logging
         }
     }
 
@@ -169,7 +175,7 @@ class Socio extends RESTItem
             $this->db->rollback();
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
-
+        $this->log_info( "Aggiunta di un nuovo socio con id $socio_id.");
         $this->db->commit();
     }
 
@@ -240,7 +246,7 @@ class Socio extends RESTItem
             $this->db->rollback();
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
-
+        $this->log_info( "Modifica socio con id ".$new_socio['id'].".");
         $this->db->commit();
     }
 

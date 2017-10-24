@@ -35,16 +35,16 @@ export class TesseramentiComponent implements OnInit {
     ngOnInit() {
         let obs = this._tessService.getTesseramenti();
         this.tessSource = new ObservableDataSource<Tesseramento>(obs);
-        obs.subscribe(
-            (values: Tesseramento[]) => {
-                values.forEach(
-                    (value: Tesseramento) => {
-                        this.editing[value.id] = false
-                        this.oldValues[value.id] = value.anno;
-                    }
-                )
-            }
-        )
+        // obs.subscribe(
+        //     (values: Tesseramento[]) => {
+        //         values.forEach(
+        //             (value: Tesseramento) => {
+        //                 this.editing[value.id] = false
+        //                 this.oldValues[value.id] = value.anno;
+        //             }
+        //         )
+        //     }
+        // )
         this.changeDetector.detectChanges();
     }
 

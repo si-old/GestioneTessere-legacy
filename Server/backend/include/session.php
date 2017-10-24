@@ -6,15 +6,17 @@ class Session
     function __construct()
     {
         $this->isAdmin = "is_admin";
+        $this->user = "user";
         $this->time = "last_activity";
         $this->duration = 20 * 60 * 1000;
         session_start();
     }
 
     // inizializza la sessione
-    function create($isAdmin)
+    function create($isAdmin, $user)
     {
         $_SESSION[$this->isAdmin] = $isAdmin;
+        $_SESSION[$this->user] = $user;
         $_SESSION[$this->time] = time();
         session_write_close();
     }
@@ -49,6 +51,14 @@ class Session
             return true;
         } else {
             return false;
+        }
+    }
+
+    function get_user() {
+        if(isset($_SESSION[$this->user])) {
+            return $_SESSION[$this->user];
+        } else {
+            return "NO USER";
         }
     }
 }
