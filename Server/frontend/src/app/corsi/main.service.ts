@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http'
 
 import { Corso } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
 import { Observable } from 'rxjs/Observable'
 import { Subject } from 'rxjs/Subject'
 
-const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/cdl.php"
+const REST_ENDPOINT: string = BACKEND_SERVER + "cdl.php"
 
 @Injectable()
 export class CorsiService{

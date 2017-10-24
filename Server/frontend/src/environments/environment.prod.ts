@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  backend: 'https://www.studentingegneria.it/socisi/backend/'
 };

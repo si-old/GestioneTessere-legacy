@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 
 import { Tesseramento } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
 
 import { Observable } from 'rxjs/Observable';
@@ -11,7 +11,7 @@ import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 
-const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/tesseramento.php"
+const REST_ENDPOINT: string = BACKEND_SERVER + "tesseramento.php"
 
 @Injectable()
 export class TesseramentiService {

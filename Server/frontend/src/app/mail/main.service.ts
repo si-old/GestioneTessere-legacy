@@ -6,7 +6,9 @@ import { Observable } from 'rxjs/Observable'
 
 import { MailRequest, MailResponse } from '../model'
 
-const RPC_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/mail.php"
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER} from '../common'
+
+const RPC_ENDPOINT: string = BACKEND_SERVER + "mail.php"
 
 @Injectable()
 export class MailService{

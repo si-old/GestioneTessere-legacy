@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 
 import { Socio, Carriera, Tessera, Corso, Tesseramento } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
 import { HttpClient } from '@angular/common/http'
 
@@ -14,7 +14,7 @@ import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-const REST_ENDPOINT: string = 'https://www.studentingegneria.it/socisi/backend/socio.php'
+const REST_ENDPOINT: string = BACKEND_SERVER + "socio.php'
 
 @Injectable()
 export class SociService {

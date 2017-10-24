@@ -7,7 +7,9 @@ import { Observable } from 'rxjs/Observable'
 import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject'
 
-const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/blacklist.php"
+import { BACKEND_SERVER, HTTP_GLOBAL_OPTIONS } from '../common'
+
+const REST_ENDPOINT: string = BACKEND_SERVER + "blacklist.php"
 
 export class BlacklistResponse{
     allowed: BlacklistMember[];
@@ -27,7 +29,7 @@ export class BlacklistService{
     constructor(private http: HttpClient){}
 
     getBlacklist(): Observable<BlacklistResponse>{
-        this.http.get<BlacklistResponse>(REST_ENDPOINT).subscribe(this.blacklistObserver);
+        this.http.get<BlacklistResponse>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(this.blacklistObserver);
         return this.blacklistSub;
     }
 
@@ -35,6 +37,6 @@ export class BlacklistService{
         this.http.post<BlacklistResponse>(REST_ENDPOINT, {
             id: ids,
             blacklist: blacklist
-        }).subscribe(this.blacklistObserver);
+        }, HTTP_GLOBAL_OPTIONS).subscribe(this.blacklistObserver);
     }
 }

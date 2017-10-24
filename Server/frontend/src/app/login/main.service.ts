@@ -11,11 +11,11 @@ import { MatDialog } from '@angular/material'
 
 import { Observable } from 'rxjs/Observable'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
 import { MessageDialog } from '../dialogs/message.dialog'
 
-const REST_ENDPOINT: string = "https://www.studentingegneria.it/socisi/backend/login.php"
+const REST_ENDPOINT: string = BACKEND_SERVER + "login.php"
 
 const LSItemKey_admin: string = 'admin';
 const LSItemKey_user: string = 'username';

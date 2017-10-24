@@ -1,4 +1,6 @@
 
+import { environment } from '../../environments/environment';
+
 // matricola: 9 cifre, con uno zero opzionale all'inizio
 export const PATTERN_MATRICOLA: string = "0?\\d{9}";
 
@@ -18,5 +20,8 @@ export const PATTERN_PASSWORD: string = "[\\S]{6,}";
 // user: almeno 3 tra caratteri e cifre
 export const PATTERN_USER: string = "[\\S]{3,}";
 
-// options object for very http request
+// options object for every http request
 export const HTTP_GLOBAL_OPTIONS = { withCredentials: true };
+
+// url del backend a seconda dell'environment, contiene lo slash finale
+export const BACKEND_SERVER = environment.backend;

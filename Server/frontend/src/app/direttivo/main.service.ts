@@ -4,14 +4,14 @@ import { HttpClient } from '@angular/common/http'
 
 import { MembroDirettivo, Carriera, Tessera } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
 import { Observable } from 'rxjs/Observable';
 import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject';
 
 
-const REST_ENDPOINT = "https://www.studentingegneria.it/socisi/backend/direttivo.php";
+const REST_ENDPOINT: string = BACKEND_SERVER + "direttivo.php";
 
 @Injectable()
 export class DirettivoService {
