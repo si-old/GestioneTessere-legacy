@@ -43,7 +43,7 @@
             <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
           </button>
       </ng-container>
-      <button mat-icon-button (click)="deleteCorso(row)">
+      <button mat-icon-button (click)="deleteCorso(row)" *ngIf="enableDelete">
         <mat-icon matTooltip="Elimina" matTooltipPosition="right">delete</mat-icon>
       </button>
     </mat-cell>

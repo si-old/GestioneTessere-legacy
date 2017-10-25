@@ -39,7 +39,7 @@ import { BlacklistService } from './mail/blacklist.service'
 import { LogService } from './log/main.service'
 import { LogComponent } from './log/main.component'
 
-import {  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, 
+import {  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, ScegliCorsoDialog,
           CreateTesseraDialog, MessageDialog, LoadingDialog } from './dialogs'
 
 import { ToolbarComponent } from './toolbar.component'
@@ -61,6 +61,7 @@ import {  EqualFieldsValidatorDirective, DialogErrorHandler,
     TextInputDialog,
     CreateCarrieraDialog,
     CreateTesseraDialog,
+    ScegliCorsoDialog,
     LoginComponent,
     ToolbarComponent,
     TitleBarComponent,
@@ -105,7 +106,8 @@ import {  EqualFieldsValidatorDirective, DialogErrorHandler,
     CreateTesseraDialog,
     AggiuntaDirettivoComponent,
     MessageDialog,
-    LoadingDialog
+    LoadingDialog,
+    ScegliCorsoDialog
   ],
   bootstrap: [AppComponent]
 })

@@ -17,7 +17,7 @@ import { Corso, Carriera, } from '../model'
 import { FilteredSortedDataSource } from '../common'
 import { CorsiService } from './main.service'
 
-import { TextInputDialog, ConfirmDialog } from '../dialogs'
+import { TextInputDialog, ScegliCorsoDialog } from '../dialogs'
 
 
 @Component({
@@ -30,8 +30,13 @@ export class CorsiComponent implements OnInit {
   displayedColumns: string[] = ['id', 'nome', 'azioni']
   editing: boolean[] = [];
   initValues: string[] = [];
+  
+  // se c'è un solo corso non si può cancellare
+  enableDelete: boolean = true;
+
 
   corsiSource: FilteredSortedDataSource<Corso>;
+  corsi: Corso[];
 
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
@@ -42,6 +47,8 @@ export class CorsiComponent implements OnInit {
     private dialog: MatDialog) {
     this._corsisrv.getCorsi().subscribe(
       (corsi: Corso[]) => {
+        this.enableDelete = corsi.length > 1;
+        this.corsi = corsi;
         corsi.forEach(
           (corso) => {
             this.editing[corso.id] = false;
@@ -84,8 +91,13 @@ export class CorsiComponent implements OnInit {
   }
 
   deleteCorso(corso: Corso) {
-    this.dialog.open(ConfirmDialog).afterClosed().subscribe(
-      (response) => { if (response) this._corsisrv.deleteCorso(corso); }
+    this.dialog.open(ScegliCorsoDialog, {
+      data: {
+        da_eliminare: corso,
+        corsi: this.corsi
+      }
+    }).afterClosed().subscribe(
+      (sostituto) => { if (sostituto) this._corsisrv.deleteCorso(corso, sostituto); }
     )
   }
 

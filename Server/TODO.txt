@@ -2,7 +2,6 @@ R 1.1
 + gestione numeri di tessera usati / disponibili
 + aggiungere TAB per soci tesserati / non tesserati
 - gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
-- fix rimozione carriere
 
 R 1.2
 - aggiustare gestione errori mostrando un dialog (appena capisco cosa non funziona)
