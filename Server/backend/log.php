@@ -3,14 +3,7 @@
     require_once('include/lib.php');
     
 class Log extends RESTItem {
-
-    function __construct($db){
-        parent::__construct($db);
-        $this->paginate = isset($_GET['paginate']) || isset($_GET['limit']) || isset($_GET['offset']);
-        $this->limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
-        $this->offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
-    }
-        
+    
     protected function do_get() {
     	$to_return = $this->logger->get_log_messages($this->paginate, $this->offset, $this->limit);
     	// $this->log_debug('Ricerca di tutti i log.');
