@@ -51,7 +51,7 @@ export class AggiuntaSocioComponent implements OnInit {
         )
         this._tessserv.getTesseramentoAttivo().subscribe(
             (x: Tesseramento) => {
-                console.log(x);
+                this.tessAttivo = x;
                 this.model.tessere[0].anno = x;
                 this.error = false;
                 this.loading.addStep();
