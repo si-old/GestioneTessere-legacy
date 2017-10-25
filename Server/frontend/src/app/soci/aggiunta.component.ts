@@ -8,7 +8,7 @@ import { CorsiService } from '../corsi/main.service'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE } from '../common'
+import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE, LoadingTracker } from '../common'
 
 @Component({
     selector: 'aggiunta-socio',
@@ -23,7 +23,9 @@ export class AggiuntaSocioComponent implements OnInit {
     private PATTERN_CELLULARE = PATTERN_CELLULARE;
 
 
-    error: boolean;
+    error: boolean = false;
+    loading: LoadingTracker = new LoadingTracker(2);
+
     model: Socio;
     allCorsi: Corso[];
 
@@ -40,14 +42,23 @@ export class AggiuntaSocioComponent implements OnInit {
             carriere: [new Carriera({ matricola: '', studente: false })]
         });
         this._corsisrv.getCorsi().subscribe(
-            (x: Corso[]) => { this.model.carriere[0].corso = x[0]; },
+            (x: Corso[]) => { 
+                this.model.carriere[0].corso = x[0];
+                this.loading.addStep();
+            },
         )
         this._tessserv.getTesseramentoAttivo().subscribe(
             (x: Tesseramento) => {
-                this.error = false;
+                console.log(x);
                 this.model.tessere[0].anno = x;
+                this.error = false;
+                this.loading.addStep();
             },
-            () => { this.error = true; }
+            (err: any) => {
+                this.error = true;
+                this.loading.addStep();
+                throw err;
+            }
         )
     }
 
