@@ -113,12 +113,8 @@ class Socio extends RESTItem
             $this->log_debug( "Ricerca socio con id $this->id.");
             return $this->get_full_socio($this->id);
         } else {
-<<<<<<< HEAD
-            return $this->get_list($_GET['tesserati']);
-=======
-            $this->logger->debug(this->session->get_user(), 'Ricerca tutti i soci.');
+            $this->log_debug('Ricerca tutti i soci.');
             return $this->get_list();
->>>>>>> logging
         }
     }
 
