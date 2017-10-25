@@ -46,7 +46,7 @@ import { ToolbarComponent } from './toolbar.component'
 import { TitleBarComponent } from './titlebar.component'
 
 import {  EqualFieldsValidatorDirective, DialogErrorHandler, 
-          CheckboxGroupValidatorDirective } from './common'
+          CheckboxGroupValidatorDirective, NotInArrayValidatorDirective } from './common'
 
 @NgModule({
   declarations: [
@@ -72,6 +72,7 @@ import {  EqualFieldsValidatorDirective, DialogErrorHandler,
     LogComponent,
     EqualFieldsValidatorDirective,
     CheckboxGroupValidatorDirective,
+    NotInArrayValidatorDirective,
     MessageDialog,
     LoadingDialog
   ],

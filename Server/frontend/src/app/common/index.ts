@@ -3,6 +3,7 @@ export * from './loadingTracker'
 
 export * from './equalFields.directive'
 export * from './checkboxGroup.directive'
+export * from './notInArray.directive'
 
 export * from './dialog.errorHandler'
 
