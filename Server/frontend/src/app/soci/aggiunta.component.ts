@@ -29,6 +29,8 @@ export class AggiuntaSocioComponent implements OnInit {
     model: Socio;
     allCorsi: Corso[];
 
+    tessAttivo: Tesseramento;
+
     constructor(private _corsisrv: CorsiService,
         private _tessserv: TesseramentiService,
         private _snackbar: MatSnackBar,
@@ -49,7 +51,7 @@ export class AggiuntaSocioComponent implements OnInit {
         )
         this._tessserv.getTesseramentoAttivo().subscribe(
             (x: Tesseramento) => {
-                console.log(x);
+                this.tessAttivo = x;
                 this.model.tessere[0].anno = x;
                 this.error = false;
                 this.loading.addStep();
