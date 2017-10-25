@@ -17,7 +17,7 @@ import { Corso, Carriera, } from '../model'
 import { FilteredSortedDataSource } from '../common'
 import { CorsiService } from './main.service'
 
-import { TextInputDialog, ConfirmDialog } from '../dialogs'
+import { TextInputDialog, ScegliCorsoDialog } from '../dialogs'
 
 
 @Component({
@@ -84,8 +84,8 @@ export class CorsiComponent implements OnInit {
   }
 
   deleteCorso(corso: Corso) {
-    this.dialog.open(ConfirmDialog).afterClosed().subscribe(
-      (response) => { if (response) this._corsisrv.deleteCorso(corso); }
+    this.dialog.open(ScegliCorsoDialog).afterClosed().subscribe(
+      (sostituto) => { if (sostituto) this._corsisrv.deleteCorso(corso, sostituto); }
     )
   }
 

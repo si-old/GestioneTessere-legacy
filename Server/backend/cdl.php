@@ -4,6 +4,12 @@
     
 class CdL extends RESTItem
 {
+
+    function __construct($db){
+        parent::__construct($db);
+        $this->has_sostituto = isset($_GET['sostituto']);
+        $this->sostituto = $_GET['sostituto'];
+    }
         
     protected function do_get()
     {
@@ -50,13 +56,18 @@ class CdL extends RESTItem
         
     protected function do_del()
     {
-        if ($this->has_id) {
+        if ($this->has_id && $this->has_sostituto) {
+            $stmt = $this->db->prepare('UPDATE Carriera SET CdL = ? WHERE CdL = ?');
+            $stmt->bind_param('ii', $this->sostituto, $this->id);
+            if (! $stmt->execute()) {
+                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            }
             $stmt = $this->db->prepare('DELETE FROM CdL WHERE ID=?');
             $stmt->bind_param('i', $this->id);
             if (! $stmt->execute()) {
                 throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
             }
-            $this->log_info("Rimosso Corso di Laurea con id $this->id.");
+            $this->log_info("Rimosso $this->id e sostituito con $this->sostituto.");
             return $this->do_get();
         } else {
             throw new RESTException(HttpStatusCode::$NOT_FOUND);
