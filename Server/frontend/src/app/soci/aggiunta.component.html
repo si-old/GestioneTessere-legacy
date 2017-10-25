@@ -9,24 +9,16 @@
                     <div>
                         <label for="numero">Numero Tessera:</label>
                         <mat-form-field>
-<<<<<<< 027f1bd83026cc09777b2297b228a43cca60d0dc
-                            <input  type="text" name="numero" [(ngModel)]="model.tessere[0].numero" [notInArray]="tessAttivo.tessere"
-=======
-                            <input  type="text" name="numero" [(ngModel)]="model.tessere[0].numero"
->>>>>>> aggiunto loading in aggiuntasocio, fix errore recupero tessere in tesseramento.php
-                                    #inputNumero="ngModel" matInput required [pattern]="PATTERN_NUMERO_TESSERA">
+                            <input type="text" name="numero" [(ngModel)]="model.tessere[0].numero" [notInArray]="tessAttivo.tessere" />
                             <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
                                 Il campo è obbligatorio!
                             </mat-error>
                             <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
                                 Devi inserire un numero (anche negativo).
                             </mat-error>
-<<<<<<< 027f1bd83026cc09777b2297b228a43cca60d0dc
                             <mat-error *ngIf="inputNumero.errors && inputNumero.errors.notInArray">
-                                    La tessera è già assegnata!.
-                                </mat-error>
-=======
->>>>>>> aggiunto loading in aggiuntasocio, fix errore recupero tessere in tesseramento.php
+                                La tessera è già assegnata!.
+                            </mat-error>
                             <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
                                 Devi inserire un numero (anche negativo).
                             </mat-hint>
@@ -140,5 +132,5 @@
     <ng-container *ngIf="!loading.isLoaded()">
         <mat-spinner></mat-spinner>
         <h3 style="padding: 10px 0">Loading...</h3>
-    </ng-container>            
+    </ng-container>
 </div>

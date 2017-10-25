@@ -45,7 +45,7 @@ import {  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, ScegliCorsoDialo
 import { ToolbarComponent } from './toolbar.component'
 import { TitleBarComponent } from './titlebar.component'
 
-import {  EqualFieldsValidatorDirective, DialogErrorHandler, LoadingPlaceholderComponent,
+import {  EqualFieldsValidatorDirective, DialogErrorHandler, 
           CheckboxGroupValidatorDirective, NotInArrayValidatorDirective } from './common'
 
 @NgModule({
