@@ -4,9 +4,13 @@
     require_once('include/lib.php');
     require_once('include/utils.php');
 
-class Socio extends RESTItem
+class Socio extends RESTItem {
 
-{
+    function __costruct($db) {
+        parent::__construct($db);
+        $this->has_tesserati = isset($_GET['tesserati']) && strlen($_GET['tesserati']) > 0;
+        $this->tesserati = filter_var($_GET['tesserati'], FILTER_VALIDATE_BOOLEAN);
+    }
 
     private $query_carriere = '	SELECT	ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente, 
 											ca.Professione as ca_professione, ca.Matricola as ca_matricola, 
@@ -17,7 +21,7 @@ class Socio extends RESTItem
 											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
 									FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID ';
 
-    private function get_list($tesserati)
+    private function get_list()
     {
         $query_carriere_attive = $this->query_carriere.'WHERE ca.Attiva = 1';
         $query_tessere_attive = $this->query_tessere.'WHERE a.Aperto = 1';
@@ -28,8 +32,8 @@ class Socio extends RESTItem
 						FROM Socio as s	LEFT JOIN ( $query_carriere_attive ) as c on ca_socio = s.ID
 										LEFT JOIN ( $query_tessere_attive ) as t on t_socio = s.ID";
         $conditions = '';
-        if(isset($tesserati)) {
-            if(strcasecmp($tesserati,'true') == 0) {
+        if($this->has_tesserati) {
+            if($this->tesserati) {
                 $conditions = ' WHERE t_numero IS NOT NULL';
             } else {
                 $conditions = ' WHERE t_numero IS NULL';
@@ -112,7 +116,7 @@ class Socio extends RESTItem
         if ($this->has_id) {
             return $this->get_full_socio($this->id);
         } else {
-            return $this->get_list($_GET['tesserati']);
+            return $this->get_list();
         }
     }
 
