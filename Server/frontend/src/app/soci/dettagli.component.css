@@ -41,3 +41,18 @@ div{
 .mat-spinner{
     margin: 0 auto;
 }
+
+.mat-column-dettagli, .mat-column-anno{
+    display: flex;
+    flex-direction: row;
+    max-width: 50%;
+    justify-content: space-between;
+}
+
+.mat-column-studente, .mat-column-numero{
+    max-width: 20%;
+}
+
+.mat-column-azioni{
+    max-width: 15%;
+}

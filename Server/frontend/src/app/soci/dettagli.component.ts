@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material'
 
 import { Socio, Tessera, Carriera, Corso } from '../model'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, SubjectDataSource } from '../common'
+import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, PATTERN_MATRICOLA, SubjectDataSource } from '../common'
 
 
 import { CorsiService } from '../corsi/main.service'
@@ -35,6 +35,7 @@ export class DettagliSocioComponent implements OnInit {
     // fix: only import doesn't show in view, must define local variable
     private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
     private PATTERN_CELLULARE = PATTERN_CELLULARE;
+    private PATTERN_MATRICOLA = PATTERN_MATRICOLA;
 
     public loaded = false;
     //related to having this component in a MatDialog or as a main component or a Route
@@ -46,6 +47,7 @@ export class DettagliSocioComponent implements OnInit {
     model: Socio; //working model, where changes happen
     id: number; //id of the requested Socio
     hasTessera: boolean = false; // true se ha una tessera dell'ultimo tesseramento, quello attivo
+    initialSocio: Socio;
 
     //properties for carriere table
     carriereSource: SubjectDataSource<Carriera> = new SubjectDataSource<Carriera>();
@@ -119,6 +121,7 @@ export class DettagliSocioComponent implements OnInit {
      */
 
     private initData(socio: Socio): void {
+        this.initialSocio = socio.clone();
         this.loaded = true;
         this.model = socio;
         this.model.carriere.forEach(
@@ -195,11 +198,7 @@ export class DettagliSocioComponent implements OnInit {
      * @param form the form to revert
      */
     revert(form: any) {
-        this._socisrv.getSocioById(this.id).subscribe(
-            (socio) => {
-                this.refreshData(socio);
-            }
-        )
+        this.model.reinit(this.initialSocio);
         this.disableEditing();
         return false; //to prevent Edge from reloading
     }
