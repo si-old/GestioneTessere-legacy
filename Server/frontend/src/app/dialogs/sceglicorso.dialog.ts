@@ -18,8 +18,8 @@ export class ScegliCorsoDialog {
     constructor(private _diagref: MatDialogRef<ScegliCorsoDialog>,
         @Inject(MAT_DIALOG_DATA) private data: any) {
         this.da_eliminare = data.da_eliminare;
-        this.corsi = data.corsi.filter((x: Corso) => { x.id != this.da_eliminare.id });
-        this.sostituto = null;
+        this.corsi = data.corsi.filter((x: Corso) => { return x.id != data.da_eliminare.id });
+        this.sostituto = this.corsi[0];
     }
 
     conferma(form: any) {

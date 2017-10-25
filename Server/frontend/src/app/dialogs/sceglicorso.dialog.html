@@ -5,7 +5,7 @@
     <div>
         <label for="corso">Corso di laurea:</label>
         <div class="mat-form-field">
-            <mat-select placeholder="Corsi di Laurea" [(ngModel)]="sostituto"
+            <mat-select placeholder="Corsi di Laurea" [(ngModel)]="sostituto" name="sostituto"
                         selected="sostituto" required matInput #inputCorso="ngModel">
                 <mat-option *ngFor="let corso of corsi" [value]="corso">
                     {{corso.nome}}
