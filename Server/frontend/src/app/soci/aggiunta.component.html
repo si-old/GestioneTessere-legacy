@@ -2,126 +2,133 @@
     <div mat-dialog-title>
         Aggiungi nuovo socio
     </div>
-    <ng-container *ngIf="!error">
-        <form #form="ngForm">
-            <div mat-dialog-content style="text-align:left">
-                <div>
-                    <label for="numero">Numero Tessera:</label>
-                    <mat-form-field>
-                        <input type="text" name="numero" [(ngModel)]="model.tessere[0].numero" #inputNumero="ngModel" matInput required [pattern]="PATTERN_NUMERO_TESSERA">
-                        <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
-                            Il campo è obbligatorio!
-                        </mat-error>
-                        <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
-                            Devi inserire un numero (anche negativo).
-                        </mat-error>
-                        <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
-                            Devi inserire un numero (anche negativo).
-                        </mat-hint>
-                    </mat-form-field>
-                    <label for="anno">Anno: {{ model.tessere[0].anno }} </label>
-                </div>
-
-                <div>
-                    <label for="nome">Nome:</label>
-                    <mat-form-field>
-                        <input type="text" name="nome" [(ngModel)]="model.nome" matInput required #inputNome="ngModel" />
-                        <mat-error *ngIf="inputNome.errors && inputNome.errors.required">
-                            Il campo è obbligatorio!
-                        </mat-error>
-                    </mat-form-field>
-                    <label for="cognome">Cognome:</label>
-                    <mat-form-field>
-                        <input type="text" name="cognome" [(ngModel)]="model.cognome" matInput required #inputCognome="ngModel" />
-                        <mat-error *ngIf="inputCognome.errors && inputCognome.errors.required">
-                            Il campo è obbligatorio!
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-
-                <div>
-                    <label for="email">E-Mail:</label>
-                    <mat-form-field>
-                        <input type="text" name="email" [(ngModel)]="model.email" matInput required email #inputEmail="ngModel" />
-                        <mat-error *ngIf="inputEmail.errors && inputEmail.errors.required">
-                            Il campo è obbligatorio!
-                        </mat-error>
-                        <mat-error *ngIf="inputEmail.errors && inputEmail.errors.email && !inputEmail.errors.required">
-                            Non è una email valida!
-                        </mat-error>
-                    </mat-form-field>
-                    <label for="cellulare">Cellulare:</label>
-                    <mat-form-field>
-                        <input  type="text" name="cellulare" [(ngModel)]="model.cellulare" 
-                                matInput [pattern]="PATTERN_CELLULARE" #inputCell="ngModel"/>
-                        <mat-error *ngIf="inputCell.errors && inputCell.errors.pattern">
-                            Non corrisponde al formato previsto
-                        </mat-error>
-                        <mat-hint *ngIf="inputCell.untouched || !inputCell.value">
-                            Composto da 10 cifre con eventualmente il prefisso internazionale e uno spazio.
-                        </mat-hint>
-                    </mat-form-field>
-                </div>
-
-                <div>
-                    <label for="facebook">Facebook:</label>
-                    <mat-form-field>
-                        <input type="text" name="facebook" [(ngModel)]="model.facebook" matInput/>
-                    </mat-form-field>
-                    <label for="studente">Studente:</label>
-                    <mat-slide-toggle [(ngModel)]="model.carriere[0].studente" name="studente" color="primary">
-                    </mat-slide-toggle>
-                </div>
-
-                <ng-container *ngIf="model.carriere[0].studente">
+    <ng-container *ngIf="loading.isLoaded()">
+        <ng-container *ngIf="!error">
+            <form #form="ngForm">
+                <div mat-dialog-content style="text-align:left">
                     <div>
-                        <label for="matricola">Matricola:</label>
+                        <label for="numero">Numero Tessera:</label>
                         <mat-form-field>
-                            <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" matInput [required]="model.carriere[0].studente"
-                                [pattern]="PATTERN_MATRICOLA" #inputMatricola="ngModel" />
-                            <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.required">
+                            <input  type="text" name="numero" [(ngModel)]="model.tessere[0].numero"
+                                    #inputNumero="ngModel" matInput required [pattern]="PATTERN_NUMERO_TESSERA">
+                            <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
                                 Il campo è obbligatorio!
                             </mat-error>
-                            <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.pattern">
-                                La matricola è di 10 cifre, di cui lo zero iniziale può essere omesso.
+                            <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
+                                Devi inserire un numero (anche negativo).
                             </mat-error>
-                            <mat-hint *ngIf="inputMatricola.untouched || !inputMatricola.value">
-                                La matricola è di 10 cifre, di cui lo zero iniziale può essere omesso.
+                            <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
+                                Devi inserire un numero (anche negativo).
                             </mat-hint>
                         </mat-form-field>
-                        <label for="corso">Corso di laurea:</label>
-                        <div class="mat-form-field">
-                            <corsi-viewedit [(ngModel)]="model.carriere[0].corso" [flag]="true" [required]="model.carriere[0].studente" name="corso"></corsi-viewedit>
-                        </div>
+                        <label for="anno">Anno: {{ model.tessere[0].anno }} </label>
                     </div>
-                </ng-container>
 
-                <ng-container *ngIf="!model.carriere[0].studente">
                     <div>
-                        <label for="professione">Professione:</label>
+                        <label for="nome">Nome:</label>
                         <mat-form-field>
-                            <input  type="text" name="professione" [(ngModel)]="model.carriere[0].professione" 
-                                    matInput [required]="!model.carriere[0].studente" #inputProfessione="ngModel" />
-                            <mat-error *ngIf="inputProfessione.errors && inputProfessione.errors.required">
+                            <input type="text" name="nome" [(ngModel)]="model.nome" matInput required #inputNome="ngModel" />
+                            <mat-error *ngIf="inputNome.errors && inputNome.errors.required">
+                                Il campo è obbligatorio!
+                            </mat-error>
+                        </mat-form-field>
+                        <label for="cognome">Cognome:</label>
+                        <mat-form-field>
+                            <input type="text" name="cognome" [(ngModel)]="model.cognome" matInput required #inputCognome="ngModel" />
+                            <mat-error *ngIf="inputCognome.errors && inputCognome.errors.required">
                                 Il campo è obbligatorio!
                             </mat-error>
                         </mat-form-field>
                     </div>
-                </ng-container>
-            </div>
-            <div mat-dialog-actions style="display: block">
-                <button type="submit" class="to_right" mat-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
+
+                    <div>
+                        <label for="email">E-Mail:</label>
+                        <mat-form-field>
+                            <input type="text" name="email" [(ngModel)]="model.email" matInput required email #inputEmail="ngModel" />
+                            <mat-error *ngIf="inputEmail.errors && inputEmail.errors.required">
+                                Il campo è obbligatorio!
+                            </mat-error>
+                            <mat-error *ngIf="inputEmail.errors && inputEmail.errors.email && !inputEmail.errors.required">
+                                Non è una email valida!
+                            </mat-error>
+                        </mat-form-field>
+                        <label for="cellulare">Cellulare:</label>
+                        <mat-form-field>
+                            <input type="text" name="cellulare" [(ngModel)]="model.cellulare" matInput [pattern]="PATTERN_CELLULARE" #inputCell="ngModel"
+                            />
+                            <mat-error *ngIf="inputCell.errors && inputCell.errors.pattern">
+                                Non corrisponde al formato previsto
+                            </mat-error>
+                            <mat-hint *ngIf="inputCell.untouched || !inputCell.value">
+                                Composto da 10 cifre con eventualmente il prefisso internazionale e uno spazio.
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <label for="facebook">Facebook:</label>
+                        <mat-form-field>
+                            <input type="text" name="facebook" [(ngModel)]="model.facebook" matInput/>
+                        </mat-form-field>
+                        <label for="studente">Studente:</label>
+                        <mat-slide-toggle [(ngModel)]="model.carriere[0].studente" name="studente" color="primary">
+                        </mat-slide-toggle>
+                    </div>
+
+                    <ng-container *ngIf="model.carriere[0].studente">
+                        <div>
+                            <label for="matricola">Matricola:</label>
+                            <mat-form-field>
+                                <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" matInput [required]="model.carriere[0].studente"
+                                    [pattern]="PATTERN_MATRICOLA" #inputMatricola="ngModel" />
+                                <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.required">
+                                    Il campo è obbligatorio!
+                                </mat-error>
+                                <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.pattern">
+                                    La matricola è di 10 cifre, di cui lo zero iniziale può essere omesso.
+                                </mat-error>
+                                <mat-hint *ngIf="inputMatricola.untouched || !inputMatricola.value">
+                                    La matricola è di 10 cifre, di cui lo zero iniziale può essere omesso.
+                                </mat-hint>
+                            </mat-form-field>
+                            <label for="corso">Corso di laurea:</label>
+                            <div class="mat-form-field">
+                                <corsi-viewedit [(ngModel)]="model.carriere[0].corso" [flag]="true" [required]="model.carriere[0].studente" name="corso"></corsi-viewedit>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="!model.carriere[0].studente">
+                        <div>
+                            <label for="professione">Professione:</label>
+                            <mat-form-field>
+                                <input type="text" name="professione" [(ngModel)]="model.carriere[0].professione" matInput [required]="!model.carriere[0].studente"
+                                    #inputProfessione="ngModel" />
+                                <mat-error *ngIf="inputProfessione.errors && inputProfessione.errors.required">
+                                    Il campo è obbligatorio!
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+                </div>
+                <div mat-dialog-actions style="display: block">
+                    <button type="submit" class="to_right" mat-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
                 <mat-icon matTooltip="Conferma" matTooltipPosition="right">check</mat-icon>
             </button>
-                <button class="to_right" mat-dialog-close mat-icon-button (click)="revertForm(form)">
+                    <button class="to_right" mat-dialog-close mat-icon-button (click)="revertForm(form)">
                 <mat-icon matTooltip="Annulla" matTooltipPosition="right">close</mat-icon>
             </button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-container *ngIf="error">
+            <div mg-dialog-content>
+                <h3>Nessun Tesseramento attivo!</h3>
             </div>
-        </form>
+        </ng-container>
     </ng-container>
-    <ng-container *ngIf="error">
-        <div mg-dialog-content>
-            <h3>Nessun Tesseramento attivo!</h3>
-        </div>
-    </ng-container>
+    <ng-container *ngIf="!loading.isLoaded()">
+        <mat-spinner></mat-spinner>
+        <h3 style="padding: 10px 0">Loading...</h3>
+    </ng-container>            
 </div>
