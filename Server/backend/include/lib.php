@@ -6,6 +6,7 @@ require_once('loggerFacade.php');
 
 abstract class RESTItem
 {
+	private $CSV_DELIMITER = ';';
 
     function __construct($db)
     {
@@ -14,6 +15,7 @@ abstract class RESTItem
         $this->id = $_GET['id'];
         $this->session = new Session();
         $this->logger = new LoggerFacade(get_class($this), $db);
+        $this->is_csv = false;
     }
 
     public function dispatch()
@@ -33,7 +35,7 @@ abstract class RESTItem
         header("Access-Control-Allow-Headers: Content-Type");
         try {
             if ($this->is_session_authorized() || true) {
-                header("Content-Type: application/json");
+            	$this->set_return_header($headers);
                 switch ($_SERVER['REQUEST_METHOD']) {
                     case 'GET':
                         $res = $this->do_get();
@@ -53,7 +55,11 @@ abstract class RESTItem
                         // as OPTION should
                         return;
                 }
-                echo json_encode($res, JSON_UNESCAPED_UNICODE);
+                if(!$this->is_csv) {
+                	echo json_encode($res, JSON_UNESCAPED_UNICODE);
+                } else {
+                	$this->write_csv($res);
+                }
             } else {
                 throw new RESTException(HttpStatusCode::$UNAUTHORIZED);
             }
@@ -67,6 +73,35 @@ abstract class RESTItem
             echo $ex->getMessage();
         }
     }
+
+    private function set_return_header($headers) {
+    	if(isset($headers['Accept']) && strcasecmp($headers['Accept'], 'text/csv')==0) {
+    		$this->is_csv = true;
+			header('Content-Type: text/csv; charset=utf-8');
+			$filename = get_class($this).date('_Y-m-d').'.csv';
+    		header('Content-Disposition: attachment; filename='.$filename);
+    	} else {
+    		$this->is_csv = false;
+    		header("Content-Type: application/json");
+    	}
+    }
+
+    private function write_csv($content) {
+		$fp=fopen('php://output', 'w');
+		fputcsv($fp, array_keys($content[0]), $CSV_DELIMITER);
+		foreach($content as $fields) {
+			$result = [];
+    		array_walk_recursive($fields, function($item) use (&$result) {
+    			if(is_array($item)) {
+    				$result[] = $item[0];
+    			} else {
+        			$result[] = $item;
+        		}
+    		});
+    		fputcsv($fp, $result, $CSV_DELIMITER);
+		}
+		fclose($fp);
+	}
 
     abstract protected function do_get();
 
