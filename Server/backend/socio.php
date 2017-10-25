@@ -15,7 +15,7 @@ class Socio extends RESTItem {
     private $query_carriere = '	SELECT	ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente, 
 											ca.Professione as ca_professione, ca.Matricola as ca_matricola, 
 											ca.Attiva as ca_attiva, c.ID as c_id, c.Nome as c_nome
-									FROM Carriera as ca LEFT JOIN CdL as c on c.ID = ca.CdL ';
+									FROM Carriera as ca LEFT JOIN Corso as c on c.ID = ca.Corso ';
         
     private $query_tessere = '	SELECT	t.Socio as t_socio, t.ID as t_id, t.Numero as t_numero, 
 											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
@@ -169,7 +169,7 @@ class Socio extends RESTItem {
         }
 
         $carriera = $new_socio['carriere'][0];
-        $stmt_carriera = $this->db->prepare('INSERT INTO Carriera(Socio, Studente, Professione, CdL, Matricola, Attiva) VALUES (?, ?, ?, ?, ?, 1)');
+        $stmt_carriera = $this->db->prepare('INSERT INTO Carriera(Socio, Studente, Professione, Corso, Matricola, Attiva) VALUES (?, ?, ?, ?, ?, 1)');
         $stmt_carriera->bind_param('iisis', $socio_id, $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola']);
         if (! $stmt_carriera->execute()) {
             $this->db->rollback();
@@ -192,8 +192,8 @@ class Socio extends RESTItem {
         }
 
         $carriere_ids = '';
-        $stmt_carriera_upd = $this->db->prepare('UPDATE Carriera SET Studente=?,Professione=?,CdL=?,Matricola=?,Attiva=? WHERE ID=?');
-        $stmt_carriera_ins = $this->db->prepare('INSERT INTO Carriera (Studente, Professione, CdL, Matricola, Attiva, Socio) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt_carriera_upd = $this->db->prepare('UPDATE Carriera SET Studente=?,Professione=?,Corso=?,Matricola=?,Attiva=? WHERE ID=?');
+        $stmt_carriera_ins = $this->db->prepare('INSERT INTO Carriera (Studente, Professione, Corso, Matricola, Attiva, Socio) VALUES (?, ?, ?, ?, ?, ?)');
         foreach ($new_socio['carriere'] as $carriera) {
             if (isset($carriera['id'])) {
                 $stmt_carriera_upd->bind_param('isisii', $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola'], $carriera['attiva'], $carriera['id']);

@@ -9,7 +9,7 @@ class Mail extends RESTItem
     private $query_carriere = '	SELECT	ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente, 
 											ca.Professione as ca_professione, ca.Matricola as ca_matricola, 
 											ca.Attiva as ca_attiva, c.ID as c_id, c.Nome as c_nome
-									FROM Carriera as ca LEFT JOIN CdL as c on c.ID = ca.CdL ';
+									FROM Carriera as ca LEFT JOIN Corso as c on c.ID = ca.Corso ';
         
     private $query_tessere = '	SELECT	t.Socio as t_socio, t.ID as t_id, t.Numero as t_numero, 
 											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
