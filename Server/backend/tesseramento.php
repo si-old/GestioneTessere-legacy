@@ -20,7 +20,11 @@ class Tesseramento extends RESTItem
             	$id_aperto = $id;
             }
         }
-        $stmt = $this->db->query('SELECT Numero FROM Tessera WHERE Anno = '.$id_aperto);
+        $stmt = $this->db->prepare('SELECT Numero FROM Tessera WHERE Anno = ?');
+        $stmt->bind_param('i',$id_aperto);
+        if (! $stmt->execute()) {
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+        }
         $stmt->bind_result($numero);
         $tessere = array();
         while($stmt->fetch()) {
