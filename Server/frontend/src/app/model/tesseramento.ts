@@ -5,6 +5,8 @@ export class Tesseramento {
     anno: string;
     aperto: boolean;
 
+    tessere?: number[];
+
     constructor(fields?: Partial<Tesseramento>) {
         if (fields) Object.assign(this, fields);
     }
