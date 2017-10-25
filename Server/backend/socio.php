@@ -21,7 +21,7 @@ class Socio extends RESTItem {
 											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
 									FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID ';
 
-    private function get_list()
+    private function get_list($paginate = false, $offset = 0, $limit = 10)
     {
         $query_carriere_attive = $this->query_carriere.'WHERE ca.Attiva = 1';
         $query_tessere_attive = $this->query_tessere.'WHERE a.Aperto = 1';
@@ -40,7 +40,13 @@ class Socio extends RESTItem {
             }
         }
         $query = $query.$conditions;
+        if($paginate) {
+            $query = $query.' LIMIT ? OFFSET ?';
+        }
         $stmt = $this->db->prepare($query);
+        if($paginate) {
+            $stmt->bind_param('ii', $limit, $offset);
+        }
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
@@ -56,7 +62,20 @@ class Socio extends RESTItem {
                                                         'email' => $user['s_email'], 'cellulare' => $user['s_cellulare'], 'facebook' => $user['s_facebook'],
                                                         'carriere' => array($carriera), 'tessere' => array($tessera));
         }
-        return $users;
+        if($paginate){
+            $res = $this->db->query('SELECT COUNT(*) FROM Socio');
+            while($row = $res->fetch_row()){
+                $size = $row[0];
+            }
+            $to_return2 = array(
+                                'totale' => $size,
+                                'offset' => $offset,
+                                'limit' => $limit,
+                                'results' => $users );
+            return $to_return2;
+        } else {
+            return $users;
+        }
     }
 
     private function get_full_socio($id)
@@ -118,7 +137,7 @@ class Socio extends RESTItem {
             return $this->get_full_socio($this->id);
         } else {
             $this->log_debug('Ricerca tutti i soci.');
-            return $this->get_list();
+            return $this->get_list($this->paginate, $this->offset, $this->limit);
         }
     }
 

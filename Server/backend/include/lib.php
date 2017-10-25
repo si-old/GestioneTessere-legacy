@@ -13,6 +13,9 @@ abstract class RESTItem
         $this->db = $db;
         $this->has_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
         $this->id = $_GET['id'];
+        $this->paginate = isset($_GET['paginate']) || isset($_GET['limit']) || isset($_GET['offset']);
+        $this->limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
+        $this->offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
         $this->session = new Session();
         $this->logger = new LoggerFacade(get_class($this), $db);
         $this->is_csv = false;
