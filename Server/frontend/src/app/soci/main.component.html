@@ -1,4 +1,8 @@
 <titlebar>
+  <a left mat-icon-button [href]="fileurl" (click)="downloadCsv()" #downloadAnchor
+          [download]="filename" target="_self">
+    <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>    
+  </a>
   <h2 center> Soci </h2>
   <span right>
     <mat-form-field floatPlaceholder="never">
