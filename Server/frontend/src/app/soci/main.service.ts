@@ -50,8 +50,13 @@ export class SociService {
     this._singleObs.next(temp);
   }
 
-  getSoci(): Observable<Socio[]> {
-    this.http.get<Socio[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver)
+  getSoci(tesserati ?: boolean): Observable<Socio[]> {
+    let query_string: string = ''
+    if (tesserati != null) {
+      query_string = '?tesserati=' + tesserati
+    }
+    this.http.get<Socio[]>(REST_ENDPOINT + query_string, HTTP_GLOBAL_OPTIONS)
+      .subscribe(this.httpObserver)
     return this._obs;
   }
 
