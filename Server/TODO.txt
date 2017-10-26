@@ -1,8 +1,4 @@
 ﻿R 1.1
-<<<<<<< 6a44ddf9d3d99cb5a22c86b864542028368eea94
-=======
-+ aggiungere TAB per soci tesserati / non tesserati -> tab-tesserati-e_non
->>>>>>> aggiornato TODO
 + rinominare CdL in Corso -> rename-cdl
 - gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
 
