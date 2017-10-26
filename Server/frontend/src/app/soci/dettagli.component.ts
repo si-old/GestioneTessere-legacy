@@ -105,7 +105,7 @@ export class DettagliSocioComponent implements OnInit {
                                         message: "Nessun socio trovato con questo ID!"
                                     }
                                 })
-                            }else{
+                            } else {
                                 throw x;
                             }
                         }

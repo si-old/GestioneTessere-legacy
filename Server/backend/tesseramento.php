@@ -20,7 +20,11 @@ class Tesseramento extends RESTItem
             	$id_aperto = $id;
             }
         }
-        $stmt = $this->db->query('SELECT Numero FROM Tessera WHERE Anno = '.$id_aperto);
+        $stmt = $this->db->prepare('SELECT Numero FROM Tessera WHERE Anno = ?');
+        $stmt->bind_param('i',$id_aperto);
+        if (! $stmt->execute()) {
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+        }
         $stmt->bind_result($numero);
         $tessere = array();
         while($stmt->fetch()) {
@@ -33,7 +37,7 @@ class Tesseramento extends RESTItem
         
     /*
         request: {
-            action: 'open', 'close', 'edit'
+            action: 'open', 'edit', 'close' (close è disabilitato)
             anno: se 'open' o 'edit', stringa con il nuovo anno, da aprire o modificare
             id: solo se 'edit', numero del tesseramento da modificare
         }
@@ -41,7 +45,7 @@ class Tesseramento extends RESTItem
     protected function do_post($data)
     {
         $valid_open = isset($data['action']) && strcasecmp($data['action'], 'open') == 0 && isset($data['anno']);
-        $valid_close = isset($data['action']) && strcasecmp($data['action'], 'close') == 0;
+        $valid_close = false; //isset($data['action']) && strcasecmp($data['action'], 'close') == 0;
         $valid_edit = isset($data['action']) &&  strcasecmp($data['action'], 'edit') == 0 && isset($data['anno']) && isset($data['id']);
         $valid_format = $valid_open || $valid_close || $valid_edit;
         if ($valid_format) {

@@ -47,7 +47,7 @@ export class LogService extends PaginableService {
         }else{
             observer = this.httpObserver;
         }
-        this.http.get<LogEntry[]>(REST_ENDPOINT + '?' + this.paginationQuery, HTTP_GLOBAL_OPTIONS).subscribe(observer);
+        this.http.get<LogEntry[]>(REST_ENDPOINT + '?' + this.queryString(), HTTP_GLOBAL_OPTIONS).subscribe(observer);
         return this.logEntrySub;
     }
 
@@ -58,7 +58,7 @@ export class LogService extends PaginableService {
         }else{
             observer = this.httpObserver;
         }
-        this.http.delete<LogEntry[]>(REST_ENDPOINT + '?' + this.paginationQuery, HTTP_GLOBAL_OPTIONS).subscribe(observer);
+        this.http.delete<LogEntry[]>(REST_ENDPOINT + '?' + this.queryString(), HTTP_GLOBAL_OPTIONS).subscribe(observer);
     }
 }
 

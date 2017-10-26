@@ -38,10 +38,6 @@ div{
     vertical-align: top;
 }
 
-.mat-spinner{
-    margin: 0 auto;
-}
-
 .mat-column-dettagli, .mat-column-anno{
     display: flex;
     flex-direction: row;

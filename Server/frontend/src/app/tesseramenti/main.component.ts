@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material'
 import { Tesseramento } from '../model'
 import { TesseramentiService } from './main.service'
 
-import { ConfirmDialog, TextInputDialog } from '../dialogs'
+import { ConfirmDialog, TextInputDialog, MessageDialog } from '../dialogs'
 
 import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource } from '../common'
 
@@ -35,16 +35,16 @@ export class TesseramentiComponent implements OnInit {
     ngOnInit() {
         let obs = this._tessService.getTesseramenti();
         this.tessSource = new ObservableDataSource<Tesseramento>(obs);
-        // obs.subscribe(
-        //     (values: Tesseramento[]) => {
-        //         values.forEach(
-        //             (value: Tesseramento) => {
-        //                 this.editing[value.id] = false
-        //                 this.oldValues[value.id] = value.anno;
-        //             }
-        //         )
-        //     }
-        // )
+        obs.subscribe(
+            (values: Tesseramento[]) => {
+                values.forEach(
+                    (value: Tesseramento) => {
+                        this.editing[value.id] = false
+                        this.oldValues[value.id] = value.anno;
+                    }
+                )
+            }
+        )
         this.changeDetector.detectChanges();
     }
 
@@ -77,5 +77,15 @@ export class TesseramentiComponent implements OnInit {
     revertChanges(t: Tesseramento) {
         t.anno = this.oldValues[t.id];
         this.editing[t.id] = false;
+    }
+
+    tessereCallback(t: Tesseramento){
+        this.dialog.open(MessageDialog, {
+            data: {
+                message: "Le tessere assegnate sono: "+ t.tessere
+                                                        .sort((a,b) => {return a - b})
+                                                        .join(', ')
+            }
+        })
     }
 }

@@ -23,6 +23,8 @@ export class AggiuntaDirettivoComponent implements OnInit {
     socio: Socio = null
     user: string;
     password: string;
+
+    loaded: boolean = false;
     
     constructor(private _diagref: MatDialogRef<AggiuntaDirettivoComponent>,
         private _socisrv: SociService) {
@@ -31,7 +33,10 @@ export class AggiuntaDirettivoComponent implements OnInit {
 
     ngOnInit() {
         this._socisrv.getSoci().first().subscribe(
-            (s: Socio[]) => { this.allSoci = s }
+            (s: Socio[]) => {
+                this.allSoci = s
+                this.loaded = true;
+            }
         )
     }
 

@@ -1,4 +1,8 @@
 <titlebar>
+  <a left mat-icon-button [href]="fileurl" (click)="downloadCsv()" #downloadAnchor
+          [download]="filename" target="_self">
+    <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>    
+  </a>
   <h2 center> Soci </h2>
   <span right>
     <mat-form-field floatPlaceholder="never">
@@ -9,7 +13,13 @@
       </button>
     </span>
 </titlebar>
-
+<div style="width: max-content">
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link (click)="socisrv.tesserati=true" [active]="socisrv.tesserati">Tesserati</a>
+    <a mat-tab-link (click)="socisrv.tesserati=false" [active]="!socisrv.tesserati">Non tesserati</a>
+    <a mat-tab-link (click)="socisrv.tesserati=null" [active]="socisrv.tesserati==null">Tutti</a>
+  </nav>
+</div>
 <div style="overflow-x: auto">
   <mat-table #table [dataSource]="sociSource" matSort>
 
@@ -17,42 +27,42 @@
             The actual rendered columns are set as a property on the row definition" -->
 
     <ng-container cdkColumnDef="id">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_id"> ID </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.id}} </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="tessera">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Tessera </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="t_numero"> Tessera </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.getTessera().numero }} </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="nome">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Nome </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_nome"> Nome </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.nome}} </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="cognome">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Cognome </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_cognome"> Cognome </mat-header-cell>
       <mat-cell *cdkCellDef="let row">{{row.cognome}}</mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="email">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Email </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_email"> Email </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.email}} </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="carriera">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Carriera </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="ca_matricola"> Carriera </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{ row.getCarrieraAttiva() }} </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="facebook">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Facebook </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_facebook"> Facebook </mat-header-cell>
       <mat-cell *cdkCellDef="let row">{{row.facebook}}</mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="cellulare">
-      <mat-header-cell *cdkHeaderCellDef mat-sort-header> Cellulare </mat-header-cell>
+      <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_cellulare"> Cellulare </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.cellulare}}</mat-cell>
     </ng-container>
 
@@ -71,4 +81,6 @@
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  <mat-paginator #paginator [length]="socisrv.length" [pageIndex]="socisrv.index" [pageSize]="socisrv.limit" [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="pageChange($event)"></mat-paginator>
 </div>

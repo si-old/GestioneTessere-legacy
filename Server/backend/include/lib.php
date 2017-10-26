@@ -6,14 +6,20 @@ require_once('loggerFacade.php');
 
 abstract class RESTItem
 {
-
     function __construct($db)
     {
         $this->db = $db;
         $this->has_id = isset($_GET['id']) && strlen($_GET['id']) > 0;
         $this->id = $_GET['id'];
+        $this->paginate = isset($_GET['paginate']) || isset($_GET['limit']) || isset($_GET['offset']);
+        $this->limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
+        $this->offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
+        $this->has_order = isset($_GET['orderby']) && (strlen($_GET['orderby']) > 0);
+        $this->orderby = $_GET['orderby'];
+        $this->orderasc = isset($_GET['orderasc']) && filter_var($_GET['orderasc'], FILTER_VALIDATE_BOOLEAN);
         $this->session = new Session();
         $this->logger = new LoggerFacade(get_class($this), $db);
+        $this->is_csv = false;
     }
 
     public function dispatch()
@@ -30,10 +36,12 @@ abstract class RESTItem
         }
         header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
         header("Access-Control-Allow-Credentials: true");
-        header("Access-Control-Allow-Headers: Content-Type");
+        header("Access-Control-Allow-Headers: Content-Type, Content-Disposition");
+        header("Access-Control-Expose-Headers: Content-Type, Content-Disposition");
+        
         try {
             if ($this->is_session_authorized() || true) {
-                header("Content-Type: application/json");
+                $this->set_return_header($headers);
                 switch ($_SERVER['REQUEST_METHOD']) {
                     case 'GET':
                         $res = $this->do_get();
@@ -53,7 +61,11 @@ abstract class RESTItem
                         // as OPTION should
                         return;
                 }
-                echo json_encode($res, JSON_UNESCAPED_UNICODE);
+                if (!$this->is_csv) {
+                    echo json_encode($res, JSON_UNESCAPED_UNICODE);
+                } else {
+                    $this->write_csv($res);
+                }
             } else {
                 throw new RESTException(HttpStatusCode::$UNAUTHORIZED);
             }
@@ -68,6 +80,44 @@ abstract class RESTItem
         }
     }
 
+    private function set_return_header($headers)
+    {
+        if (isset($headers['Accept']) && strcasecmp($headers['Accept'], 'text/csv')==0) {
+            $this->is_csv = true;
+            header('Content-Type: text/csv');
+            $filename = get_class($this).date('_Y-m-d').'.csv';
+            header('Content-Description: File Transfer');
+            header('Content-Disposition: attachment; filename='.$filename);
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+        } else {
+            $this->is_csv = false;
+            header("Content-Type: application/json");
+        }
+    }
+
+    private function write_csv($content)
+    {
+        if (count($content)<=0) {
+            return;
+        }
+        $CSV_DELIMITER = ';';
+        $headers = array_keys_recursive($content[0]);
+        echo implode($CSV_DELIMITER, $headers)."\r\n";
+        foreach ($content as $fields) {
+            $result = [];
+            array_walk_recursive($fields, function ($item) use (&$result) {
+                if (is_array($item)) {
+                    $result[] = $item[0];
+                } else {
+                    $result[] = $item;
+                }
+            });
+            echo implode($CSV_DELIMITER, $result)."\r\n";
+        }
+    }
+
     abstract protected function do_get();
 
     abstract protected function do_post($body);
@@ -76,15 +126,18 @@ abstract class RESTItem
 
     abstract protected function is_session_authorized();
 
-    protected function log_info($message){
+    protected function log_info($message)
+    {
         $this->logger->info($this->session->get_user(), $message);
     }
 
-    protected function log_error($message){
+    protected function log_error($message)
+    {
         $this->logger->error($this->session->get_user(), $message);
     }
 
-    protected function log_debug($message){
+    protected function log_debug($message)
+    {
         $this->logger->debug($this->session->get_user(), $message);
     }
 };
@@ -103,7 +156,8 @@ class RESTException extends Exception
         return $this->code;
     }
 
-    function get_error_message(){
+    function get_error_message()
+    {
         return $this->error_message;
     }
 }

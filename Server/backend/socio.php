@@ -4,9 +4,11 @@
     require_once('include/lib.php');
     require_once('include/utils.php');
 
-class Socio extends RESTItem {
+class Socio extends RESTItem
+{
 
-    function __costruct($db) {
+    function __construct($db)
+    {
         parent::__construct($db);
         $this->has_tesserati = isset($_GET['tesserati']) && strlen($_GET['tesserati']) > 0;
         $this->tesserati = filter_var($_GET['tesserati'], FILTER_VALIDATE_BOOLEAN);
@@ -15,32 +17,45 @@ class Socio extends RESTItem {
     private $query_carriere = '	SELECT	ca.Socio as ca_socio, ca.ID as ca_id, ca.Studente as ca_studente, 
 											ca.Professione as ca_professione, ca.Matricola as ca_matricola, 
 											ca.Attiva as ca_attiva, c.ID as c_id, c.Nome as c_nome
-									FROM Carriera as ca LEFT JOIN CdL as c on c.ID = ca.CdL ';
+									FROM Carriera as ca LEFT JOIN Corso as c on c.ID = ca.Corso ';
         
     private $query_tessere = '	SELECT	t.Socio as t_socio, t.ID as t_id, t.Numero as t_numero, 
 											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
 									FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID ';
 
-    private function get_list()
+    private function get_list($paginate = false, $offset = 0, $limit = 10)
     {
         $query_carriere_attive = $this->query_carriere.'WHERE ca.Attiva = 1';
         $query_tessere_attive = $this->query_tessere.'WHERE a.Aperto = 1';
-        $query = "	SELECT	s.ID as s_id, s.Nome as s_nome, s.Cognome as s_cognome, 
+        $select_data = '	SELECT	s.ID as s_id, s.Nome as s_nome, s.Cognome as s_cognome, 
 								s.Email as s_email, s.Cellulare as s_cellulare, s.Facebook as s_facebook,
 								ca_id, ca_studente, ca_professione, ca_matricola, ca_attiva, c_id, 
-								c_nome, t_id, t_numero, a_id, a_anno, a_aperto
-						FROM Socio as s	LEFT JOIN ( $query_carriere_attive ) as c on ca_socio = s.ID
+								c_nome, t_id, t_numero, a_id, a_anno, a_aperto';
+        $from_where =" FROM Socio as s	LEFT JOIN ( $query_carriere_attive ) as c on ca_socio = s.ID
 										LEFT JOIN ( $query_tessere_attive ) as t on t_socio = s.ID";
-        $conditions = '';
-        if($this->has_tesserati) {
-            if($this->tesserati) {
-                $conditions = ' WHERE t_numero IS NOT NULL';
+        if ($this->has_tesserati) {
+            if ($this->tesserati) {
+                $from_where = $from_where.' WHERE t_numero IS NOT NULL';
             } else {
-                $conditions = ' WHERE t_numero IS NULL';
+                $from_where = $from_where.' WHERE t_numero IS NULL';
             }
         }
-        $query = $query.$conditions;
+        $query = $select_data.$from_where;
+        if ($this->has_order) {
+            $query = $query." ORDER BY $this->orderby";
+            if ($this->orderasc) {
+                $query = $query.' ASC';
+            } else {
+                $query = $query.' DESC';
+            }
+        }
+        if ($paginate) {
+            $query = $query.' LIMIT ? OFFSET ?';
+        }
         $stmt = $this->db->prepare($query);
+        if ($paginate) {
+            $stmt->bind_param('ii', $limit, $offset);
+        }
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
@@ -56,7 +71,20 @@ class Socio extends RESTItem {
                                                         'email' => $user['s_email'], 'cellulare' => $user['s_cellulare'], 'facebook' => $user['s_facebook'],
                                                         'carriere' => array($carriera), 'tessere' => array($tessera));
         }
-        return $users;
+        if ($paginate) {
+            $res = $this->db->query('SELECT COUNT(*)'.$from_where);
+            while ($row = $res->fetch_row()) {
+                $size = $row[0];
+            }
+            $to_return2 = array(
+                                'totale' => $size,
+                                'offset' => $offset,
+                                'limit' => $limit,
+                                'results' => $users );
+            return $to_return2;
+        } else {
+            return $users;
+        }
     }
 
     private function get_full_socio($id)
@@ -118,7 +146,7 @@ class Socio extends RESTItem {
             return $this->get_full_socio($this->id);
         } else {
             $this->log_debug('Ricerca tutti i soci.');
-            return $this->get_list();
+            return $this->get_list($this->paginate, $this->offset, $this->limit);
         }
     }
 
@@ -169,7 +197,7 @@ class Socio extends RESTItem {
         }
 
         $carriera = $new_socio['carriere'][0];
-        $stmt_carriera = $this->db->prepare('INSERT INTO Carriera(Socio, Studente, Professione, CdL, Matricola, Attiva) VALUES (?, ?, ?, ?, ?, 1)');
+        $stmt_carriera = $this->db->prepare('INSERT INTO Carriera(Socio, Studente, Professione, Corso, Matricola, Attiva) VALUES (?, ?, ?, ?, ?, 1)');
         $stmt_carriera->bind_param('iisis', $socio_id, $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola']);
         if (! $stmt_carriera->execute()) {
             $this->db->rollback();
@@ -192,8 +220,8 @@ class Socio extends RESTItem {
         }
 
         $carriere_ids = '';
-        $stmt_carriera_upd = $this->db->prepare('UPDATE Carriera SET Studente=?,Professione=?,CdL=?,Matricola=?,Attiva=? WHERE ID=?');
-        $stmt_carriera_ins = $this->db->prepare('INSERT INTO Carriera (Studente, Professione, CdL, Matricola, Attiva, Socio) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt_carriera_upd = $this->db->prepare('UPDATE Carriera SET Studente=?,Professione=?,Corso=?,Matricola=?,Attiva=? WHERE ID=?');
+        $stmt_carriera_ins = $this->db->prepare('INSERT INTO Carriera (Studente, Professione, Corso, Matricola, Attiva, Socio) VALUES (?, ?, ?, ?, ?, ?)');
         foreach ($new_socio['carriere'] as $carriera) {
             if (isset($carriera['id'])) {
                 $stmt_carriera_upd->bind_param('isisii', $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola'], $carriera['attiva'], $carriera['id']);

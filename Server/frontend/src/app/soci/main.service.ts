@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core'
 
 import { Socio, Carriera, Tessera, Corso, Tesseramento } from '../model'
 
-import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER, OrderingPaginableService, PaginatedResults } from '../common'
 
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 
 import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
@@ -17,10 +17,29 @@ import 'rxjs/add/operator/map';
 const REST_ENDPOINT: string = BACKEND_SERVER + "socio.php";
 
 @Injectable()
-export class SociService {
+export class SociService extends OrderingPaginableService {
 
   private _obs: Subject<Socio[]>;
   private _singleObs: Subject<Socio>;
+
+
+  _tesserati: boolean = true;
+  get tesserati(): boolean {
+    return this._tesserati;
+  }
+  set tesserati(value: boolean) {
+    this._tesserati = value;
+    this.getSoci();
+  }
+
+  httpPaginatedObserver: NextObserver<PaginatedResults<Socio>> | ErrorObserver<PaginatedResults<Socio>> = {
+    next: (value: PaginatedResults<Socio>) => {
+      this.updateSub(value.results);
+      this.length = value.totale;
+    },
+    error: (err: any) => { this._obs.error(err) },
+    complete: () => { }
+  }
 
   private httpObserver: NextObserver<Socio[]> | ErrorObserver<Socio[]> = {
     next: (value) => { this.updateSub(value); },
@@ -33,6 +52,7 @@ export class SociService {
   }
 
   constructor(private http: HttpClient) {
+    super();
     this._obs = new Subject<Socio[]>();
     this._singleObs = new Subject<Socio>();
   }
@@ -50,8 +70,23 @@ export class SociService {
     this._singleObs.next(temp);
   }
 
+  queryString() {
+    let query_string: string = super.queryString();
+    if (this.tesserati != null) {
+      query_string = [super.queryString(), 'tesserati=' + this.tesserati].filter(x => x).join('&');
+    }
+    return query_string
+  }
+
   getSoci(): Observable<Socio[]> {
-    this.http.get<Socio[]>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver)
+    let obs: any;
+    if (this.paginate) {
+      obs = this.httpPaginatedObserver
+    } else {
+      obs = this.httpObserver;
+    }
+    this.http.get<Socio[]>(REST_ENDPOINT + '?' + this.queryString(), HTTP_GLOBAL_OPTIONS)
+      .subscribe(obs)
     return this._obs;
   }
 
@@ -65,6 +100,29 @@ export class SociService {
   }
 
   addSocio(newSocio: Socio): void {
-    this.http.post<Socio[]>(REST_ENDPOINT, newSocio, HTTP_GLOBAL_OPTIONS).subscribe(this.httpObserver)
+    let obs: any;
+    if (this.paginate) {
+      obs = this.httpPaginatedObserver
+    } else {
+      obs = this.httpObserver;
+    }
+    this.http.post<Socio[]>(REST_ENDPOINT + '?' + this.queryString(), newSocio, HTTP_GLOBAL_OPTIONS).subscribe(obs)
+  }
+
+
+  requestCsv(): Observable<File> {
+    let headers = new HttpHeaders().set('Accept', 'text/csv');
+    return this.http.get(REST_ENDPOINT + '?tesserati=' + this.tesserati, {
+      ...HTTP_GLOBAL_OPTIONS,
+      observe: 'response',
+      headers: headers,
+      responseType: 'arraybuffer'
+    }).map(
+      (res: HttpResponse<ArrayBuffer>) => {
+        let disposition = res.headers.get('Content-Disposition');
+        let filename = disposition.substr(disposition.search('=')+1);
+        var file = new File([res.body], filename);
+        return file;
+      })
   }
 }
