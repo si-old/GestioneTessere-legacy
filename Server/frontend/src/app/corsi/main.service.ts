@@ -9,7 +9,7 @@ import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 import { Observable } from 'rxjs/Observable'
 import { Subject } from 'rxjs/Subject'
 
-const REST_ENDPOINT: string = BACKEND_SERVER + "cdl.php"
+const REST_ENDPOINT: string = BACKEND_SERVER + "corso.php"
 
 @Injectable()
 export class CorsiService {

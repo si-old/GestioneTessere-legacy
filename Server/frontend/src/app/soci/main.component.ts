@@ -6,7 +6,7 @@ import { SociService } from './main.service'
 import { AggiuntaSocioComponent } from './aggiunta.component'
 import { DettagliSocioComponent } from './dettagli.component'
 
-import { MatSort, MatSnackBar, MatDialog, MatDialogRef, Sort } from '@angular/material'
+import { MatSort, MatSnackBar, MatDialog, MatDialogRef, Sort, PageEvent } from '@angular/material'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk/table';
@@ -32,15 +32,6 @@ export class SociComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
 
-  _tesserati: boolean = true;
-  get tesserati(): boolean {
-    return this._tesserati;
-  }
-  set tesserati(value: boolean) {
-    this._tesserati = value;
-    this.socisrv.getSoci(value);
-  }
-
   constructor(private socisrv: SociService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -48,7 +39,8 @@ export class SociComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sociSource = new SociDataSource(this.socisrv, this.tesserati);
+    this.socisrv.paginate = true;
+    this.sociSource = new SociDataSource(this.socisrv);
     this.changeDetector.detectChanges();
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
@@ -57,7 +49,11 @@ export class SociComponent implements OnInit {
         if (this.sociSource) { this.sociSource.filter = this.filter.nativeElement.value; }
       });
     this.sorter.sortChange.subscribe(
-      (next: Sort) => { this.sociSource.sort = next }
+      (next: Sort) => {
+        this.socisrv.orderby = (!next.active || !next.direction) ? '' : next.active;
+        this.socisrv.orderasc = (next.direction == 'asc');
+        this.socisrv.getSoci();
+      }
     )
   }
 
@@ -76,6 +72,12 @@ export class SociComponent implements OnInit {
       data: { socio: selected }
     });
   }
+
+  pageChange(event: PageEvent) {
+    this.socisrv.index = event.pageIndex;
+    this.socisrv.limit = event.pageSize;
+    this.socisrv.getSoci();
+  }
 }
 
 class SociDataSource extends DataSource<Socio>{
@@ -86,39 +88,25 @@ class SociDataSource extends DataSource<Socio>{
     this._filterChange.next(f);
   }
 
-  //needed to give a default value to let the flow work
-  _sortChange = new BehaviorSubject<Sort>({ active: '', direction: '' })
-
-  set sort(next: Sort) {
-    this._sortChange.next(next); //aliased observable to assure a first emission. sortChange doesn't do that
-  }
-
-  constructor(private socisrv: SociService, private tesserati: boolean) {
+  constructor(private socisrv: SociService) {
     super();
   }
 
   connect(): Observable<Socio[]> {
     const displayDataChanges = [
       this._filterChange,
-      this._sortChange,
-      this.socisrv.getSoci(this.tesserati)
+      this.socisrv.getSoci()
     ];
     return Observable.combineLatest(
       ...displayDataChanges,
-      (filter_in: string, sort_in: Sort, input: Socio[]) => {
-        return { data: input, filter: filter_in, sort: sort_in }
+      (filter_in: string, input: Socio[]) => {
+        return { data: input, filter: filter_in }
       }).map(
       (x: TableChangeData<Socio[]>) => {
         let data = x.data.slice().filter((item: Socio) => {
           return item.contains(x.filter.toLowerCase());
         })
-        if (!x.sort.active || x.sort.direction == '') {
-          return data;
-        } else {
-          return data.sort(
-            (a, b) => { return a.compare(b, x.sort.active, x.sort.direction) }
-          );
-        }
+        return data;
       }
       );
   }

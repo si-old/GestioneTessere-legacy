@@ -15,6 +15,9 @@ abstract class RESTItem
         $this->paginate = isset($_GET['paginate']) || isset($_GET['limit']) || isset($_GET['offset']);
         $this->limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
         $this->offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
+        $this->has_order = isset($_GET['orderby']) && (strlen($_GET['orderby']) > 0);
+        $this->orderby = $_GET['orderby'];
+        $this->orderasc = isset($_GET['orderasc']) && filter_var($_GET['orderasc'], FILTER_VALIDATE_BOOLEAN);
         $this->session = new Session();
         $this->logger = new LoggerFacade(get_class($this), $db);
     }
@@ -79,15 +82,18 @@ abstract class RESTItem
 
     abstract protected function is_session_authorized();
 
-    protected function log_info($message){
+    protected function log_info($message)
+    {
         $this->logger->info($this->session->get_user(), $message);
     }
 
-    protected function log_error($message){
+    protected function log_error($message)
+    {
         $this->logger->error($this->session->get_user(), $message);
     }
 
-    protected function log_debug($message){
+    protected function log_debug($message)
+    {
         $this->logger->debug($this->session->get_user(), $message);
     }
 };
@@ -106,7 +112,8 @@ class RESTException extends Exception
         return $this->code;
     }
 
-    function get_error_message(){
+    function get_error_message()
+    {
         return $this->error_message;
     }
 }
