@@ -37,7 +37,7 @@ class Tesseramento extends RESTItem
         
     /*
         request: {
-            action: 'open', 'close', 'edit'
+            action: 'open', 'edit', 'close' (close è disabilitato)
             anno: se 'open' o 'edit', stringa con il nuovo anno, da aprire o modificare
             id: solo se 'edit', numero del tesseramento da modificare
         }
@@ -45,7 +45,7 @@ class Tesseramento extends RESTItem
     protected function do_post($data)
     {
         $valid_open = isset($data['action']) && strcasecmp($data['action'], 'open') == 0 && isset($data['anno']);
-        $valid_close = isset($data['action']) && strcasecmp($data['action'], 'close') == 0;
+        $valid_close = false; //isset($data['action']) && strcasecmp($data['action'], 'close') == 0;
         $valid_edit = isset($data['action']) &&  strcasecmp($data['action'], 'edit') == 0 && isset($data['anno']) && isset($data['id']);
         $valid_format = $valid_open || $valid_close || $valid_edit;
         if ($valid_format) {
