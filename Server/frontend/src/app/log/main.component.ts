@@ -18,7 +18,7 @@ export class LogComponent implements OnInit {
     displayedColumns: string[] = ['orario', 'utente', 'livello', 'origine', 'messaggio'];
     logSource: ObservableDataSource<LogEntry>;
 
-    constructor(private _logsrv: LogService,
+    constructor(public _logsrv: LogService,
         private changeDetector: ChangeDetectorRef,
         private dialog: MatDialog) {
             this._logsrv.paginate = true;

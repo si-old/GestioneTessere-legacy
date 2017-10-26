@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core'
 @Component({
     selector: 'loading-placeholder',
     template: `
-    <div *ngIf="!loaded" class="centered">
+    <div class="centered">
         <mat-spinner></mat-spinner>
         <h3 style="padding: 10px 0">Loading...</h3>
     </div>

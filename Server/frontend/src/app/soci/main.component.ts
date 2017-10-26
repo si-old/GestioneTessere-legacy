@@ -32,7 +32,7 @@ export class SociComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
 
-  constructor(private socisrv: SociService,
+  constructor(public socisrv: SociService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private changeDetector: ChangeDetectorRef) {
