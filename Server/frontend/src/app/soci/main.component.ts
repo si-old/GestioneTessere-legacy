@@ -6,7 +6,7 @@ import { SociService } from './main.service'
 import { AggiuntaSocioComponent } from './aggiunta.component'
 import { DettagliSocioComponent } from './dettagli.component'
 
-import { MatSort, MatSnackBar, MatDialog, MatDialogRef, Sort, PageEvent } from '@angular/material'
+import { MatSort, MatSnackBar, MatDialog, MatDialogRef, Sort, PageEvent, MatAnchor } from '@angular/material'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk/table';
@@ -31,15 +31,6 @@ export class SociComponent implements OnInit {
 
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
-
-  _tesserati: boolean = true;
-  get tesserati(): boolean {
-    return this._tesserati;
-  }
-  set tesserati(value: boolean) {
-    this._tesserati = value;
-    this.socisrv.getSoci(value);
-  }
 
   constructor(private socisrv: SociService,
     private snackBar: MatSnackBar,
@@ -86,6 +77,30 @@ export class SociComponent implements OnInit {
     this.socisrv.index = event.pageIndex;
     this.socisrv.limit = event.pageSize;
     this.socisrv.getSoci();
+  }
+
+  filename: string;
+  fileurl: string;
+
+  once = false;
+
+  @ViewChild('downloadAnchor') anchor: MatAnchor;
+
+  downloadCsv() {
+    if (!this.once) {
+      this.socisrv.requestCsv().subscribe(
+        (file: File) => {
+          this.once = true;
+          this.anchor._elementRef.nativeElement.download = file.name;
+          this.anchor._elementRef.nativeElement.href = URL.createObjectURL(file);
+          this.anchor._elementRef.nativeElement.click();
+        }
+      );
+      return false;
+    } else {
+      this.once = false;
+      return true;
+    }
   }
 }
 

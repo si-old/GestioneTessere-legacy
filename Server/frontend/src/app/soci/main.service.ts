@@ -4,7 +4,7 @@ import { Socio, Carriera, Tessera, Corso, Tesseramento } from '../model'
 
 import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER, OrderingPaginableService, PaginatedResults } from '../common'
 
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 
 import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
@@ -107,5 +107,22 @@ export class SociService extends OrderingPaginableService {
       obs = this.httpObserver;
     }
     this.http.post<Socio[]>(REST_ENDPOINT + '?' + this.queryString(), newSocio, HTTP_GLOBAL_OPTIONS).subscribe(obs)
+  }
+
+
+  requestCsv(): Observable<File> {
+    let headers = new HttpHeaders().set('Accept', 'text/csv');
+    return this.http.get(REST_ENDPOINT + '?tesserati=' + this.tesserati, {
+      ...HTTP_GLOBAL_OPTIONS,
+      observe: 'response',
+      headers: headers,
+      responseType: 'arraybuffer'
+    }).map(
+      (res: HttpResponse<ArrayBuffer>) => {
+        let disposition = res.headers.get('Content-Disposition');
+        let filename = disposition.substr(disposition.search('=')+1);
+        var file = new File([res.body], filename);
+        return file;
+      })
   }
 }
