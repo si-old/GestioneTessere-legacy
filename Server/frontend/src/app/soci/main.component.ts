@@ -22,7 +22,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 @Component({
   selector: 'soci',
   templateUrl: './main.component.html',
-  styleUrls: ['../common/style.css','../common/mainroutes.style.css', './main.component.css'],
+  styleUrls: ['../common/style.css', '../common/mainroutes.style.css', './main.component.css'],
 })
 export class SociComponent implements OnInit {
 
@@ -32,6 +32,15 @@ export class SociComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
 
+  _tesserati: boolean = true;
+  get tesserati(): boolean {
+    return this._tesserati;
+  }
+  set tesserati(value: boolean) {
+    this._tesserati = value;
+    this.socisrv.getSoci(value);
+  }
+
   constructor(private socisrv: SociService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -39,7 +48,7 @@ export class SociComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sociSource = new SociDataSource(this.socisrv);
+    this.sociSource = new SociDataSource(this.socisrv, this.tesserati);
     this.changeDetector.detectChanges();
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
@@ -84,7 +93,7 @@ class SociDataSource extends DataSource<Socio>{
     this._sortChange.next(next); //aliased observable to assure a first emission. sortChange doesn't do that
   }
 
-  constructor(private socisrv: SociService) {
+  constructor(private socisrv: SociService, private tesserati: boolean) {
     super();
   }
 
@@ -92,7 +101,7 @@ class SociDataSource extends DataSource<Socio>{
     const displayDataChanges = [
       this._filterChange,
       this._sortChange,
-      this.socisrv.getSoci()
+      this.socisrv.getSoci(this.tesserati)
     ];
     return Observable.combineLatest(
       ...displayDataChanges,

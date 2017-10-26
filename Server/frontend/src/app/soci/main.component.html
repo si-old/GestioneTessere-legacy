@@ -9,7 +9,13 @@
       </button>
     </span>
 </titlebar>
-
+<div style="width: max-content">
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link (click)="tesserati=true" [active]="tesserati">Tesserati</a>
+    <a mat-tab-link (click)="tesserati=false" [active]="!tesserati">Non tesserati</a>
+    <a mat-tab-link (click)="tesserati=null" [active]="tesserati==null">Tutti</a>
+  </nav>
+</div>
 <div style="overflow-x: auto">
   <mat-table #table [dataSource]="sociSource" matSort>
 
