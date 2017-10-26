@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material'
 import { Tesseramento } from '../model'
 import { TesseramentiService } from './main.service'
 
-import { ConfirmDialog, TextInputDialog } from '../dialogs'
+import { ConfirmDialog, TextInputDialog, MessageDialog } from '../dialogs'
 
 import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource } from '../common'
 
@@ -77,5 +77,15 @@ export class TesseramentiComponent implements OnInit {
     revertChanges(t: Tesseramento) {
         t.anno = this.oldValues[t.id];
         this.editing[t.id] = false;
+    }
+
+    tessereCallback(t: Tesseramento){
+        this.dialog.open(MessageDialog, {
+            data: {
+                message: "Le tessere assegnate sono: "+ t.tessere
+                                                        .sort((a,b) => {return a - b})
+                                                        .join(', ')
+            }
+        })
     }
 }
