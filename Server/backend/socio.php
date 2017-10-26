@@ -6,7 +6,7 @@
 
 class Socio extends RESTItem {
 
-    function __costruct($db) {
+    function __construct($db) {
         parent::__construct($db);
         $this->has_tesserati = isset($_GET['tesserati']) && strlen($_GET['tesserati']) > 0;
         $this->tesserati = filter_var($_GET['tesserati'], FILTER_VALIDATE_BOOLEAN);

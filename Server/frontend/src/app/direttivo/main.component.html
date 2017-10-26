@@ -54,7 +54,7 @@
             <button mat-icon-button (click)="commitChanges(row)" *ngIf="editing[row.id_direttivo]">
                 <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
             </button>
-            <a mat-icon-button routerLink="/soci/{{row.id_direttivo}}" *ngIf="row.id_direttivo>=0">
+            <a mat-icon-button routerLink="/soci/{{row.id}}" *ngIf="row.id>=0">
                 <mat-icon matTooltip="Dettagli" matTooltipPosition="below">link</mat-icon>
             </a>
             <button mat-icon-button (click)="deleteMembro(row)">
