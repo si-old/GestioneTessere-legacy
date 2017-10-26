@@ -1,5 +1,4 @@
 ﻿R 1.1
-+ aggiungere TAB per soci tesserati / non tesserati -> tab-tesserati-e_non
 + rinominare CdL in Corso -> rename-cdl
 - gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
 
