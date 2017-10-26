@@ -1,11 +1,12 @@
 R 1.1
-+ gestione numeri di tessera usati / disponibili
-+ aggiungere TAB per soci tesserati / non tesserati
++ gestione numeri di tessera usati / disponibili -> già in develop
++ aggiungere TAB per soci tesserati / non tesserati -> tab-tesserati-e_non
++ rinominare CdL in Corso -> rename-cdl
 - gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
 
 R 1.2
 - aggiustare gestione errori mostrando un dialog (appena capisco cosa non funziona)
-- implementare il ritorno all'url di arrivo per il login (se si viene da un redirect, si torna all'url iniziale anzich� a soci)
-- paginazione soci
-- export della lista soci e email come csv
+- implementare il ritorno all'url di arrivo per il login (se si viene da un redirect, si torna all'url iniziale anzichè a soci)
+- paginazione soci -> paginazione-soci
+- export della lista soci e email come csv -> file-csv
 - modifica in layout responsive per visualizzazione da cellulare
