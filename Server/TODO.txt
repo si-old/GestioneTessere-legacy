@@ -1,9 +1,9 @@
 ﻿R 1.1
-- gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
+- paginazione soci -> paginazione-soci
+- export della lista soci e email come csv -> file-csv
 
 R 1.2
 - aggiustare gestione errori mostrando un dialog (appena capisco cosa non funziona)
 - implementare il ritorno all'url di arrivo per il login (se si viene da un redirect, si torna all'url iniziale anzichè a soci)
-- paginazione soci -> paginazione-soci
-- export della lista soci e email come csv -> file-csv
+- gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
 - modifica in layout responsive per visualizzazione da cellulare
