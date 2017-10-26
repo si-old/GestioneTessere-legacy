@@ -45,10 +45,14 @@
                 <button *ngIf="row.aperto" mat-icon-button (click)="closeCallback()">
                     <mat-icon matTooltip="Chiudi" matTooltipPosition="right">lock</mat-icon>
                 </button>
+                <button *ngIf="row.aperto" mat-icon-button (click)="tessereCallback(row)">
+                    <mat-icon matTooltip="Info tessere" matTooltipPosition="right">more</mat-icon>
+                </button>
             </mat-cell>
         </ng-container>
 
         <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+
 </div>
