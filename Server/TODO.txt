@@ -1,4 +1,3 @@
-<<<<<<< b9dcaa23c3180a4e1e0fd9a18f6771a19e992485
 ﻿R 1.1
 + rinominare CdL in Corso -> rename-cdl
 - gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
