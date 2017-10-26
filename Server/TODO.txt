@@ -1,5 +1,4 @@
 ﻿R 1.1
-+ rinominare CdL in Corso -> rename-cdl
 - gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
 
 R 1.2
