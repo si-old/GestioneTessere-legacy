@@ -191,7 +191,6 @@
         </div>
     </form>
 </div>
-<div *ngIf="!loaded" class="centered">
-    <mat-spinner></mat-spinner>
-    <h3 style="padding: 10px 0">Loading...</h3>
-</div>
+<ng-container *ngIf="!loaded">
+    <loading-placeholder></loading-placeholder>
+</ng-container>
