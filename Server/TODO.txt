@@ -1,5 +1,4 @@
 ﻿R 1.1
-- paginazione soci -> paginazione-soci
 - export della lista soci e email come csv -> file-csv
 
 R 1.2
