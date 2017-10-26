@@ -12,14 +12,14 @@ export class PaginableService{
     offset: number = 0;
     length: number = 0;
 
-    get index(): number{
+    public get index(): number{
         return Math.floor(this.offset / this.limit);
     }
-    set index(value: number){
+    public set index(value: number){
         this.offset = value * this.limit;
     }
 
-    get paginationQuery(): string {
+    public queryString(): string {
         if (this.paginate) {
             return "paginate&limit=" + this.limit + "&offset=" + this.offset
         } else {
@@ -27,11 +27,11 @@ export class PaginableService{
         }
     }
 
-    nextPage(){
+    public nextPage(){
         this.offset += this.limit
     }
 
-    previousPage(){
+    public previousPage(){
         this.offset -= this.limit
         if(this.offset < 0) this.offset = 0;
     }
