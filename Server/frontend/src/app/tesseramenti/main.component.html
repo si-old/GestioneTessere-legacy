@@ -42,9 +42,6 @@
                 <button *ngIf="editing[row.id]" mat-icon-button (click)="revertChanges(row)">
                     <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
                 </button>
-                <button *ngIf="row.aperto" mat-icon-button (click)="closeCallback()">
-                    <mat-icon matTooltip="Chiudi" matTooltipPosition="right">lock</mat-icon>
-                </button>
                 <button *ngIf="row.aperto" mat-icon-button (click)="tessereCallback(row)">
                     <mat-icon matTooltip="Info tessere" matTooltipPosition="right">more</mat-icon>
                 </button>
