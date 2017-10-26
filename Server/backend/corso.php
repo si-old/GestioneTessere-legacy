@@ -2,7 +2,7 @@
     require_once('include/config.php');
     require_once('include/lib.php');
     
-class CdL extends RESTItem
+class Corso extends RESTItem
 {
 
     function __construct($db){
@@ -13,7 +13,7 @@ class CdL extends RESTItem
         
     protected function do_get()
     {
-        $stmt = $this->db->prepare('SELECT * FROM CdL ORDER BY ID ASC');
+        $stmt = $this->db->prepare('SELECT * FROM Corso ORDER BY ID ASC');
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
@@ -38,10 +38,10 @@ class CdL extends RESTItem
         $update = isset($data['id']);
         if ($valid) {
             if ($update) {
-                $stmt = $this->db->prepare('UPDATE CdL SET Nome = ? WHERE ID = ?');
+                $stmt = $this->db->prepare('UPDATE Corso SET Nome = ? WHERE ID = ?');
                 $stmt->bind_param('si', $data['nome'], $data['id']);
             } else {
-                $stmt = $this->db->prepare('INSERT INTO CdL (Nome) VALUES (?)');
+                $stmt = $this->db->prepare('INSERT INTO Corso (Nome) VALUES (?)');
                 $stmt->bind_param('s', $data['nome']);
             }
             if (! $stmt->execute()) {
@@ -57,12 +57,12 @@ class CdL extends RESTItem
     protected function do_del()
     {
         if ($this->has_id && $this->has_sostituto) {
-            $stmt = $this->db->prepare('UPDATE Carriera SET CdL = ? WHERE CdL = ?');
+            $stmt = $this->db->prepare('UPDATE Carriera SET Corso = ? WHERE Corso = ?');
             $stmt->bind_param('ii', $this->sostituto, $this->id);
             if (! $stmt->execute()) {
                 throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
             }
-            $stmt = $this->db->prepare('DELETE FROM CdL WHERE ID=?');
+            $stmt = $this->db->prepare('DELETE FROM Corso WHERE ID=?');
             $stmt->bind_param('i', $this->id);
             if (! $stmt->execute()) {
                 throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
@@ -82,5 +82,5 @@ class CdL extends RESTItem
     
     // $db ho dovuto portarla dentro col costruttore di RESTItem
     // è definita in config.php
-    $temp = new CdL($db);
+    $temp = new Corso($db);
     $temp->dispatch();
