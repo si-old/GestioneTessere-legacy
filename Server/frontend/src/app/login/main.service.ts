@@ -1,11 +1,12 @@
 import { Injectable, Injector } from '@angular/core'
-import { Router, CanActivate } from '@angular/router'
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import {
-        HttpClient,
-        HttpInterceptor,
-        HttpRequest,
-        HttpHandler,
-        HttpEvent } from '@angular/common/http'
+    HttpClient,
+    HttpInterceptor,
+    HttpRequest,
+    HttpHandler,
+    HttpEvent
+} from '@angular/common/http'
 
 import { MatDialog } from '@angular/material'
 
@@ -35,8 +36,8 @@ export class LoginService {
     cookie: string = null;
 
     constructor(private http: HttpClient,
-                private _router: Router,
-                private _dialog: MatDialog) {
+        private _router: Router,
+        private _dialog: MatDialog) {
 
     }
 
@@ -45,7 +46,7 @@ export class LoginService {
             REST_ENDPOINT,
             { user: user, password: password },
             HTTP_GLOBAL_OPTIONS)
-        .map(
+            .map(
             (body) => {
                 if (body.login) {
                     localStorage.setItem(LSItemKey_admin, JSON.stringify(body.admin));
@@ -54,7 +55,7 @@ export class LoginService {
                 }
                 return body.login
             }
-        )
+            )
     }
 
     refreshTimeout() {
@@ -67,7 +68,7 @@ export class LoginService {
                 this._dialog.open(MessageDialog, {
                     data: {
                         message: "La sessione è scaduta, effetua di nuovo il login!",
-                        callback: () => {}
+                        callback: () => { }
                     }
                 });
                 localStorage.clear();
@@ -79,11 +80,11 @@ export class LoginService {
 
     logout() {
         localStorage.clear();
-        if(this.timeout){
+        if (this.timeout) {
             window.clearTimeout(this.timeout);
         }
         this.http.delete<LoginAnswer>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(
-            () => {}
+            () => { }
         )
     }
 
@@ -112,15 +113,18 @@ export class LoginService {
 export class LoggedinGuard implements CanActivate {
 
     constructor(private _login: LoginService,
-        private _router: Router,
-        private _dialog: MatDialog) {
+        private _router: Router) {
 
     }
 
-    canActivate(): boolean {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         let toReturn: boolean = this._login.isLoggedIn();
         if (!toReturn) {
-            this._router.navigate(['/login'])
+            this._router.navigate(['/login'], {
+                queryParams: {
+                    return: encodeURI(state.url)
+                }
+            })
         }
         return toReturn;
     }
@@ -131,15 +135,22 @@ export class LoggedinGuard implements CanActivate {
 export class AdminGuard implements CanActivate {
 
     constructor(private _login: LoginService,
-        private _router: Router,
-        private _dialog: MatDialog) {
+        private _router: Router) {
 
     }
 
-    canActivate(): boolean {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         let toReturn: boolean = this._login.isLoggedIn() && this._login.isAdmin();
         if (!toReturn) {
-            this._router.navigate(['/login'])
+            if (this._login.isLoggedIn()) {
+                this._router.navigate(['/soci']);
+            } else {
+                this._router.navigate(['/login'], {
+                    queryParams: {
+                        return: encodeURI(state.url)
+                    }
+                })
+            }
         }
         return toReturn;
     }

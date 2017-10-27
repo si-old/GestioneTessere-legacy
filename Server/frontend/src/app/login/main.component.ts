@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 
 import { MatSnackBar } from '@angular/material'
 
@@ -23,16 +23,25 @@ export class LoginComponent implements OnInit {
     password: string
 
     error: boolean = true;
+    return: string = '/soci';
 
     constructor(private snack: MatSnackBar,
         private _loginsrv: LoginService,
-        private _router: Router) {
+        private _router: Router,
+        private _route: ActivatedRoute) {
     }
 
     ngOnInit() {
-        if (this._loginsrv.isLoggedIn()) {
-            this._router.navigate(['/soci'])
-        }
+        this._route.queryParams.subscribe(
+            (query: any) => {
+                if (query.return) {
+                    this.return = decodeURI(query.return);
+                }
+                if (this._loginsrv.isLoggedIn()) {
+                    this._router.navigate([this.return]);
+                }
+            }
+        )
     }
 
     login(form) {
@@ -41,7 +50,7 @@ export class LoginComponent implements OnInit {
             this._loginsrv.login(this.user, this.password).subscribe(
                 (res) => {
                     if (res) {
-                        this._router.navigate(['/soci'])
+                        this._router.navigate([this.return])
                     } else {
                         this.snack.open("Errore di autenticazione", "OK", {
                             duration: 1500,
