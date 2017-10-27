@@ -33,7 +33,6 @@ interface LoginAnswer {
 export class LoginService {
 
     timeout: number = null;
-    cookie: string = null;
 
     constructor(private http: HttpClient,
         private _router: Router,
@@ -51,6 +50,7 @@ export class LoginService {
                 if (body.login) {
                     localStorage.setItem(LSItemKey_admin, JSON.stringify(body.admin));
                     localStorage.setItem(LSItemKey_user, JSON.stringify(user));
+                    localStorage.setItem(LSItemKey_expiration, JSON.stringify(Date.now()));
                     this.refreshTimeout();
                 }
                 return body.login
@@ -68,40 +68,47 @@ export class LoginService {
                 this._dialog.open(MessageDialog, {
                     data: {
                         message: "La sessione è scaduta, effetua di nuovo il login!",
-                        callback: () => { }
                     }
                 });
-                localStorage.clear();
-                this.cookie = null;
+                this.resetSession();
             },
             duration
         )
     }
 
-    logout() {
+    validateSession() {
+        let last_time = JSON.parse(localStorage.getItem(LSItemKey_expiration));
+        let this_time = Date.now();
+        if (last_time && this_time - last_time < duration) {
+            this.refreshTimeout()
+            localStorage.setItem(LSItemKey_expiration, JSON.stringify(this_time));
+        } else {
+            this.resetSession();
+        }
+    }
+
+    private resetSession() {
         localStorage.clear();
         if (this.timeout) {
             window.clearTimeout(this.timeout);
         }
+    }
+
+    logout() {
+        this.resetSession();
         this.http.delete<LoginAnswer>(REST_ENDPOINT, HTTP_GLOBAL_OPTIONS).subscribe(
-            () => { }
+            () => {}
         )
     }
 
     isLoggedIn(): boolean {
-        let toReturn: boolean = JSON.parse(localStorage.getItem(LSItemKey_admin)) != null;
-        if (toReturn) {
-            this.refreshTimeout();
-        }
-        return toReturn;
+        this.validateSession();
+        return JSON.parse(localStorage.getItem(LSItemKey_admin)) != null;
     }
 
     isAdmin(): boolean {
-        let toReturn: boolean = JSON.parse(localStorage.getItem(LSItemKey_admin));
-        if (toReturn) {
-            this.refreshTimeout()
-        }
-        return toReturn;
+        this.validateSession();
+        return JSON.parse(localStorage.getItem(LSItemKey_admin));
     }
 
     getUsername(): string {
@@ -135,7 +142,7 @@ export class LoggedinGuard implements CanActivate {
 export class AdminGuard implements CanActivate {
 
     constructor(private _login: LoginService,
-        private _router: Router) {
+        private _router: Router, private _dialog: MatDialog) {
 
     }
 
@@ -144,6 +151,11 @@ export class AdminGuard implements CanActivate {
         if (!toReturn) {
             if (this._login.isLoggedIn()) {
                 this._router.navigate(['/soci']);
+                this._dialog.open(MessageDialog, {
+                    data: {
+                        message: "Non hai abbastanza permessi per accedere alla sezione!",
+                    }
+                });
             } else {
                 this._router.navigate(['/login'], {
                     queryParams: {
