@@ -2,3 +2,5 @@
 - aggiustare gestione errori mostrando un dialog (appena capisco cosa non funziona)
 - gestione connessioni lente / aggiunta feedback inizio-fine richieste remote
 - modifica in layout responsive per visualizzazione da cellulare
+
+- Verifica e correzione soci duplicati
