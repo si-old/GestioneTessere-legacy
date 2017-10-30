@@ -5,19 +5,25 @@
   }
   
 .to_left{
-    margin-right: auto;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
 }
+
+.centered{
+    flex: 1;
+    display: flex;
+    justify-content: space-around
+}
+
+.to_right{
+    display: flex;
+    flex: 1;
+    justify-content: flex-end
+}
+
 
 .v-centered{
     margin-top: auto;
     margin-bottom: auto;
-}
-
-.centered{
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.to_right{
-    margin-left: auto;
 }
