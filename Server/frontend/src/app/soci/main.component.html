@@ -1,7 +1,6 @@
 <titlebar>
-  <a left mat-icon-button [href]="fileurl" (click)="downloadCsv()" #downloadAnchor
-          [download]="filename" target="_self">
-    <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>    
+  <a left mat-icon-button [href]="fileurl" (click)="downloadCsv()" #downloadAnchor [download]="filename" target="_self">
+    <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>
   </a>
   <h2 center> Soci </h2>
   <span right>
@@ -13,12 +12,20 @@
       </button>
     </span>
 </titlebar>
-<div style="width: max-content">
-  <nav mat-tab-nav-bar>
-    <a mat-tab-link (click)="socisrv.tesserati=true" [active]="socisrv.tesserati">Tesserati</a>
-    <a mat-tab-link (click)="socisrv.tesserati=false" [active]="!socisrv.tesserati">Non tesserati</a>
-    <a mat-tab-link (click)="socisrv.tesserati=null" [active]="socisrv.tesserati==null">Tutti</a>
-  </nav>
+<div style="display: flex; justify-content: space-between; align-items: center">
+  <div style="width: max-content">
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link (click)="socisrv.tesserati=true" [active]="socisrv.tesserati">Tesserati</a>
+      <a mat-tab-link (click)="socisrv.tesserati=false" [active]="!socisrv.tesserati">Non tesserati</a>
+      <a mat-tab-link (click)="socisrv.tesserati=null" [active]="socisrv.tesserati==null">Tutti</a>
+    </nav>
+  </div>
+  <div>
+    <mat-slide-toggle [checked]="!socisrv.paginate" labelPosition="before"
+      (change)="togglePagination()" color="primary">
+      Mostra tutti
+    </mat-slide-toggle>
+  </div>
 </div>
 <div style="overflow-x: auto">
   <mat-table #table [dataSource]="sociSource" matSort>
@@ -82,5 +89,5 @@
     <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
   <mat-paginator #paginator [length]="socisrv.length" [pageIndex]="socisrv.index" [pageSize]="socisrv.limit" [pageSizeOptions]="[5, 10, 25, 100]"
-    (page)="pageChange($event)"></mat-paginator>
+    (page)="pageChange($event)" *ngIf="socisrv.paginate"></mat-paginator>
 </div>

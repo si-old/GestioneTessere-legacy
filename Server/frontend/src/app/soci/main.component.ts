@@ -79,6 +79,11 @@ export class SociComponent implements OnInit {
     this.socisrv.getSoci();
   }
 
+  togglePagination(){
+    this.socisrv.paginate=!this.socisrv.paginate;
+    this.socisrv.getSoci();
+  }
+
   filename: string;
   fileurl: string;
 
