@@ -5,12 +5,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout'
 import { AppComponent } from './app.component';
 
 
 import { AppRoutingModule } from './app-routing.module';
 import { VieweditModule } from './viewedit/viewedit.module'
 import { MaterialModule } from './material.module'
+
 
 import { SociComponent } from './soci/main.component'
 import { AggiuntaSocioComponent } from './soci/aggiunta.component'
@@ -39,14 +41,18 @@ import { BlacklistService } from './mail/blacklist.service'
 import { LogService } from './log/main.service'
 import { LogComponent } from './log/main.component'
 
-import {  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, ScegliCorsoDialog,
-          CreateTesseraDialog, MessageDialog, LoadingDialog } from './dialogs'
+import {
+  ConfirmDialog, TextInputDialog, CreateCarrieraDialog, ScegliCorsoDialog,
+  CreateTesseraDialog, MessageDialog, LoadingDialog
+} from './dialogs'
 
 import { ToolbarComponent } from './toolbar.component'
 import { TitleBarComponent } from './titlebar.component'
 
-import {  EqualFieldsValidatorDirective, DialogErrorHandler, LoadingPlaceholderComponent,
-          CheckboxGroupValidatorDirective, NotInArrayValidatorDirective } from './common'
+import {
+  EqualFieldsValidatorDirective, DialogErrorHandler, LoadingPlaceholderComponent,
+  CheckboxGroupValidatorDirective, NotInArrayValidatorDirective
+} from './common'
 
 @NgModule({
   declarations: [
@@ -84,7 +90,8 @@ import {  EqualFieldsValidatorDirective, DialogErrorHandler, LoadingPlaceholderC
     VieweditModule,
     HttpClientModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FlexLayoutModule
   ],
   providers: [
     SociService,

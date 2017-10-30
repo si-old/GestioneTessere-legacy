@@ -1,0 +1,45 @@
+<mat-sidenav-container>
+    <mat-sidenav fxHide fxHide.lt-md="false">
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/soci">Soci</a>
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
+        <a mat-raised-button class="custom-button" color="accent" routerLink="/mail">Mail</a>
+        <ng-container *ngIf="isAdmin">
+            <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
+            <a mat-raised-button class="custom-button" color="accent" routerLink="/log">Log</a>
+        </ng-container>
+    </mat-sidenav>
+
+    <mat-toolbar color="primary">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="grow">
+            <div fxHide fxHide.lt-md="true" fxFlex>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/soci">Soci</a>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/mail">Mail</a>
+                <ng-container *ngIf="isAdmin">
+                    <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
+                    <a mat-raised-button class="custom-button" color="accent" routerLink="/log">Log</a>
+                </ng-container>
+            </div>
+            <div fxShow fxShow.lt-md="false"=fxFlex>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/soci">Soci</a>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
+                <a mat-raised-button class="custom-button" color="accent" routerLink="/mail">Mail</a>
+                <ng-container *ngIf="isAdmin">
+                    <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
+                    <a mat-raised-button class="custom-button" color="accent" routerLink="/log">Log</a>
+                </ng-container>
+            </div>
+            <!--<a mat-raised-button class="custom-button" color="accent" (click)="dostuff()">Cose</a>-->
+            <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                Ciao {{username}}
+                <button mat-fab color="accent" class="right-button" (click)="logout()">
+                        <mat-icon matTooltip="Logout" matTooltipPosition="below">power_settings_new</mat-icon>
+                    </button>
+            </div>
+        </div>
+    </mat-toolbar>
+    <ng-content></ng-content>
+</mat-sidenav-container>
