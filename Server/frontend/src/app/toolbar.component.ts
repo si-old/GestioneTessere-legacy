@@ -7,27 +7,7 @@ import { HttpClient } from '@angular/common/http'
 
 @Component({
     selector: 'toolbar',
-    template: `
-    <mat-toolbar color="primary">
-        <a mat-raised-button class="custom-button" color="accent" routerLink="/soci">Soci</a>
-        <a mat-raised-button class="custom-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
-        <a mat-raised-button class="custom-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
-        <a mat-raised-button class="custom-button" color="accent" routerLink="/mail">Mail</a>        
-        <ng-container *ngIf="isAdmin">
-            <a mat-raised-button class="custom-button" color="accent" routerLink="/direttivo">Direttivo</a>
-            <a mat-raised-button class="custom-button" color="accent" routerLink="/log">Log</a>            
-        </ng-container>
-        <!--<a mat-raised-button class="custom-button" color="accent" (click)="dostuff()">Cose</a>-->
-        <div class="full-size">
-            <div class="to-right">
-                Ciao {{username}}
-                <button mat-fab color="accent" class="right-button" (click)="logout()">
-                    <mat-icon matTooltip="Logout" matTooltipPosition="below">power_settings_new</mat-icon>
-                </button>
-            </div>
-        </div>
-    </mat-toolbar>
-    `,
+    templateUrl: './toolbar.component.html',
     styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent {

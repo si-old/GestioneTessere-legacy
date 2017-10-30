@@ -3,8 +3,9 @@
 <div class="mat-app-background">
   <div class="main-container">
     <div class="example-container mat-elevation-z8">
-      <toolbar *ngIf="_login.isLoggedIn()"></toolbar>
-      <router-outlet></router-outlet>
+      <toolbar *ngIf="_login.isLoggedIn()">
+        <router-outlet></router-outlet>
+      </toolbar>
     </div>
   </div>
 </div>
