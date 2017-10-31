@@ -16,7 +16,8 @@ import {
     MatTabsModule,
     MatCheckboxModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSidenavModule
   } from '@angular/material';
 
   import { CdkTableModule } from '@angular/cdk/table';
@@ -38,7 +39,8 @@ const INCLUDED_MODULES = [
     MatTabsModule,
     MatCheckboxModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSidenavModule
 ]
 
 @NgModule({

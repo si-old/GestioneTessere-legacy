@@ -11,6 +11,10 @@ $candy-app-primary: mat-palette($mat-indigo);
 $candy-app-accent:  mat-palette($mat-blue-grey, A200, A100, A400);
 $candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
 
+.primary-background{
+  background-color: mat-color($candy-app-primary)
+}
+
 /* Include the default theme styles.*/
 @include angular-material-theme($candy-app-theme);
 

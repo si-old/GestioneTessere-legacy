@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 
+import { MatSidenav } from '@angular/material'
 import { Router } from '@angular/router'
 import { LoginService } from './login/main.service'
 
@@ -12,6 +13,7 @@ import { HttpClient } from '@angular/common/http'
 })
 export class ToolbarComponent {
 
+    @ViewChild('sidenav') private menu: MatSidenav;
 
     constructor(private _loginsrv: LoginService, private _router: Router,
         private http: HttpClient) {
@@ -30,6 +32,23 @@ export class ToolbarComponent {
 
     get username() {
         return this._loginsrv.getUsername();
+    }
+
+    get loggedIn() {
+        return this._loginsrv.isLoggedIn();
+    }
+
+    toggleMenu() {
+        if (this.menu) {
+            this.menu.toggle();
+        }
+    }
+
+    navigateFromSidenav(route: string) {
+        if (this.menu) {
+            this.menu.close()
+        }
+        this._router.navigate([route]);
     }
 
     logout() {
