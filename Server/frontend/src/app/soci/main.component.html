@@ -12,15 +12,15 @@
       </button>
     </span>
 </titlebar>
-<div style="display: flex; justify-content: space-between; align-items: center">
-  <div style="width: max-content">
+<div fxLayout fxLayout.lt-sm="column" fxLayoutAlign="space-between center">
+  <div style="width: max-content" fxFlexOrder.lt-sm="2" fxFlexAlign.lt-sm="start">
     <nav mat-tab-nav-bar>
       <a mat-tab-link (click)="socisrv.tesserati=true" [active]="socisrv.tesserati">Tesserati</a>
       <a mat-tab-link (click)="socisrv.tesserati=false" [active]="!socisrv.tesserati">Non tesserati</a>
       <a mat-tab-link (click)="socisrv.tesserati=null" [active]="socisrv.tesserati==null">Tutti</a>
     </nav>
   </div>
-  <div style="margin: 0 1em;">
+  <div style="margin: 0 1em;" fxFlexOrder.lt-sm="1" fxFlexAlign="end">
     <mat-slide-toggle [checked]="!socisrv.paginate" labelPosition="before"
       (change)="togglePagination()" color="primary">
       Mostra tutti
