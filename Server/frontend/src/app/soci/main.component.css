@@ -5,14 +5,18 @@
 }
 
 .mat-column-tessera{
-    max-width: 5%;
-}
-
-.mat-column-nome, .mat-column-cognome, .mat-column-cellulare{
-    max-width: 10%;
+    flex-grow: 0.5;
+    text-align: center;
 }
 
 .mat-column-azioni{
-    max-width: 10%;
     text-align: center;
 }
+
+.mat-column-nome, .mat-column-cognome, .mat-column-cellulare{
+    flex-grow: 1;
+} 
+
+.mat-column-email, .mat-column-carriera, .mat-column-facebook{
+    flex-grow: 2;
+} 
