@@ -12,9 +12,6 @@ div{
 
 .label{
     text-align: right;
-    display: inline-block;
-    min-width: 10%;
-    margin: 1%;
     font-weight: bold;
 }
 
@@ -34,13 +31,18 @@ div{
 }
 
 .table-container .label{
-    width: 10%;
     vertical-align: top;
+}
+
+.mat-cell, .mat-header-cell {
+    text-align: initial;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .mat-column-dettagli, .mat-column-anno{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     max-width: 50%;
     justify-content: space-between;
 }
