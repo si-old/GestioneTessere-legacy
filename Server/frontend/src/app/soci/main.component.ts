@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
+import { ObservableMedia, MediaChange, MatchMedia } from '@angular/flex-layout'
 
 import { Socio } from '../model'
 import { TableChangeData } from '../common'
@@ -26,7 +27,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 export class SociComponent implements OnInit {
 
-  displayedColumns = ['tessera', 'nome', 'cognome', 'email', 'carriera', 'cellulare', 'facebook', 'azioni'];
+  displayedColumns = [];
   sociSource: SociDataSource;
 
   @ViewChild('filter') filter: ElementRef;
@@ -35,7 +36,18 @@ export class SociComponent implements OnInit {
   constructor(public socisrv: SociService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef,
+    private media: ObservableMedia) {
+  }
+
+  updateColumns() {
+    if (this.media.isActive('lt-sm')) {
+      this.displayedColumns = ['tessera', 'nome', 'cognome', 'cellulare', 'azioni'];
+    } else if (this.media.isActive('lt-md')) {
+      this.displayedColumns = ['tessera', 'nome', 'cognome', 'email', 'cellulare', 'azioni'];
+    } else {
+      this.displayedColumns = ['tessera', 'nome', 'cognome', 'email', 'carriera', 'cellulare', 'facebook', 'azioni'];
+    }
   }
 
   ngOnInit() {
@@ -55,6 +67,8 @@ export class SociComponent implements OnInit {
         this.socisrv.getSoci();
       }
     )
+    this.updateColumns();
+    this.media.subscribe(() => { this.updateColumns(); });
   }
 
   addSocio() {
@@ -79,8 +93,8 @@ export class SociComponent implements OnInit {
     this.socisrv.getSoci();
   }
 
-  togglePagination(){
-    this.socisrv.paginate=!this.socisrv.paginate;
+  togglePagination() {
+    this.socisrv.paginate = !this.socisrv.paginate;
     this.socisrv.getSoci();
   }
 
