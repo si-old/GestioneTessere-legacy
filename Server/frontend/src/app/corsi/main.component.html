@@ -21,7 +21,8 @@
   <ng-container cdkColumnDef="nome">
     <mat-header-cell *cdkHeaderCellDef mat-sort-header> Nome </mat-header-cell>
     <mat-cell *cdkCellDef="let row;">
-      <text-viewedit [flag]="editing[row.id]" [(ngModel)]="row.nome" placeholder="Nome" required #inputNome="ngModel">
+      <text-viewedit  [flag]="editing[row.id]" [(ngModel)]="row.nome"
+                      placeholder="Nome" required #inputNome="ngModel">
         <mat-error *ngIf="inputNome.errors && inputNome.errors.required" >
           Il campo è obbligatorio!
         </mat-error>
@@ -39,7 +40,7 @@
         <button mat-icon-button (click)="revertCorso(row)">
             <mat-icon matTooltip="Annulla" matTooltipPosition="left">close</mat-icon>
           </button>
-        <button mat-icon-button (click)="updateCorso(row)" [disabled]="inputNome.invalid" >
+        <button mat-icon-button (click)="updateCorso(row)">
             <mat-icon matTooltip="Conferma" matTooltipPosition="above">done</mat-icon>
           </button>
       </ng-container>

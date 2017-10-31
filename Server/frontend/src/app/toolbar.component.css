@@ -1,6 +1,13 @@
-.custom-button{
+.toolbar-button{
   margin-left: 0.5em;
 }
+
+.sidenav-button{
+  margin-top: 0.5em;
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+}
+
 
 .to-right{
   display: inline-block;
