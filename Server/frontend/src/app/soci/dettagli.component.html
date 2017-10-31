@@ -41,6 +41,9 @@
                     <mat-error *ngIf="inputCell.errors && inputCell.errors.pattern">
                         Non corrisponde al formato previsto
                     </mat-error>
+                    <mat-hint *ngIf="inputCell.untouched || !inputCell.value">
+                        10 cifre con, eventualmente, il prefisso internazionale.
+                    </mat-hint>
                 </text-viewedit>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
