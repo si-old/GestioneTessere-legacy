@@ -1,29 +1,4 @@
-.titlebar{
-    display: flex;
-    text-align: left;
-    justify-content: center;
-  }
-  
-.to_left{
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
-}
-
-.centered{
-    flex: 1;
-    display: flex;
-    justify-content: space-around
-}
-
-.to_right{
-    display: flex;
-    flex: 1;
-    justify-content: flex-end
-}
-
-
-.v-centered{
-    margin-top: auto;
-    margin-bottom: auto;
+half-size{
+    width: 45%;
+    height: auto;
 }

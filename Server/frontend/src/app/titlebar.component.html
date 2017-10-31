@@ -1,0 +1,18 @@
+<div    style="text-align:left" fxLayout="row" fxLayout.lt-sm="row wrap"
+        fxLayoutAlign="center stretch">
+
+    <div    fxFlex="grow" fxFlex.lt-sm="40"
+            fxLayout="row" fxLayoutAlign="start center">
+        <ng-content select="[left]"></ng-content>
+    </div>
+
+    <div    fxFlex="grow" fxFlex.lt-sm="60" fxFlexOrder.gt-xs="3"
+            fxLayout="row" fxLayoutAlign="end center">
+        <ng-content select="[right]"></ng-content>
+    </div>
+
+    <div fxFlex="grow" fxLayout="row" fxLayoutAlign="center center">
+        <ng-content select="[center]"></ng-content>
+    </div>
+
+</div>
