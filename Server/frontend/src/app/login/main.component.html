@@ -1,13 +1,12 @@
 <mat-toolbar color="primary">
     <h2 style="width: 100%"> Login </h2>
 </mat-toolbar>
-<form #form="ngForm" class="fontstyle">
-    <div class="form-field">
-        <label for="user">Username: </label>
-        <mat-form-field>
-            <input  type="text" matInput name="user" required #inputUser="ngModel"
-                    [(ngModel)]="user" [pattern]="PATTERN_USER" />
-             <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
+<form #form="ngForm" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1em">
+    <div fxFlex="50%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
+        <label fxFlex="20%" for="user">Username: </label>
+        <mat-form-field fxFlex="calc(80% - 1.5em)">
+            <input type="text" matInput name="user" required #inputUser="ngModel" [(ngModel)]="user" [pattern]="PATTERN_USER" />
+            <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
                 Il campo è obbligatorio!
             </mat-error>
             <mat-error *ngIf="inputUser.errors && inputUser.errors.pattern">
@@ -18,11 +17,11 @@
             </mat-hint>
         </mat-form-field>
     </div>
-    <div class="form-field">
-        <label for="password">Password: </label>
-        <mat-form-field>
-            <input  type="password" matInput name="password" required #inputPass="ngModel"
-                    [(ngModel)]="password" [pattern]="PATTERN_PASSWORD" />
+    <div fxFlex="50%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
+        <label fxFlex="20%" for="password">Password: </label>
+        <mat-form-field fxFlex="calc(80% - 1.5em)">
+            <input [type]="hidden ? 'password' : 'text' " matInput name="password" required #inputPass="ngModel" [(ngModel)]="password"
+                [pattern]="PATTERN_PASSWORD" />
             <mat-error *ngIf="inputPass.errors && inputPass.errors.required">
                 Il campo è obbligatorio!
             </mat-error>
@@ -32,10 +31,13 @@
             <mat-hint *ngIf="inputPass.untouched || inputPass.valid">
                 La password deve contenere almeno 6 caratteri. Non può contenere spazi.
             </mat-hint>
+            <button type="button" matSuffix mat-icon-button (click)="hidden=!hidden">
+                <mat-icon [matTooltip]="(hidden ? 'Mostra' : 'Nascondi') + ' password'" matTooltipPosition="after">{{hidden ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </button>
         </mat-form-field>
     </div>
-    <div class="form-field">        
-        <button mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
+    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+        <button type="submit" mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
             Login
         </button>
     </div>
