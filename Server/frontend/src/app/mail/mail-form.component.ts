@@ -79,18 +79,18 @@ export class MailFormComponent implements OnInit {
             loadRef = this.dialog.open(LoadingDialog, {
                 disableClose: true
             });
-            // this.mailsrv.sendEmail(mailReq).subscribe(
-            //     (res: MailResponse) => {
-            //         loadRef.close();
-            //         this.dialog.open(MessageDialog, {
-            //             data: {
-            //                 message: `
-            //                     Su un totale di ${res.ok+res.nok} email, ${res.ok} sono state inviate con successo. 
-            //                 `
-            //             }
-            //         })
-            //     }
-            // )
+            this.mailsrv.sendEmail(mailReq).subscribe(
+                (res: MailResponse) => {
+                    loadRef.close();
+                    this.dialog.open(MessageDialog, {
+                        data: {
+                            message: `
+                                Su un totale di ${res.ok+res.nok} email, ${res.ok} sono state inviate con successo. 
+                            `
+                        }
+                    })
+                }
+            )
         }
     }
 }
