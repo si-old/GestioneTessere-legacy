@@ -25,6 +25,8 @@ export class LoginComponent implements OnInit {
     error: boolean = true;
     return: string = '/soci';
 
+    hidden: boolean = true;
+
     constructor(private snack: MatSnackBar,
         private _loginsrv: LoginService,
         private _router: Router,
