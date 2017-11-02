@@ -9,7 +9,7 @@
             <mat-form-field>
                 <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio" required name="socio" #inputSocio="ngModel">
                     <mat-option *ngFor="let soci of allSoci" [value]="soci">
-                        {{soci.id}} - {{soci.nome}}
+                        {{soci.nome}} {{soci.cognome}}
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="inputSocio.errors && inputSocio.errors.required">
