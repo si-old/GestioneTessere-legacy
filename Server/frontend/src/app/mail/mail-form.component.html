@@ -1,35 +1,10 @@
-<form #form="ngForm" class="padded-side width-limit" fxLayout="row">
-    <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutAlign="start" fxFlex="0 0 100%" class="checkbox-container">
-        <div fxFlex="50%" fxLayout="column">
+<form #form="ngForm" class="padded-side" fxLayout="row" [ngStyle.gt-xs]="{'height': '440px', 'overflow': 'none'}">
+    <div fxFlex="100%" fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutAlign="start stretch" class="checkbox-container"
+        fxLayoutGap="1em">
+        <div fxLayout="column" fxFlexOrder.lt-sm="2" class="height-fit">
             <div fxLayout="row" fxLayoutAlign="start center">
-                <label fxFlex="20%" for="oggetto">Oggetto:</label>
-                <mat-form-field fxFlex="70%">
-                    <input type="text" name="oggetto" matInput [(ngModel)]="oggetto" required #inputOggetto="ngModel" />
-                    <mat-error *ngIf="inputOggetto.errors && inputOggetto.errors.required">
-                        Il campo è obbligatorio!
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div fxLayout="row">
-                <label fxFlex="20%" fxFlexAlign="start" for="contenuto">Contenuto:</label>
-                <mat-form-field fxFlex="70%">
-                    <textarea matInput name="contenuto" rows="10" [(ngModel)]="corpo" required #inputCorpo="ngModel">
-                    </textarea>
-                    <mat-error *ngIf="inputCorpo.errors && inputCorpo.errors.required">
-                        Il campo è obbligatorio!
-                    </mat-error>
-                </mat-form-field>
-            </div>
-        </div>
-        <div fxFlex="5%" fxLayout="row" fxLayoutAlign="center center" fxFlexOrder.lt-sm="3">
-            <button mat-raised-button color="primary" (click)="sendEmail(form)" [disabled]="form.invalid">
-                Invia
-            </button>
-        </div>
-        <div fxFlex="50%" fxLayout="column" fxFlexOrder.lt-sm="2">
-            <div fxFlex="35%" fxLayout="row" fxLayoutAlign="start center">
-                <label fxFlex="0 0 20%" for="feedback">Indirizzo di feedback:</label>
-                <mat-form-field fxFlex="0 0 70%">
+                <label fxFlex="25%" for="feedback">Indirizzo di feedback:</label>
+                <mat-form-field fxFlex="50%">
                     <input type="text" name="feedback" matInput [(ngModel)]="email_feedback" required email #inputFeedback="ngModel" />
                     <mat-error *ngIf="inputFeedback.errors && inputFeedback.errors.required">
                         Il campo è obbligatorio!
@@ -39,8 +14,8 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div fxLayout="row" fxLayoutGap="1em">
-                <div fxFlex="0 0 50%" fxLayout="column" fxLayoutAlign="start stretch">
+            <div fxLayout="row" fxLayoutGap="1em" class="height-fit">
+                <div fxFlex="35%" fxLayout="column" fxLayoutAlign="start stretch">
                     <div>
                         <mat-checkbox color="primary" [(ngModel)]="blacklist" name="blacklist">
                             Escludi blacklist
@@ -51,13 +26,13 @@
                             Lavoratori
                         </mat-checkbox>
                     </div>
-                    <div ngFlex="0 0 70%">
-                        <mat-error *ngIf="form.touched && groupCorsi.errors && groupCorsi.errors.checkboxGroup">
+                    <div ngFlex="0 0 50%">
+                        <mat-error style="max-width: 8em" *ngIf="form.touched && groupCorsi.errors && groupCorsi.errors.checkboxGroup">
                             E&#768; necessario selezionare almeno un gruppo di destinatari.
                         </mat-error>
                     </div>
                 </div>
-                <div fxFlex="0 0 50%" ngModelGroup="destinatari" #groupCorsi="ngModelGroup">
+                <div fxFlex="35%" fxLayout="column" ngModelGroup="destinatari" #groupCorsi="ngModelGroup" class="height-fit">
                     <div>
                         <mat-checkbox color="primary" [(ngModel)]="tutti" (change)="tuttiCallback()" name="tutti" checkbox-bypass>
                             Tutti i corsi
@@ -70,6 +45,32 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div fxLayout="column" fxFlexOrder.lt-sm="1" class="height-fit">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <label fxFlex="25%" for="oggetto">Oggetto:</label>
+                <mat-form-field fxFlex="75%">
+                    <input type="text" name="oggetto" matInput [(ngModel)]="oggetto" required #inputOggetto="ngModel" />
+                    <mat-error *ngIf="inputOggetto.errors && inputOggetto.errors.required">
+                        Il campo è obbligatorio!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" class="height-fit" fxLayoutAlign="start center">
+                <label fxFlex="25%" fxFlexAlign="start" for="contenuto">Contenuto:</label>
+                <mat-form-field fxFlex="75%">
+                    <textarea matInput name="contenuto" rows="10" [(ngModel)]="corpo" required #inputCorpo="ngModel">
+                    </textarea>
+                    <mat-error *ngIf="inputCorpo.errors && inputCorpo.errors.required">
+                        Il campo è obbligatorio!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="3">
+            <button mat-raised-button color="primary" (click)="sendEmail(form)" [disabled]="form.invalid">
+                Invia
+            </button>
         </div>
     </div>
 </form>

@@ -1,6 +1,6 @@
-.width-limit{
-    max-width: 100%;
-}    
+.height-fit{
+    height: fit-content;
+}
 
 .checkbox-container{
     text-align: start;
