@@ -43,7 +43,6 @@ div{
 .mat-column-dettagli, .mat-column-anno{
     display: flex;
     flex-direction: column;
-    max-width: 50%;
     justify-content: space-between;
 }
 
