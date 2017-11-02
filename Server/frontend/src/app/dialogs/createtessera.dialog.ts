@@ -12,37 +12,45 @@ import { PATTERN_NUMERO_TESSERA } from '../common'
     selector: 'createtessera-dialog',
     template: `
         <p mat-dialog-title color="primary" class="centered">Nuova tessera</p>
-        <ng-container *ngIf="!error">
-            <form #form="ngForm" mat-dialog-content>
-                Anno: {{activeTesseramento}}<br />
-                <label for="numero">Numero:</label>
-                <mat-form-field>
-                    <input  type="text" name="numero" [(ngModel)]="numero" #inputNumero="ngModel"
-                            matInput required [pattern]="PATTERN_NUMERO_TESSERA" />
-                    <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
-                        Il campo è obbligatorio!
-                    </mat-error>
-                    <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
-                        Devi inserire un numero (anche negativo).
-                    </mat-error>
-                    <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
-                        Devi inserire un numero (anche negativo).
-                    </mat-hint>
-                </mat-form-field>
-                <div mat-dialog-actions style="display: block">
-                    <button type="submit" mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
-                        <mat-icon matTooltip="Conferma" matTooltipPosition="below">done</mat-icon>
-                    </button>
-                    <button type="button" mat-icon-button mat-dialog-close class="to_right" >
-                        <mat-icon matTooltip="Annulla" matTooltipPosition="below">close</mat-icon>
-                    </button>
+        <ng-container *ngIf="loaded">
+            <ng-container *ngIf="!error">
+                <form #form="ngForm" mat-dialog-content>
+                    Anno: {{tessAttivo}}<br />
+                    <label for="numero">Numero:</label>
+                    <mat-form-field>
+                        <input  type="text" name="numero" [(ngModel)]="numero" #inputNumero="ngModel"
+                                matInput required [pattern]="PATTERN_NUMERO_TESSERA" [notInArray]="tessAttivo.tessere"/>
+                        <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
+                            Il campo è obbligatorio!
+                        </mat-error>
+                        <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
+                            Devi inserire un numero (anche negativo).
+                        </mat-error>
+                        <mat-error *ngIf="inputNumero.errors && inputNumero.errors.notInArray">
+                            La tessera è già assegnata!.
+                        </mat-error>
+                        <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
+                            Devi inserire un numero (anche negativo).
+                        </mat-hint>
+                    </mat-form-field>
+                    <div mat-dialog-actions style="display: block">
+                        <button type="submit" mat-icon-button class="to_right" (click)="commitTessera(form)" [disabled]="form.invalid">
+                            <mat-icon matTooltip="Conferma" matTooltipPosition="below">done</mat-icon>
+                        </button>
+                        <button type="button" mat-icon-button mat-dialog-close class="to_right" >
+                            <mat-icon matTooltip="Annulla" matTooltipPosition="below">close</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </ng-container>
+            <ng-container *ngIf="error">
+                <div mat-dialog-content>
+                    <h3>Nessun tesseramento attivo!</h3>
                 </div>
-            </form>
+            </ng-container>
         </ng-container>
-        <ng-container *ngIf="error">
-            <div mat-dialog-content>
-                <h3>Nessun tesseramento attivo!</h3>
-            </div>
+        <ng-container *ngIf="!loaded">
+            <loading-placeholder></loading-placeholder>
         </ng-container>
     `,
     styleUrls: ['../common/style.css']
@@ -53,7 +61,8 @@ export class CreateTesseraDialog {
     private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
 
     error: boolean;
-    activeTesseramento: Tesseramento;
+    loaded: boolean = false;
+    tessAttivo: Tesseramento;
 
     numero: number;
 
@@ -61,14 +70,14 @@ export class CreateTesseraDialog {
         private dialogRef: MatDialogRef<CreateTesseraDialog>,
         private tesseramentoSrv: TesseramentiService) {
         this.tesseramentoSrv.getTesseramentoAttivo().subscribe(
-            (tessAttivo: Tesseramento) => { this.activeTesseramento = tessAttivo; this.error = false; },
-            (err) => { this.error = true; }
+            (tessAttivo: Tesseramento) => { this.tessAttivo = tessAttivo; this.error = false; this.loaded = true },
+            (err) => { this.error = true; this.loaded = true }
         )
     }
 
     commitTessera(form) {
         if (!form.invalid) {
-            this.dialogRef.close(new Tessera({ anno: this.activeTesseramento, numero: this.numero }));
+            this.dialogRef.close(new Tessera({ anno: this.tessAttivo, numero: this.numero }));
         }
     }
 }
