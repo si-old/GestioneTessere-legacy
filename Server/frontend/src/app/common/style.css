@@ -25,3 +25,7 @@
   text-align: center;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.padded-side{
+  padding: 0 1%;
+}
