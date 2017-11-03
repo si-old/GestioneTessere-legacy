@@ -1,7 +1,7 @@
 <?php
 
 /* ----------------------- to debug frontend response to http errors ----------------------------- */
-/*    //to avoid output
+    //to avoid output
     error_reporting(E_ALL);
     //to allow CORS
     header("Access-Control-Allow-Origin: *");
