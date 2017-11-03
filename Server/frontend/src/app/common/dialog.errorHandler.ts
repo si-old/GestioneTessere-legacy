@@ -32,14 +32,15 @@ export class DialogErrorHandler extends ErrorHandler {
                 localError = localError.error
             }
             if (localError instanceof HttpErrorResponse) {
-                let errorDesc = 'Request to ' + localError.url + ': ' + localError.status + " " + localError.statusText + ": ";
+                let errorDesc = 'Request to ' + localError.url + "\n" + localError.status +
+                                " " + localError.statusText + ": " + localError.error;
                 switch (localError.status) {
                     case 403:
                         finalMessage = "La sessione è scaduta, ripeti il login.";
                         finalCallback = () => { login.logout(); router.navigate['/login']; };
                         break;
                     case 500:
-                        finalMessage = "Errore sul server - " + errorDesc + localError.error;
+                        finalMessage = "Errore sul server - " + errorDesc;
                         break;
                     default:
                         finalMessage = errorDesc;

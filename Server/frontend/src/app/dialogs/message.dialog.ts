@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
     selector: 'message-dialog',
     template: `
         <p mat-dialog-title color="primary" class="centered">Attenzione</p>
-        <div mat-dialog-content>{{message}}</div>
+        <pre mat-dialog-content>{{message}}</pre>
         <div mat-dialog-actions style="display: flex; justify-content: center">
             <button mat-button mat-dialog-close (click)="handleClick()">
                 OK

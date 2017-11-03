@@ -19,10 +19,6 @@ export class ToolbarComponent {
         private http: HttpClient) {
     }
 
-    dostuff() {
-        this.http.delete('https://www.studentingegneria.it/socisi/backend/blacklist.php').subscribe();
-    }
-
     get isAdmin() {
         return this._loginsrv.isAdmin();
     }
