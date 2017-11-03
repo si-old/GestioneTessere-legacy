@@ -20,10 +20,7 @@ export class ToolbarComponent {
     }
 
     dostuff() {
-        this.http.post('https://www.studentingegneria.it/socisi/backend/tessera.php', {
-            code: 500,
-            message: 'cose'
-        }).subscribe();
+        this.http.delete('https://www.studentingegneria.it/socisi/backend/blacklist.php').subscribe();
     }
 
     get isAdmin() {
