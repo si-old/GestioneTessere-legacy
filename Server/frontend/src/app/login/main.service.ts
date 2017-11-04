@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material'
 
 import { Observable } from 'rxjs/Observable'
 
-import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
+import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common/costants'
 
 import { MessageDialog } from '../dialogs/message.dialog'
 
