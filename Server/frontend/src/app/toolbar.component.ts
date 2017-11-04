@@ -19,13 +19,6 @@ export class ToolbarComponent {
         private http: HttpClient) {
     }
 
-    dostuff() {
-        this.http.post('https://www.studentingegneria.it/socisi/backend/tessera.php', {
-            code: 500,
-            message: 'cose'
-        }).subscribe();
-    }
-
     get isAdmin() {
         return this._loginsrv.isAdmin();
     }
