@@ -6,12 +6,6 @@ import { MatSort, MatSnackBar, Sort, MatDialog } from '@angular/material'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 import { Corso, Carriera, } from '../model'
 import { FilteredSortedDataSource } from '../common'
