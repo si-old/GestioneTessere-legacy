@@ -32,12 +32,15 @@ export class AggiuntaDirettivoComponent implements OnInit {
     }
 
     ngOnInit() {
+        let old_paginate = this._socisrv.paginate;
+        this._socisrv.paginate = false;
         this._socisrv.getSoci().first().subscribe(
             (s: Socio[]) => {
-                this.allSoci = s.sort((a: Socio, b: Socio) => { 
+                this.allSoci = s.sort((a: Socio, b: Socio) => {
                     return (a.nome + ' ' + a.cognome).localeCompare(b.nome + ' ' + b.cognome)
                 })
                 this.loaded = true;
+                this._socisrv.paginate = old_paginate;
             }
         )
     }

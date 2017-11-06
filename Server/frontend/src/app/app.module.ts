@@ -50,10 +50,10 @@ import {
 import { ToolbarComponent } from './toolbar.component'
 import { TitleBarComponent } from './titlebar.component'
 
+import { DialogErrorHandler, LoadingPlaceholderComponent, LoadingDialogInterceptor } from './ux'
 
 import {
-  EqualFieldsValidatorDirective, DialogErrorHandler, LoadingPlaceholderComponent,
-  CheckboxGroupValidatorDirective, NotInArrayValidatorDirective
+  EqualFieldsValidatorDirective, CheckboxGroupValidatorDirective, NotInArrayValidatorDirective
 } from './common'
 
 @NgModule({
@@ -107,7 +107,9 @@ import {
     LogService,
     LoggedinGuard,
     AdminGuard,
-    { provide: ErrorHandler, useClass: DialogErrorHandler }
+    { provide: ErrorHandler, useClass: DialogErrorHandler },
+    LoadingDialogInterceptor,
+    { provide: HTTP_INTERCEPTORS, useExisting: LoadingDialogInterceptor, multi: true}
   ],
   entryComponents: [
     AggiuntaSocioComponent,

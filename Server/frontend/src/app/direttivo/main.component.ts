@@ -53,7 +53,7 @@ export class DirettivoComponent {
   }
 
   addMembro() {
-    this._dialog.open(AggiuntaDirettivoComponent, { width: "40%" }).afterClosed().subscribe(
+    this._dialog.open(AggiuntaDirettivoComponent).afterClosed().subscribe(
       (x) => { if (x) this._dirsrv.addMembro(x) }
     )
   }

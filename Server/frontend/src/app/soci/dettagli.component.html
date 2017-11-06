@@ -6,7 +6,7 @@
         <h3 center> Modifica dati {{model.nome}} </h3>
     </titlebar>
     <form #form="ngForm" [ngClass]="form_style">
-        <div mat-dialog-content fxLayout="column">
+        <div mat-dialog-content>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
                 <span fxFlex="20%" class="label">Nome:</span>
                 <text-viewedit fxFlex="calc(80% - 1em)" [(ngModel)]="model.nome" name="nome" [flag]="editing" required #inputNome="ngModel">
@@ -195,6 +195,3 @@
         </div>
     </form>
 </div>
-<ng-container *ngIf="!loaded">
-    <loading-placeholder></loading-placeholder>
-</ng-container>

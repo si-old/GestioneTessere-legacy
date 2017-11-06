@@ -7,7 +7,8 @@
             <label for="socio">Socio: </label>
 
             <mat-form-field>
-                <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio" required name="socio" #inputSocio="ngModel">
+                <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio"
+                            required name="socio" #inputSocio="ngModel">
                     <mat-option *ngFor="let soci of allSoci" [value]="soci">
                         {{soci.nome}} {{soci.cognome}}
                     </mat-option>
@@ -57,7 +58,4 @@
         </button>
         </div>
     </form>
-</ng-container>
-<ng-container *ngIf="!loaded">
-    <loading-placeholder></loading-placeholder>
 </ng-container>

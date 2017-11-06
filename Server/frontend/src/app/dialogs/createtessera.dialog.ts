@@ -49,9 +49,6 @@ import { PATTERN_NUMERO_TESSERA } from '../common'
                 </div>
             </ng-container>
         </ng-container>
-        <ng-container *ngIf="!loaded">
-            <loading-placeholder></loading-placeholder>
-        </ng-container>
     `,
     styleUrls: ['../common/style.css']
 })

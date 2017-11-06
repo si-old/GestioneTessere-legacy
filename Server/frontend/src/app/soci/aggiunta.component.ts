@@ -8,7 +8,8 @@ import { CorsiService } from '../corsi/main.service'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE, LoadingTracker } from '../common'
+import { LoadingTracker } from '../ux'
+import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE } from '../common'
 
 @Component({
     selector: 'aggiunta-socio',

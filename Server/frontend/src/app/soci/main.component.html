@@ -77,11 +77,8 @@
       <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
       <mat-cell *cdkCellDef="let row">
         <button mat-icon-button (click)="editSocio(row)">
-              <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
-            </button>
-        <a mat-icon-button routerLink="{{row.id}}">
-          <mat-icon matTooltip="Dettagli" matTooltipPosition="right">link</mat-icon>
-        </a>
+          <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
+        </button>
       </mat-cell>
     </ng-container>
 
