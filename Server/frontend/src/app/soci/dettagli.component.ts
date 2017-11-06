@@ -139,7 +139,6 @@ export class DettagliSocioComponent implements OnInit {
                             // si esclude la tessera corrente
                             tess.anno.tessere = tessAttivo.tessere.filter((x: number) => { return x != tess.numero });
                         }
-                        console.log(tess);
                     }
                 );
             },
