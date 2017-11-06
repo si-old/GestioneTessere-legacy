@@ -1,31 +1,28 @@
 <div class="fontstyle" *ngIf="loaded">
     <titlebar mat-dialog-title>
-        <button left mat-icon-button (click)="exit()">
-            <mat-icon matTooltip="Esci" matTooltipPosition="right">keyboard_arrow_left</mat-icon>
-        </button>
         <h3 center> Modifica dati {{model.nome}} </h3>
     </titlebar>
     <form #form="ngForm" [ngClass]="form_style">
         <div mat-dialog-content>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
-                <span fxFlex="20%" class="label">Nome:</span>
-                <text-viewedit fxFlex="calc(80% - 1em)" [(ngModel)]="model.nome" name="nome" [flag]="editing" required #inputNome="ngModel">
+                <span fxFlex="31%" class="label">Nome:</span>
+                <text-viewedit fxFlex="100%" [(ngModel)]="model.nome" name="nome" [flag]="editing" required #inputNome="ngModel">
                     <mat-error *ngIf="inputNome.errors && inputNome.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
                 </text-viewedit>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
-                <span fxFlex="20%" class="label">Cognome:</span>
-                <text-viewedit fxFlex="calc(80% - 1em)" [(ngModel)]="model.cognome" name="cognome" [flag]="editing" required #inputCognome="ngModel">
+                <span fxFlex="31%" class="label">Cognome:</span>
+                <text-viewedit fxFlex="69%" [(ngModel)]="model.cognome" name="cognome" [flag]="editing" required #inputCognome="ngModel">
                     <mat-error *ngIf="inputCognome.errors && inputCognome.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
                 </text-viewedit>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
-                <span fxFlex="20%" class="label">E-Mail:</span>
-                <text-viewedit fxFlex="calc(80% - 1em)" [(ngModel)]="model.email" name="email" [flag]="editing" required email #inputEmail="ngModel">
+                <span fxFlex="31%" class="label">Email:</span>
+                <text-viewedit fxFlex="69%" [(ngModel)]="model.email" name="email" [flag]="editing" required email #inputEmail="ngModel">
                     <mat-error *ngIf="inputEmail.errors && inputEmail.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
@@ -35,8 +32,8 @@
                 </text-viewedit>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
-                <span fxFlex="20%" class="label">Cellulare:</span>
-                <text-viewedit fxFlex="calc(80% - 1em)" [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" #inputCell="ngModel"
+                <span fxFlex="31%" class="label">Cellulare:</span>
+                <text-viewedit fxFlex="100%" [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" #inputCell="ngModel"
                     [pattern]="PATTERN_CELLULARE">
                     <mat-error *ngIf="inputCell.errors && inputCell.errors.pattern">
                         Non corrisponde al formato previsto
@@ -47,17 +44,17 @@
                 </text-viewedit>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
-                <span fxFlex="20%" class="label">Facebook:</span>
-                <text-viewedit fxFlex="calc(80% - 1em)" [(ngModel)]="model.facebook" name="facebook" [flag]="editing"></text-viewedit>
+                <span fxFlex="31%" class="label">Facebook:</span>
+                <text-viewedit fxFlex="69%" [(ngModel)]="model.facebook" name="facebook" [flag]="editing"></text-viewedit>
             </div>
             <div class="table-container" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around start" fxLayoutGap="1em">
-                <div fxFlex="20%" fxLayout="column" fxLayout.lt-sm="row" fxLayoutAlign="end end">
+                <div fxFlex="31%" fxLayout="column" fxLayout.lt-sm="row" fxLayoutAlign="end end">
                     <p class="label">Carriere:</p>
                     <button mat-icon-button *ngIf="editing" (click)="addCarriera()">
                         <mat-icon matTooltip="Nuova carriera" matTooltipPosition="left">add</mat-icon>
                     </button>
                 </div>
-                <mat-table fxFlex="calc(80% - 1em)" [dataSource]="carriereSource">
+                <mat-table fxFlex="100%" [dataSource]="carriereSource">
 
                     <ng-container cdkColumnDef="studente">
                         <mat-header-cell *cdkHeaderCellDef> Tipo </mat-header-cell>
@@ -127,13 +124,13 @@
                 </mat-table>
             </div>
             <div class="table-container" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around start" fxLayoutGap="1em">
-                <div fxFlex="20%" fxLayout="column" fxLayout.lt-sm="row" fxLayoutAlign="end end">
+                <div fxFlex="31%" fxLayout="column" fxLayout.lt-sm="row" fxLayoutAlign="end end">
                     <p class="label">Tessere:</p>
                     <button mat-icon-button *ngIf="editing && !hasTessera" (click)="addTessera()">
                             <mat-icon matTooltip="Nuova tessera" matTooltipPosition="left">add</mat-icon>
                         </button>
                 </div>
-                <mat-table fxFlex="calc(80% - 1em)" [dataSource]="tessereSource">
+                <mat-table fxFlex="100%" [dataSource]="tessereSource">
 
                     <ng-container cdkColumnDef="numero">
                         <mat-header-cell *cdkHeaderCellDef> Numero </mat-header-cell>

@@ -13,19 +13,24 @@
 }
 
 .half-size{
-  width: 48vw;
+  width: 48%;
   padding: 0 1%
 }
 
 .fontstyle{
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 .main-container{
   text-align: center;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 .padded-side{
   padding: 0 1%;
 }
+

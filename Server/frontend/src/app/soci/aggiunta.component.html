@@ -7,9 +7,9 @@
             <form #form="ngForm">
                 <div mat-dialog-content>
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="numero">Numero Tessera:</label>
-                            <mat-form-field fxFlex="50%">
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="numero">Numero Tessera:</label>
+                            <mat-form-field fxFlex="100%">
                                 <input type="text" name="numero" [(ngModel)]="model.tessere[0].numero" [notInArray]="tessAttivo.tessere" #inputNumero="ngModel"
                                     matInput required [pattern]="PATTERN_NUMERO_TESSERA">
                                 <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
@@ -26,25 +26,25 @@
                                 </mat-hint>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="anno"> Anno:</label>
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="anno"> Anno:</label>
                             <p> {{ model.tessere[0].anno }} </p>
                         </div>
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="nome">Nome:</label>
-                            <mat-form-field fxFlex="50%">
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="nome">Nome:</label>
+                            <mat-form-field fxFlex="100%">
                                 <input type="text" name="nome" [(ngModel)]="model.nome" matInput required #inputNome="ngModel" />
                                 <mat-error *ngIf="inputNome.errors && inputNome.errors.required">
                                     Il campo è obbligatorio!
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="cognome">Cognome:</label>
-                            <mat-form-field fxFlex="50%">
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="cognome">Cognome:</label>
+                            <mat-form-field fxFlex="100%">
                                 <input type="text" name="cognome" [(ngModel)]="model.cognome" matInput required #inputCognome="ngModel" />
                                 <mat-error *ngIf="inputCognome.errors && inputCognome.errors.required">
                                     Il campo è obbligatorio!
@@ -54,9 +54,9 @@
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="email">E-Mail:</label>
-                            <mat-form-field fxFlex="50%">
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="email">E-Mail:</label>
+                            <mat-form-field fxFlex="100%">
                                 <input type="text" name="email" [(ngModel)]="model.email" matInput required email #inputEmail="ngModel" />
                                 <mat-error *ngIf="inputEmail.errors && inputEmail.errors.required">
                                     Il campo è obbligatorio!
@@ -66,9 +66,9 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="cellulare">Cellulare:</label>
-                            <mat-form-field fxFlex="50%">
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="cellulare">Cellulare:</label>
+                            <mat-form-field fxFlex="100%">
                                 <input type="text" name="cellulare" [(ngModel)]="model.cellulare" matInput [pattern]="PATTERN_CELLULARE" #inputCell="ngModel"
                                 />
                                 <mat-error *ngIf="inputCell.errors && inputCell.errors.pattern">
@@ -82,25 +82,25 @@
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="facebook">Facebook:</label>
-                            <mat-form-field fxFlex="50%">
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="facebook">Facebook:</label>
+                            <mat-form-field fxFlex="100%">
                                 <input type="text" name="facebook" [(ngModel)]="model.facebook" matInput/>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                            <label fxFlex="20%" for="studente">Studente:</label>
-                            <mat-slide-toggle fxFlex="50%" [(ngModel)]="model.carriere[0].studente" name="studente" color="primary">
+                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="studente">Studente:</label>
+                            <mat-slide-toggle fxFlex="100%" [(ngModel)]="model.carriere[0].studente" name="studente" color="primary">
                             </mat-slide-toggle>
                         </div>
                     </div>
 
                     <ng-container *ngIf="model.carriere[0].studente">
                         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                            <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
 
-                                <label fxFlex="20%" for="matricola">Matricola:</label>
-                                <mat-form-field fxFlex="50%">
+                                <label fxFlex="31%" for="matricola">Matricola:</label>
+                                <mat-form-field fxFlex="100%">
                                     <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola" matInput [required]="model.carriere[0].studente"
                                         [pattern]="PATTERN_MATRICOLA" #inputMatricola="ngModel" />
                                     <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.required">
@@ -114,9 +114,9 @@
                                     </mat-hint>
                                 </mat-form-field>
                             </div>
-                            <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                                <label fxFlex="20%" for="corso">Corso di laurea:</label>
-                                <div class="mat-form-field" fxFlex="50%">
+                            <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                                <label fxFlex="31%" for="corso">Corso di laurea:</label>
+                                <div class="mat-form-field" fxFlex="100%">
                                     <corsi-viewedit [(ngModel)]="model.carriere[0].corso" [flag]="true" [required]="model.carriere[0].studente" name="corso"></corsi-viewedit>
                                 </div>
                             </div>
@@ -125,9 +125,9 @@
 
                     <ng-container *ngIf="!model.carriere[0].studente">
                         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                            <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-                                <label fxFlex="20%" for="professione">Professione:</label>
-                                <mat-form-field fxFlex="50%">
+                            <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                                <label fxFlex="31%" for="professione">Professione:</label>
+                                <mat-form-field fxFlex="100%">
                                     <input type="text" name="professione" [(ngModel)]="model.carriere[0].professione" matInput [required]="!model.carriere[0].studente"
                                         #inputProfessione="ngModel" />
                                     <mat-error *ngIf="inputProfessione.errors && inputProfessione.errors.required">
