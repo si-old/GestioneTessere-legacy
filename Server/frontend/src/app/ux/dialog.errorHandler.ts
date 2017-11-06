@@ -27,35 +27,39 @@ export class DialogErrorHandler extends ErrorHandler {
             let dialog: MatDialog = this.injector.get(MatDialog);
             let login: LoginService = this.injector.get(LoginService);
             let router: Router = this.injector.get(Router);
-
-            if (localError instanceof HttpErrorResponse && localError.error instanceof Error) {
-                localError = localError.error
-            }
-            if (localError instanceof HttpErrorResponse) {
-                let errorDesc = 'Request to ' + localError.url + "\n" + localError.status +
-                                " " + localError.statusText + ": " + localError.error;
-                switch (localError.status) {
-                    case 403:
-                        finalMessage = "La sessione è scaduta, ripeti il login.";
-                        finalCallback = () => { login.logout(); router.navigate['/login']; };
-                        break;
-                    case 500:
-                        finalMessage = "Errore sul server - " + errorDesc;
-                        break;
-                    default:
-                        finalMessage = errorDesc;
-                }
+            // nessun dialog per TypeError, evita problemi con MatSelect
+            if (localError instanceof TypeError) {
+                this.elaborating = false;
             } else {
-                finalMessage = localError.message;
-            }
-            this.ngzone.run(() => {
-                dialog.open(MessageDialog, {
-                    data: {
-                        message: finalMessage,
-                        callback: () => { finalCallback(); this.elaborating = false; }
+                if (localError instanceof HttpErrorResponse && localError.error instanceof Error) {
+                    localError = localError.error
+                }
+                if (localError instanceof HttpErrorResponse) {
+                    let errorDesc = 'Request to ' + localError.url + "\n" + localError.status +
+                        " " + localError.statusText + ": " + localError.error;
+                    switch (localError.status) {
+                        case 403:
+                            finalMessage = "La sessione è scaduta, ripeti il login.";
+                            finalCallback = () => { login.logout(); router.navigate['/login']; };
+                            break;
+                        case 500:
+                            finalMessage = "Errore sul server - " + errorDesc;
+                            break;
+                        default:
+                            finalMessage = errorDesc;
                     }
+                } else {
+                    finalMessage = localError.message;
+                }
+                this.ngzone.run(() => {
+                    dialog.open(MessageDialog, {
+                        data: {
+                            message: finalMessage,
+                            callback: () => { finalCallback(); this.elaborating = false; }
+                        }
+                    })
                 })
-            })
+            }
         }
         super.handleError(error);
     }
