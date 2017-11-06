@@ -24,13 +24,13 @@ import { PATTERN_NUMERO_TESSERA } from '../common'
                             Il campo è obbligatorio!
                         </mat-error>
                         <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
-                            Devi inserire un numero (anche negativo).
+                            Devi inserire un numero valido.
                         </mat-error>
                         <mat-error *ngIf="inputNumero.errors && inputNumero.errors.notInArray">
                             La tessera è già assegnata!.
                         </mat-error>
                         <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
-                            Devi inserire un numero (anche negativo).
+                            Un numero (anche negativo).
                         </mat-hint>
                     </mat-form-field>
                     <div mat-dialog-actions style="display: block">

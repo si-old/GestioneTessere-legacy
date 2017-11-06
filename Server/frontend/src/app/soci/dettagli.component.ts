@@ -128,15 +128,21 @@ export class DettagliSocioComponent implements OnInit {
             //init single row editing in the map
             (carr: Carriera) => { this.carriereEditing[carr.id] = false; }
         );
-        this.model.tessere.forEach(
-            (tess: Tessera) => {
-                this.tessereEditing[tess.id] = false;
-                this._tesssrv.getTesseramentoAttivo().subscribe(
-                    (tessAttivo) => { if (tess.anno.equals(tessAttivo)) this.hasTessera = true; },
-                    () => { }
-                )
-            }
-        );
+        this._tesssrv.getTesseramentoAttivo().subscribe(
+            (tessAttivo) => {
+                this.model.tessere.forEach(
+                    (tess: Tessera) => {
+                        this.tessereEditing[tess.id] = false;
+                        if (tess.anno.equals(tessAttivo)) {
+                            this.hasTessera = true
+                            tess.anno.tessere = tessAttivo.tessere.filter((x: number) => { return x != tess.numero });
+                        }
+                        console.log(tess);
+                    }
+                );
+            },
+            () => { }
+        )
         this.carriereSource.update(this.model.carriere);
         this.tessereSource.update(this.model.tessere);
     }

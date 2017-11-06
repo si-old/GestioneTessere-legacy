@@ -143,16 +143,20 @@
                             </ng-container>
                             <ng-container *ngIf="tessereEditing[row.id]">
                                 <mat-form-field>
-                                    <input type="text" [(ngModel)]="row.numero" name="numero" #inputNumero="ngModel" matInput required [pattern]="PATTERN_NUMERO_TESSERA"
+                                    <input type="text" [(ngModel)]="row.numero" name="numero" #inputNumero="ngModel"
+                                            matInput required [pattern]="PATTERN_NUMERO_TESSERA" [notInArray]="row.anno.tessere"
                                     />
                                     <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
                                         Il campo è obbligatorio!
                                     </mat-error>
                                     <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
-                                        Devi inserire un numero (anche negativo).
+                                        Devi inserire un numero valido.
+                                    </mat-error>
+                                    <mat-error *ngIf="inputNumero.errors && inputNumero.errors.notInArray">
+                                        La tessera è già assegnata!.
                                     </mat-error>
                                     <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
-                                        Devi inserire un numero (anche negativo).
+                                        Un numero (anche negativo).
                                     </mat-hint>
                                 </mat-form-field>
                             </ng-container>
@@ -167,9 +171,9 @@
                     <ng-container cdkColumnDef="azioni">
                         <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
                         <mat-cell *cdkCellDef="let row">
-                            <button mat-icon-button (click)="tessereEditing[row.id] = !tessereEditing[row.id]">
-                            <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
-                        </button>
+                            <button *ngIf="row.anno.aperto" mat-icon-button (click)="tessereEditing[row.id] = !tessereEditing[row.id]">
+                                <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
+                            </button>
                         </mat-cell>
                     </ng-container>
 
@@ -195,3 +199,6 @@
         </div>
     </form>
 </div>
+<ng-container *ngIf="!loaded">
+    <loading-placeholder></loading-placeholder>
+</ng-container>
