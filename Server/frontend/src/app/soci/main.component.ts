@@ -72,7 +72,9 @@ export class SociComponent implements OnInit {
   }
 
   addSocio() {
-    let diagopened: MatDialogRef<AggiuntaSocioComponent> = this.dialog.open(AggiuntaSocioComponent);
+    let diagopened: MatDialogRef<AggiuntaSocioComponent> = this.dialog.open(AggiuntaSocioComponent,{
+      width: "80vw"
+    });
     diagopened.afterClosed().subscribe(
       newSocio => { if (newSocio) { this.socisrv.addSocio(newSocio); } }
     )
@@ -80,6 +82,7 @@ export class SociComponent implements OnInit {
 
   editSocio(selected: Socio) {
     let diagopened: MatDialogRef<DettagliSocioComponent> = this.dialog.open(DettagliSocioComponent, {
+      width: "80vw",
       data: { socio: selected }
     });
   }

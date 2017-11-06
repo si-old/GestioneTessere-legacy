@@ -28,7 +28,7 @@ import { CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from '../dia
 @Component({
     selector: 'dettagli-socio',
     templateUrl: './dettagli.component.html',
-    styleUrls: ['./dettagli.component.css', '../common/style.css']
+    styleUrls: ['../common/style.css']
 })
 export class DettagliSocioComponent implements OnInit {
 
@@ -135,6 +135,8 @@ export class DettagliSocioComponent implements OnInit {
                         this.tessereEditing[tess.id] = false;
                         if (tess.anno.equals(tessAttivo)) {
                             this.hasTessera = true
+                            // si importano le tessere per il controllo
+                            // si esclude la tessera corrente
                             tess.anno.tessere = tessAttivo.tessere.filter((x: number) => { return x != tess.numero });
                         }
                         console.log(tess);
