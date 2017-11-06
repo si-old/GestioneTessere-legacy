@@ -6,18 +6,18 @@ class Blacklist extends RESTItem
 {        
     protected function do_get()
     {
-        $stmt = $this->db->prepare('SELECT ID, Nome, Email, Blacklist FROM Socio');
+        $stmt = $this->db->prepare('SELECT ID, Nome, Cognome, Email, Blacklist FROM Socio');
         if (! $stmt->execute()) {
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
         }
-        $stmt->bind_result($id, $nome, $email, $blacklist_flag);
+        $stmt->bind_result($id, $nome,$cognome, $email, $blacklist_flag);
         $allowed = array();
         $blacklist = array();
         while ($stmt->fetch()) {
             if($blacklist_flag){
-                $blacklist[] = array('id' => $id, 'nome' => $nome, 'email' => $email);
+                $blacklist[] = array('id' => $id, 'nome' => $nome.' '.$cognome, 'email' => $email);
             }else{
-                $allowed[] = array('id' => $id, 'nome' => $nome, 'email' => $email);
+                $allowed[] = array('id' => $id, 'nome' => $nome.' '.$cognome, 'email' => $email);
             }
         }
         return array('blacklist' => $blacklist, 'allowed' => $allowed);
