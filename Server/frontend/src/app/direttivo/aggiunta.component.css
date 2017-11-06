@@ -3,5 +3,6 @@ label{
     display: inline-block;
     width: 30%;
     margin: 1%;
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-weight: 600;
 }

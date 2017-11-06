@@ -28,7 +28,7 @@ import { CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from '../dia
 @Component({
     selector: 'dettagli-socio',
     templateUrl: './dettagli.component.html',
-    styleUrls: ['../common/style.css']
+    styleUrls: ['./dettagli.component.css','../common/style.css']
 })
 export class DettagliSocioComponent implements OnInit {
 
