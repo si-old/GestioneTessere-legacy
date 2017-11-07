@@ -9,11 +9,7 @@ import { ConfirmDialog, TextInputDialog, MessageDialog } from '../dialogs'
 
 import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource } from '../common'
 
-import { Observable } from 'rxjs/Observable'
 import { Subscription } from 'rxjs/Subscription'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
-import { DataSource } from '@angular/cdk/table';
 
 @Component({
     selector: 'tesseramenti',

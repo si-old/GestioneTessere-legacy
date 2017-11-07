@@ -2,14 +2,12 @@ import {  Component, OnInit, OnDestroy,
           ViewChild, ElementRef, ChangeDetectorRef
         } from '@angular/core'
 
-import { DataSource } from '@angular/cdk/table';
-import { MatSort, MatSnackBar, Sort, MatDialog } from '@angular/material'
+import { MatSort, MatSnackBar, MatDialog } from '@angular/material'
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription'
 import { Observable } from 'rxjs/Observable';
 
-import { Corso, Carriera, } from '../model'
+import { Corso, Carriera } from '../model'
 import { FilteredSortedDataSource } from '../common'
 import { CorsiService } from './main.service'
 

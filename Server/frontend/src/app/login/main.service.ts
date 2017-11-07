@@ -1,12 +1,6 @@
-import { Injectable, Injector } from '@angular/core'
+import { Injectable } from '@angular/core'
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
-import {
-    HttpClient,
-    HttpInterceptor,
-    HttpRequest,
-    HttpHandler,
-    HttpEvent
-} from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 
 import { MatDialog } from '@angular/material'
 

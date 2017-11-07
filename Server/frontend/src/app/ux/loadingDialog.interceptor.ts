@@ -1,7 +1,7 @@
-import { forwardRef, Injector, Injectable } from '@angular/core'
+import { Injectable } from '@angular/core'
 import {
     HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse,
-    HttpHandler, HttpEvent, HTTP_INTERCEPTORS
+    HttpHandler, HttpEvent
 } from '@angular/common/http'
 import { MatDialog, MatDialogRef } from '@angular/material'
 

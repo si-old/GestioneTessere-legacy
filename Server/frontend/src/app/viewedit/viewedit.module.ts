@@ -12,13 +12,16 @@ import { BoolVieweditComponent } from './bool.component'
 import { CorsiVieweditComponent } from './corsi.component'
 import { CarrieraVieweditComponent } from './carriera.component'
 
+
+const EXPORTED_COMPONENTS: any = [
+    TextVieweditComponent,
+    BoolVieweditComponent,
+    CorsiVieweditComponent,
+    CarrieraVieweditComponent
+]
+
 @NgModule({
-    declarations:[
-        TextVieweditComponent,
-        BoolVieweditComponent,
-        CorsiVieweditComponent,
-        CarrieraVieweditComponent
-    ],
+    declarations: EXPORTED_COMPONENTS,
     imports: [
         FormsModule,
         BrowserModule,
@@ -28,15 +31,10 @@ import { CarrieraVieweditComponent } from './carriera.component'
         MatSelectModule,
         BrowserAnimationsModule
     ],
-    exports: [
-        TextVieweditComponent,
-        BoolVieweditComponent,
-        CorsiVieweditComponent,
-        CarrieraVieweditComponent
-    ],
+    exports: EXPORTED_COMPONENTS,
     providers: [
     ]
 })
-export class VieweditModule{
+export class VieweditModule {
 
 }

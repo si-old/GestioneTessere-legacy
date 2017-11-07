@@ -1,8 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject, Optional } from '@angular/core'
 
-import { Location } from '@angular/common'
-
-import { ActivatedRoute, Router } from "@angular/router";
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material'
 
 import { Socio, Tessera, Carriera, Corso } from '../model'
@@ -10,18 +7,11 @@ import { Socio, Tessera, Carriera, Corso } from '../model'
 import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, PATTERN_MATRICOLA, SubjectDataSource } from '../common'
 
 
-import { CorsiService } from '../corsi/main.service'
 import { SociService } from './main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-
-import { DataSource } from '@angular/cdk/table';
-
-import { BoolVieweditConfig, DisplayOptions } from '../viewedit/bool.component'
 
 import { CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from '../dialogs'
 
@@ -63,9 +53,6 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
     constructor(
         private _socisrv: SociService,
         private _tesssrv: TesseramentiService,
-        private _location: Location,
-        private _route: ActivatedRoute,
-        private _router: Router,
         private _dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
         @Optional() private diagref: MatDialogRef<DettagliSocioComponent>

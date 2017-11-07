@@ -1,5 +1,5 @@
-import { Directive, Input } from '@angular/core';
-import { Validator, FormControl, NG_VALIDATORS, FormGroup } from '@angular/forms';
+import { Directive } from '@angular/core';
+import { Validator, NG_VALIDATORS, FormGroup } from '@angular/forms';
 
 
 @Directive({

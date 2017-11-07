@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'
 
-import { DataSource } from '@angular/cdk/table'
 import { MatDialog } from '@angular/material'
 
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
@@ -11,7 +10,6 @@ import { ObservableDataSource, PATTERN_USER, PATTERN_PASSWORD } from '../common'
 
 import { DirettivoService } from './main.service'
 
-import { Observable } from 'rxjs/Observable'
 import { Subscription } from 'rxjs/Subscription'
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
-import { ObservableMedia, MediaChange, MatchMedia } from '@angular/flex-layout'
+import { ObservableMedia } from '@angular/flex-layout'
 
 import { Socio } from '../model'
 import { FilteredSortedDataSource } from '../common'
@@ -7,9 +7,8 @@ import { SociService } from './main.service'
 import { AggiuntaSocioComponent } from './aggiunta.component'
 import { DettagliSocioComponent } from './dettagli.component'
 
-import { MatSort, MatSnackBar, MatDialog, MatDialogRef, Sort, PageEvent, MatAnchor } from '@angular/material'
+import { MatSort, MatDialog, MatDialogRef, PageEvent, MatAnchor } from '@angular/material'
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -34,7 +33,6 @@ export class SociComponent implements OnInit, OnDestroy {
   @ViewChild('downloadAnchor') anchor: MatAnchor;
 
   constructor(public socisrv: SociService,
-    private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private changeDetector: ChangeDetectorRef,
     private media: ObservableMedia) {

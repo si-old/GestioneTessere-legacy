@@ -7,8 +7,11 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators'
 import { Subject } from 'rxjs/Subject'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
-import { TableChangeData } from './tableChangeData'
-
+export interface TableChangeData<T>{
+    data: T
+    filter: string
+    sort: Sort
+}
 export class ObservableDataSource<T> implements DataSource<T>{
 
     constructor(private _obs: Observable<T[]>) { }

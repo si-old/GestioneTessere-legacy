@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 
 import { MatSidenav } from '@angular/material'
 import { Router } from '@angular/router'
 import { LoginService } from './login/main.service'
-
-import { HttpClient } from '@angular/common/http'
 
 @Component({
     selector: 'toolbar',
@@ -15,8 +13,7 @@ export class ToolbarComponent {
 
     @ViewChild('sidenav') private menu: MatSidenav;
 
-    constructor(private _loginsrv: LoginService, private _router: Router,
-        private http: HttpClient) {
+    constructor(private _loginsrv: LoginService, private _router: Router){
     }
 
     get isAdmin() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core'
+import { Component, OnInit, Input, forwardRef } from '@angular/core'
 
 import { trigger, state, style, animate, transition, group } from '@angular/animations';
 
