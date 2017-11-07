@@ -44,7 +44,7 @@ export class AggiuntaSocioComponent implements OnInit {
             tessere: [new Tessera({ numero: null })],
             carriere: [new Carriera({ matricola: '', studente: false })]
         });
-        this._corsisrv.getCorsi().subscribe(
+        this._corsisrv.getCorsi().first().subscribe(
             (x: Corso[]) => { 
                 this.model.carriere[0].corso = x[0];
                 this.loading.addStep();

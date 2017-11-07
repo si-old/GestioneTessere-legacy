@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
 import { ObservableMedia, MediaChange, MatchMedia } from '@angular/flex-layout'
 
 import { Socio } from '../model'
-import { TableChangeData } from '../common'
+import { FilteredSortedDataSource } from '../common'
 import { SociService } from './main.service'
 import { AggiuntaSocioComponent } from './aggiunta.component'
 import { DettagliSocioComponent } from './dettagli.component'
@@ -10,22 +10,28 @@ import { DettagliSocioComponent } from './dettagli.component'
 import { MatSort, MatSnackBar, MatDialog, MatDialogRef, Sort, PageEvent, MatAnchor } from '@angular/material'
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataSource } from '@angular/cdk/table';
-
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'soci',
   templateUrl: './main.component.html',
   styleUrls: ['../common/style.css', '../common/mainroutes.style.css', './main.component.css'],
 })
-export class SociComponent implements OnInit {
+export class SociComponent implements OnInit, OnDestroy {
 
   displayedColumns = [];
-  sociSource: SociDataSource;
+  sociSource: FilteredSortedDataSource<Socio>;
+  mediaSubscription: Subscription;
 
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MatSort) sorter: MatSort;
+
+  filename: string;
+  fileurl: string;
+  once = false;
+
+  @ViewChild('downloadAnchor') anchor: MatAnchor;
 
   constructor(public socisrv: SociService,
     private snackBar: MatSnackBar,
@@ -46,27 +52,20 @@ export class SociComponent implements OnInit {
 
   ngOnInit() {
     this.socisrv.paginate = true;
-    this.sociSource = new SociDataSource(this.socisrv);
+    let filterObs = Observable.fromEvent(this.filter.nativeElement, 'keyup')
+      .map(() => this.filter.nativeElement.value)
+    this.sociSource = new FilteredSortedDataSource(this.socisrv.getSoci(), this.sorter.sortChange, filterObs)
     this.changeDetector.detectChanges();
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        if (this.sociSource) { this.sociSource.filter = this.filter.nativeElement.value; }
-      });
-    this.sorter.sortChange.subscribe(
-      (next: Sort) => {
-        this.socisrv.orderby = (!next.active || !next.direction) ? '' : next.active;
-        this.socisrv.orderasc = (next.direction == 'asc');
-        this.socisrv.getSoci();
-      }
-    )
     this.updateColumns();
-    this.media.subscribe(() => { this.updateColumns(); });
+    this.mediaSubscription = this.media.asObservable().subscribe(() => { this.updateColumns(); });
+  }
+
+  ngOnDestroy() {
+    this.mediaSubscription.unsubscribe();
   }
 
   addSocio() {
-    let diagopened: MatDialogRef<AggiuntaSocioComponent> = this.dialog.open(AggiuntaSocioComponent,{
+    let diagopened: MatDialogRef<AggiuntaSocioComponent> = this.dialog.open(AggiuntaSocioComponent, {
       width: "80vw"
     });
     diagopened.afterClosed().subscribe(
@@ -92,13 +91,6 @@ export class SociComponent implements OnInit {
     this.socisrv.getSoci();
   }
 
-  filename: string;
-  fileurl: string;
-
-  once = false;
-
-  @ViewChild('downloadAnchor') anchor: MatAnchor;
-
   downloadCsv() {
     if (!this.once) {
       this.socisrv.requestCsv().subscribe(
@@ -115,38 +107,4 @@ export class SociComponent implements OnInit {
       return true;
     }
   }
-}
-
-class SociDataSource extends DataSource<Socio>{
-
-  _filterChange = new BehaviorSubject<string>('');
-
-  set filter(f: string) {
-    this._filterChange.next(f);
-  }
-
-  constructor(private socisrv: SociService) {
-    super();
-  }
-
-  connect(): Observable<Socio[]> {
-    const displayDataChanges = [
-      this._filterChange,
-      this.socisrv.getSoci()
-    ];
-    return Observable.combineLatest(
-      ...displayDataChanges,
-      (filter_in: string, input: Socio[]) => {
-        return { data: input, filter: filter_in }
-      }).map(
-      (x: TableChangeData<Socio[]>) => {
-        let data = x.data.slice().filter((item: Socio) => {
-          return item.contains(x.filter.toLowerCase());
-        })
-        return data;
-      }
-      );
-  }
-
-  disconnect() { }
 }
