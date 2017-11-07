@@ -2,6 +2,8 @@ import { DataSource } from '@angular/cdk/table'
 import { Sort } from '@angular/material'
 
 import { Observable } from 'rxjs/Observable'
+import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators'
+
 import { Subject } from 'rxjs/Subject'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
@@ -29,23 +31,27 @@ export class SubjectDataSource<T> implements DataSource<T>{
     disconnect() { }
 }
 
-export class FilteredSortedDataSource<T extends Searchable & Comparable<T>  > extends DataSource<T>{
+export class FilteredSortedDataSource<T extends Searchable & Comparable<T>> extends DataSource<T>{
 
+    _filter: Observable<string>;
     _filterChange = new BehaviorSubject('');
     set filter(filter: string) { this._filterChange.next(filter); }
 
+    _sort: Observable<Sort>;
     _sortChange = new BehaviorSubject<Sort>({ active: '', direction: '' }); //aliased observable to assure a first emission. sortChange doesn't do that
     set sort(next: Sort) { this._sortChange.next(next); }
 
-    constructor(private _obs: Observable<T[]>) {
+    constructor(private _data: Observable<T[]>, _sort: Observable<Sort>, _filter: Observable<string>) {
         super();
+        this._sort = _sort.startWith<Sort>({ active: '', direction: '' });
+        this._filter = _filter.pipe(startWith<string>(''), debounceTime(150), distinctUntilChanged());
     }
 
     connect(): Observable<T[]> {
         const displayDataChanges = [
-            this._filterChange,
-            this._sortChange,
-            this._obs
+            this._filter,
+            this._sort,
+            this._data
         ];
 
         return Observable.combineLatest(
@@ -71,10 +77,10 @@ export class FilteredSortedDataSource<T extends Searchable & Comparable<T>  > ex
     disconnect() { }
 }
 
-export interface Comparable<T>{
+export interface Comparable<T> {
     compare(other: T, property: string, order: string): number;
 }
 
-export interface Searchable{
+export interface Searchable {
     contains(needle: string): boolean;
 }

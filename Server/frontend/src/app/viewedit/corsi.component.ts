@@ -5,6 +5,8 @@ import { trigger, state, style, animate, transition, group } from '@angular/anim
 import { Corso } from '../model'
 import { CorsiService } from '../corsi/main.service'
 
+import { Observable } from 'rxjs/Observable'
+
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 const noop = () => {
@@ -47,14 +49,12 @@ export class CorsiVieweditComponent implements OnInit, ControlValueAccessor {
     @Input('required') inputRequired: boolean = false
 
     _content: Corso;
-    allCorsi: Corso[];
+    allCorsi: Observable<Corso[]>;
 
     constructor(private _corsisrv: CorsiService) { }
 
     ngOnInit() {
-        this._corsisrv.getCorsi().subscribe(
-            (corsi: Corso[]) => { this.allCorsi = corsi }
-        )
+        this.allCorsi = this._corsisrv.getCorsi();
     }
 
     private onTouchedCallback: () => void = noop;

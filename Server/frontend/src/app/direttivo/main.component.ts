@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'
 
 import { DataSource } from '@angular/cdk/table'
 import { MatDialog } from '@angular/material'
@@ -12,13 +12,14 @@ import { ObservableDataSource, PATTERN_USER, PATTERN_PASSWORD } from '../common'
 import { DirettivoService } from './main.service'
 
 import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
   selector: 'direttivo',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css', '../common/mainroutes.style.css']
 })
-export class DirettivoComponent {
+export class DirettivoComponent implements OnInit, OnDestroy {
 
   // reexpose pattern to allow template to access them
   PATTERN_USER: string = PATTERN_USER;
@@ -31,6 +32,8 @@ export class DirettivoComponent {
   initValuesUser: string[] = [];
   initValuesPass: string[] = [];
 
+  updateSubscription: Subscription;
+
   constructor(private _dirsrv: DirettivoService,
     private _changeref: ChangeDetectorRef,
     private _dialog: MatDialog) {
@@ -40,7 +43,7 @@ export class DirettivoComponent {
   ngOnInit() {
     let obs = this._dirsrv.getDirettivo();
     this.direttivoSource = new ObservableDataSource(obs);
-    obs.subscribe(
+    this.updateSubscription = obs.subscribe(
       (direttivo: MembroDirettivo[]) => {
         direttivo.forEach((membro) => {
           this.editing[membro.id_direttivo] = false
@@ -50,6 +53,10 @@ export class DirettivoComponent {
       }
     );
     this._changeref.detectChanges();
+  }
+
+  ngOnDestroy(){
+    this.updateSubscription.unsubscribe();
   }
 
   addMembro() {
