@@ -125,7 +125,7 @@
 
                     <ng-container *ngIf="!model.carriere[0].studente">
                         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                            <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                                 <label fxFlex="31%" for="professione">Professione:</label>
                                 <mat-form-field fxFlex="100%">
                                     <input type="text" name="professione" [(ngModel)]="model.carriere[0].professione" matInput [required]="!model.carriere[0].studente"

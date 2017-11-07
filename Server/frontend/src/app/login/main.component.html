@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
     <h2 style="width: 100%"> Login </h2>
 </mat-toolbar>
-<form #form="ngForm" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1em" class="padded-side">
-    <div fxFlex="50%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
-        <label fxFlex="20%" for="user">Username: </label>
+<form #form="ngForm" fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="1em" class="padded-side">
+    <div fxFlex="100%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
+        <label fxFlex="35%" for="user">Username: </label>
         <mat-form-field fxFlex="calc(80% - 1.5em)">
             <input type="text" matInput name="user" required #inputUser="ngModel" [(ngModel)]="user" [pattern]="PATTERN_USER" />
             <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
@@ -17,8 +17,8 @@
             </mat-hint>
         </mat-form-field>
     </div>
-    <div fxFlex="50%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
-        <label fxFlex="20%" for="password">Password: </label>
+    <div fxFlex="100%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
+        <label fxFlex="35%" for="password">Password: </label>
         <mat-form-field fxFlex="calc(80% - 1.5em)">
             <input [type]="hidden ? 'password' : 'text' " matInput name="password" required #inputPass="ngModel" [(ngModel)]="password"
                 [pattern]="PATTERN_PASSWORD" />
