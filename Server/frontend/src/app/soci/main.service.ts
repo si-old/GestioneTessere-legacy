@@ -12,7 +12,6 @@ import { TesseramentiService } from '../tesseramenti/main.service'
 import { Observable } from 'rxjs/Observable';
 import { NextObserver, ErrorObserver } from 'rxjs/Observer'
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
 
 const REST_ENDPOINT: string = BACKEND_SERVER + "socio.php";
 

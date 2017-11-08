@@ -1,23 +1,4 @@
-.titlebar{
-    display: flex;
-    text-align: left;
-    justify-content: center;
-  }
-  
-.to_left{
-    margin-right: auto;
-}
-
-.v-centered{
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.centered{
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.to_right{
-    margin-left: auto;
+half-size{
+    width: 45%;
+    height: auto;
 }

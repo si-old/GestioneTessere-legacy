@@ -36,7 +36,7 @@ export class MailFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.corsisrv.getCorsi().subscribe(
+        this.corsisrv.getCorsi().first().subscribe(
             (in_corsi: Corso[]) => { 
                 in_corsi.forEach(
                     (corso: Corso) => {

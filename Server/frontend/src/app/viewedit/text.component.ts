@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef, OnInit } from '@angular/core'
+import { Component, Input, forwardRef } from '@angular/core'
 
 import {
     trigger,

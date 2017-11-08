@@ -4,8 +4,6 @@ import { MatDialog, MatDialogRef, PageEvent } from '@angular/material'
 
 import { LogEntry, LogService } from './main.service'
 
-import { ConfirmDialog } from '../dialogs'
-
 import { ObservableDataSource } from '../common'
 
 @Component({

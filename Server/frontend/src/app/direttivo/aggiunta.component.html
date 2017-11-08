@@ -3,13 +3,12 @@
 </div>
 <ng-container *ngIf="loaded">
     <form #form="ngForm" mat-dialog-content>
-        <div>
-            <label for="socio">Socio: </label>
-
-            <mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+            <label fxFlex="20%" for="socio">Socio: </label>
+            <mat-form-field fxFlex="calc(80% - 1em)">
                 <mat-select placeholder="Soci" [(ngModel)]="socio" selected="socio" required name="socio" #inputSocio="ngModel">
                     <mat-option *ngFor="let soci of allSoci" [value]="soci">
-                        {{soci.id}} - {{soci.nome}}
+                        {{soci.nome}} {{soci.cognome}}
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="inputSocio.errors && inputSocio.errors.required">
@@ -17,9 +16,9 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <div>
-            <label for="user">Username: </label>
-            <mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+            <label fxFlex="20%" for="user">Username: </label>
+            <mat-form-field  fxFlex="calc(80% - 1em)">
                 <input type="text" matInput name="user" required #inputUser="ngModel" [(ngModel)]="user" [pattern]="PATTERN_USER" />
                 <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
                     Il campo è obbligatorio!
@@ -32,9 +31,9 @@
                 </mat-hint>
             </mat-form-field>
         </div>
-        <div>
-            <label for="password">Password: </label>
-            <mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+            <label fxFlex="20%" for="password">Password: </label>
+            <mat-form-field  fxFlex="calc(80% - 1em)">
                 <input type="text" matInput name="password" required #inputPass="ngModel" [(ngModel)]="password" [pattern]="PATTERN_PASSWORD"
                 />
                 <mat-error *ngIf="inputPass.errors && inputPass.errors.required">

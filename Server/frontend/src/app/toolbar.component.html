@@ -1,0 +1,40 @@
+<mat-sidenav-container>
+    <mat-sidenav #sidenav *ngIf="loggedIn" fxLayout="column">
+        <div class="primary-background" fxLayout="column" fxFlex>
+            <a mat-raised-button class="sidenav-button" color="accent" (click)="navigateFromSidenav('/soci')">Soci</a>
+            <a mat-raised-button class="sidenav-button" color="accent" (click)="navigateFromSidenav('/corsi')">Corsi di Laurea</a>
+            <a mat-raised-button class="sidenav-button" color="accent" (click)="navigateFromSidenav('/tesseramenti')">Tesseramenti</a>
+            <a mat-raised-button class="sidenav-button" color="accent" (click)="navigateFromSidenav('/mail')">Mail</a>
+            <ng-container *ngIf="isAdmin">
+                <a mat-raised-button class="sidenav-button" color="accent" (click)="navigateFromSidenav('/direttivo')">Direttivo</a>
+                <a mat-raised-button class="sidenav-button" color="accent" (click)="navigateFromSidenav('/log')">Log</a>
+            </ng-container>
+        </div>
+    </mat-sidenav>
+    <mat-toolbar color="primary" *ngIf="loggedIn">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="grow">
+            <div fxHide fxHide.lt-md="false" fxFlex fxLayoutAlign="start center">
+                <a mat-icon-button class="toolbar-button" color="accent" (click)="toggleMenu()">
+                    <mat-icon matTooltip="Menu" matTooltipPosition="after">menu</mat-icon>
+                </a>
+            </div>
+            <div fxShow fxShow.lt-md="false" fxFlex fxLayoutAlign="start center">
+                <a mat-raised-button class="toolbar-button" color="accent" routerLink="/soci">Soci</a>
+                <a mat-raised-button class="toolbar-button" color="accent" routerLink="/corsi">Corsi di Laurea</a>
+                <a mat-raised-button class="toolbar-button" color="accent" routerLink="/tesseramenti">Tesseramenti</a>
+                <a mat-raised-button class="toolbar-button" color="accent" routerLink="/mail">Mail</a>
+                <ng-container *ngIf="isAdmin">
+                    <a mat-raised-button class="toolbar-button" color="accent" routerLink="/direttivo">Direttivo</a>
+                    <a mat-raised-button class="toolbar-button" color="accent" routerLink="/log">Log</a>
+                </ng-container>
+            </div>
+            <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                Ciao {{username}}
+                <button mat-fab color="accent" class="right-button" (click)="logout()">
+                    <mat-icon matTooltip="Logout" matTooltipPosition="below">power_settings_new</mat-icon>
+                </button>
+            </div>
+        </div>
+    </mat-toolbar>
+    <ng-content></ng-content>
+</mat-sidenav-container>

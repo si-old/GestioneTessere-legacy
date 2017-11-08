@@ -1,9 +1,10 @@
-<form #form="ngForm">
-    <div class="form-container">
-        <div class="form-left-col">
-            <div>
-                <label for="feedback">Indirizzo di feedback:</label>
-                <mat-form-field>
+<form #form="ngForm" class="padded-side" fxLayout="row" [ngStyle.gt-xs]="{'height': '440px', 'overflow': 'none'}">
+    <div fxFlex="100%" fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutAlign="start stretch" class="checkbox-container"
+        fxLayoutGap="1em">
+        <div fxLayout="column" fxFlexOrder.lt-sm="2" class="height-fit">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <label fxFlex="25%" for="feedback">Indirizzo di feedback:</label>
+                <mat-form-field fxFlex="50%">
                     <input type="text" name="feedback" matInput [(ngModel)]="email_feedback" required email #inputFeedback="ngModel" />
                     <mat-error *ngIf="inputFeedback.errors && inputFeedback.errors.required">
                         Il campo è obbligatorio!
@@ -13,51 +14,51 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="checkbox-area">
-                <div class="checkbox-list">
-                    <div class="checkbox-container">
+            <div fxLayout="row" fxLayoutGap="1em" class="height-fit">
+                <div fxFlex="35%" fxLayout="column" fxLayoutAlign="start stretch">
+                    <div>
                         <mat-checkbox color="primary" [(ngModel)]="blacklist" name="blacklist">
                             Escludi blacklist
                         </mat-checkbox>
                     </div>
-                    <div class="checkbox-container" ngModelGroup="destinatari" checkbox-group>
+                    <div ngModelGroup="destinatari" checkbox-group>
                         <mat-checkbox color="primary" [(ngModel)]="lavoratori" name="lavoratori">
                             Lavoratori
                         </mat-checkbox>
                     </div>
-                </div>
-                <div class="checkbox-list" ngModelGroup="destinatari" #groupCorsi="ngModelGroup">
-                    <div class="checkbox-container">
-                        <mat-checkbox color="primary" [(ngModel)]="tutti" (change)="tuttiCallback()" name="tutti" checkbox-bypass>
-                            Tutti i corsi
-                        </mat-checkbox>
-                    </div>
-                    <div *ngFor="let corso of corsi" class="checkbox-container">
-                        <mat-checkbox color="primary" [(ngModel)]="corsi_checked[corso.id]" [disabled]="corsi_disabled[corso.id]" [name]="'corso_'+corso.id+'_checkbox'">
-                            {{corso.nome}}
-                        </mat-checkbox>
-                    </div>
-                    <div class="checkbox-container">
-                        <mat-error *ngIf="form.touched && groupCorsi.errors && groupCorsi.errors.checkboxGroup">
+                    <div ngFlex="0 0 50%">
+                        <mat-error style="max-width: 8em" *ngIf="form.touched && groupCorsi.errors && groupCorsi.errors.checkboxGroup">
                             E&#768; necessario selezionare almeno un gruppo di destinatari.
                         </mat-error>
                     </div>
                 </div>
+                <div fxFlex="35%" fxLayout="column" ngModelGroup="destinatari" #groupCorsi="ngModelGroup" class="height-fit">
+                    <div>
+                        <mat-checkbox color="primary" [(ngModel)]="tutti" (change)="tuttiCallback()" name="tutti" checkbox-bypass>
+                            Tutti i corsi
+                        </mat-checkbox>
+                    </div>
+                    <div *ngFor="let corso of corsi">
+                        <mat-checkbox color="primary" [(ngModel)]="corsi_checked[corso.id]" [disabled]="corsi_disabled[corso.id]" [name]="'corso_'+corso.id+'_checkbox'">
+                            {{corso.nome}}
+                        </mat-checkbox>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-right-col">
-            <div>
-                <label for="oggetto">Oggetto:</label>
-                <mat-form-field>
+        <div fxLayout="column" fxFlexOrder.lt-sm="1" class="height-fit">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <label fxFlex="25%" for="oggetto">Oggetto:</label>
+                <mat-form-field fxFlex="75%">
                     <input type="text" name="oggetto" matInput [(ngModel)]="oggetto" required #inputOggetto="ngModel" />
                     <mat-error *ngIf="inputOggetto.errors && inputOggetto.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div>
-                <label id="label-contenuto" for="contenuto">Contenuto:</label>
-                <mat-form-field>
+            <div fxLayout="row" class="height-fit" fxLayoutAlign="start center">
+                <label fxFlex="25%" fxFlexAlign="start" for="contenuto">Contenuto:</label>
+                <mat-form-field fxFlex="75%">
                     <textarea matInput name="contenuto" rows="10" [(ngModel)]="corpo" required #inputCorpo="ngModel">
                     </textarea>
                     <mat-error *ngIf="inputCorpo.errors && inputCorpo.errors.required">
@@ -65,11 +66,11 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="button-container">
-                <button mat-raised-button color="primary" (click)="sendEmail(form)" [disabled]="form.invalid">
-                    Invia
-                </button>
-            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="3">
+            <button mat-raised-button color="primary" (click)="sendEmail(form)" [disabled]="form.invalid">
+                Invia
+            </button>
         </div>
     </div>
 </form>

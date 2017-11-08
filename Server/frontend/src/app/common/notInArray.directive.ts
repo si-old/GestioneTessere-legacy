@@ -1,5 +1,5 @@
 import { Directive, Input } from '@angular/core';
-import { Validator, FormControl, NG_VALIDATORS, FormGroup } from '@angular/forms';
+import { Validator, FormControl, NG_VALIDATORS } from '@angular/forms';
 
 @Directive({
     selector: '[notInArray]',

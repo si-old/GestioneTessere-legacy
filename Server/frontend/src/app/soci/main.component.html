@@ -3,7 +3,7 @@
     <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>
   </a>
   <h2 center> Soci </h2>
-  <span right>
+  <span right fxLayout>
     <mat-form-field floatPlaceholder="never">
       <input matInput #filter placeholder="Ricerca soci">
     </mat-form-field>
@@ -12,15 +12,15 @@
       </button>
     </span>
 </titlebar>
-<div style="display: flex; justify-content: space-between; align-items: center">
-  <div style="width: max-content">
+<div fxLayout fxLayout.lt-sm="column" fxLayoutAlign="space-between center">
+  <div style="width: max-content" fxFlexOrder.lt-sm="2" fxFlexAlign.lt-sm="start">
     <nav mat-tab-nav-bar>
-      <a mat-tab-link (click)="socisrv.tesserati=true" [active]="socisrv.tesserati">Tesserati</a>
-      <a mat-tab-link (click)="socisrv.tesserati=false" [active]="!socisrv.tesserati">Non tesserati</a>
+      <a mat-tab-link (click)="socisrv.tesserati=true" [active]="socisrv.tesserati==true">Tesserati</a>
+      <a mat-tab-link (click)="socisrv.tesserati=false" [active]="socisrv.tesserati==false">Non tesserati</a>
       <a mat-tab-link (click)="socisrv.tesserati=null" [active]="socisrv.tesserati==null">Tutti</a>
     </nav>
   </div>
-  <div>
+  <div style="margin: 0 1em;" fxFlexOrder.lt-sm="1" fxFlexAlign="end">
     <mat-slide-toggle [checked]="!socisrv.paginate" labelPosition="before"
       (change)="togglePagination()" color="primary">
       Mostra tutti
@@ -77,11 +77,8 @@
       <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
       <mat-cell *cdkCellDef="let row">
         <button mat-icon-button (click)="editSocio(row)">
-              <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
-            </button>
-        <a mat-icon-button routerLink="{{row.id}}">
-          <mat-icon matTooltip="Dettagli" matTooltipPosition="right">link</mat-icon>
-        </a>
+          <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
+        </button>
       </mat-cell>
     </ng-container>
 

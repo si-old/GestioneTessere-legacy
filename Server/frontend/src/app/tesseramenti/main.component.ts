@@ -9,9 +9,7 @@ import { ConfirmDialog, TextInputDialog, MessageDialog } from '../dialogs'
 
 import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource } from '../common'
 
-import { Observable } from 'rxjs/Observable'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataSource } from '@angular/cdk/table';
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
     selector: 'tesseramenti',
@@ -22,6 +20,7 @@ export class TesseramentiComponent implements OnInit {
 
     displayedColumns: string[] = ['anno', 'aperto', 'azioni'];
     tessSource: ObservableDataSource<Tesseramento>;
+    tessSubscription: Subscription;
 
     editing: boolean[] = [];
     oldValues: string[] = [];
@@ -35,7 +34,7 @@ export class TesseramentiComponent implements OnInit {
     ngOnInit() {
         let obs = this._tessService.getTesseramenti();
         this.tessSource = new ObservableDataSource<Tesseramento>(obs);
-        obs.subscribe(
+        this.tessSubscription = obs.subscribe(
             (values: Tesseramento[]) => {
                 values.forEach(
                     (value: Tesseramento) => {
@@ -46,6 +45,10 @@ export class TesseramentiComponent implements OnInit {
             }
         )
         this.changeDetector.detectChanges();
+    }
+
+    ngOnDestroy(){
+        this.tessSubscription.unsubscribe();
     }
 
     closeCallback() {

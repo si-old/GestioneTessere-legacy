@@ -34,7 +34,7 @@ export class TesseramentiService {
     }
 
     getTesseramentoAttivo(): Observable<Tesseramento> {
-        return this.getTesseramenti().map(
+        return this.getTesseramenti().first().map(
             (tArr: Tesseramento[]) => {
                 let filtered = tArr.filter((tes: Tesseramento) => { return tes.aperto });
                 if (filtered.length == 1) {

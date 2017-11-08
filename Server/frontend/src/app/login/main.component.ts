@@ -11,7 +11,7 @@ import { PATTERN_PASSWORD, PATTERN_USER } from '../common'
 @Component({
     selector: 'login',
     templateUrl: './main.component.html',
-    styleUrls: ['./main.component.css', '../common/style.css']
+    styleUrls: ['../common/style.css']
 })
 export class LoginComponent implements OnInit {
 
@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
 
     error: boolean = true;
     return: string = '/soci';
+
+    hidden: boolean = true;
 
     constructor(private snack: MatSnackBar,
         private _loginsrv: LoginService,

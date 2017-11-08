@@ -1,31 +1,28 @@
 <div class="fontstyle" *ngIf="loaded">
     <titlebar mat-dialog-title>
-        <button left mat-icon-button (click)="exit()">
-            <mat-icon matTooltip="Esci" matTooltipPosition="right">keyboard_arrow_left</mat-icon>
-        </button>
         <h3 center> Modifica dati {{model.nome}} </h3>
     </titlebar>
-    <form #form="ngForm" [ngClass]="form_style">
+    <form #form="ngForm" class="in_dialog">
         <div mat-dialog-content>
-            <div class="form_group">
-                <span class="label">Nome:</span>
-                <text-viewedit [(ngModel)]="model.nome" name="nome" [flag]="editing" required #inputNome="ngModel">
+            <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+                <span fxFlex="31%" class="label">Nome:</span>
+                <text-viewedit fxFlex="100%" [(ngModel)]="model.nome" name="nome" [flag]="editing" required #inputNome="ngModel">
                     <mat-error *ngIf="inputNome.errors && inputNome.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
                 </text-viewedit>
             </div>
-            <div class="form_group">
-                <span class="label">Cognome:</span>
-                <text-viewedit [(ngModel)]="model.cognome" name="cognome" [flag]="editing" required #inputCognome="ngModel">
+            <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+                <span fxFlex="31%" class="label">Cognome:</span>
+                <text-viewedit fxFlex="69%" [(ngModel)]="model.cognome" name="cognome" [flag]="editing" required #inputCognome="ngModel">
                     <mat-error *ngIf="inputCognome.errors && inputCognome.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
                 </text-viewedit>
             </div>
-            <div class="form_group">
-                <span class="label">E-Mail:</span>
-                <text-viewedit [(ngModel)]="model.email" name="email" [flag]="editing" required email #inputEmail="ngModel">
+            <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+                <span fxFlex="31%" class="label">Email:</span>
+                <text-viewedit fxFlex="69%" [(ngModel)]="model.email" name="email" [flag]="editing" required email #inputEmail="ngModel">
                     <mat-error *ngIf="inputEmail.errors && inputEmail.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
@@ -34,36 +31,40 @@
                     </mat-error>
                 </text-viewedit>
             </div>
-            <div class="form_group">
-                <span class="label">Cellulare:</span>
-                <text-viewedit [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" #inputCell="ngModel" [pattern]="PATTERN_CELLULARE">
+            <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+                <span fxFlex="31%" class="label">Cellulare:</span>
+                <text-viewedit fxFlex="100%" [(ngModel)]="model.cellulare" name="cellulare" [flag]="editing" #inputCell="ngModel"
+                    [pattern]="PATTERN_CELLULARE">
                     <mat-error *ngIf="inputCell.errors && inputCell.errors.pattern">
                         Non corrisponde al formato previsto
                     </mat-error>
+                    <mat-hint *ngIf="inputCell.untouched || !inputCell.value">
+                        10 cifre con, eventualmente, il prefisso internazionale.
+                    </mat-hint>
                 </text-viewedit>
             </div>
-            <div class="form_group">
-                <span class="label">Facebook:</span>
-                <text-viewedit [(ngModel)]="model.facebook" name="facebook" [flag]="editing"></text-viewedit>
+            <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+                <span fxFlex="31%" class="label">Facebook:</span>
+                <text-viewedit fxFlex="69%" [(ngModel)]="model.facebook" name="facebook" [flag]="editing"></text-viewedit>
             </div>
-            <div class="table-container">
-                <div class="label">
-                    Carriere: <br />
+            <div class="table-container" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around start" fxLayoutGap="1em">
+                <div fxFlex="31%" fxLayout="column" fxLayout.lt-sm="row" fxLayoutAlign="end end">
+                    <p class="label">Carriere:</p>
                     <button mat-icon-button *ngIf="editing" (click)="addCarriera()">
-                    <mat-icon matTooltip="Nuova carriera" matTooltipPosition="left">add</mat-icon>
-                </button>
+                        <mat-icon matTooltip="Nuova carriera" matTooltipPosition="left">add</mat-icon>
+                    </button>
                 </div>
-                <mat-table [dataSource]="carriereSource">
+                <mat-table fxFlex="100%" [dataSource]="carriereSource">
 
                     <ng-container cdkColumnDef="studente">
-                        <mat-header-cell *cdkHeaderCellDef> Studente/Lavoratore </mat-header-cell>
+                        <mat-header-cell *cdkHeaderCellDef> Tipo </mat-header-cell>
                         <mat-cell *cdkCellDef="let row">
                             {{row.studente ? 'Studente' : 'Lavoratore'}}
                         </mat-cell>
                     </ng-container>
 
                     <ng-container cdkColumnDef="dettagli">
-                        <mat-header-cell *cdkHeaderCellDef> Corso di laurea/ Professione </mat-header-cell>
+                        <mat-header-cell *cdkHeaderCellDef> Corso / Professione </mat-header-cell>
                         <mat-cell *cdkCellDef="let row">
                             <ng-container *ngIf="!carriereEditing[row.id]">
                                 {{row}}
@@ -122,14 +123,14 @@
 
                 </mat-table>
             </div>
-            <div class="table-container">
-                <div class="label">
-                    Tessere: <br />
+            <div class="table-container" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around start" fxLayoutGap="1em">
+                <div fxFlex="31%" fxLayout="column" fxLayout.lt-sm="row" fxLayoutAlign="end end">
+                    <p class="label">Tessere:</p>
                     <button mat-icon-button *ngIf="editing && !hasTessera" (click)="addTessera()">
-                        <mat-icon matTooltip="Nuova tessera" matTooltipPosition="left">add</mat-icon>
-                    </button>
+                            <mat-icon matTooltip="Nuova tessera" matTooltipPosition="left">add</mat-icon>
+                        </button>
                 </div>
-                <mat-table [dataSource]="tessereSource">
+                <mat-table fxFlex="100%" [dataSource]="tessereSource">
 
                     <ng-container cdkColumnDef="numero">
                         <mat-header-cell *cdkHeaderCellDef> Numero </mat-header-cell>
@@ -139,16 +140,20 @@
                             </ng-container>
                             <ng-container *ngIf="tessereEditing[row.id]">
                                 <mat-form-field>
-                                    <input type="text" [(ngModel)]="row.numero" name="numero" #inputNumero="ngModel" matInput required [pattern]="PATTERN_NUMERO_TESSERA"
+                                    <input type="text" [(ngModel)]="row.numero" name="numero" #inputNumero="ngModel"
+                                            matInput required [pattern]="PATTERN_NUMERO_TESSERA" [notInArray]="row.anno.tessere"
                                     />
                                     <mat-error *ngIf="inputNumero.errors && inputNumero.errors.required">
                                         Il campo è obbligatorio!
                                     </mat-error>
                                     <mat-error *ngIf="inputNumero.errors && inputNumero.errors.pattern">
-                                        Devi inserire un numero (anche negativo).
+                                        Devi inserire un numero valido.
+                                    </mat-error>
+                                    <mat-error *ngIf="inputNumero.errors && inputNumero.errors.notInArray">
+                                        La tessera è già assegnata!.
                                     </mat-error>
                                     <mat-hint *ngIf="inputNumero.untouched || !inputNumero.value">
-                                        Devi inserire un numero (anche negativo).
+                                        Un numero (anche negativo).
                                     </mat-hint>
                                 </mat-form-field>
                             </ng-container>
@@ -163,9 +168,9 @@
                     <ng-container cdkColumnDef="azioni">
                         <mat-header-cell *cdkHeaderCellDef> Azioni </mat-header-cell>
                         <mat-cell *cdkCellDef="let row">
-                            <button mat-icon-button (click)="tessereEditing[row.id] = !tessereEditing[row.id]">
-                            <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
-                        </button>
+                            <button *ngIf="row.anno.aperto" mat-icon-button (click)="tessereEditing[row.id] = !tessereEditing[row.id]">
+                                <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
+                            </button>
                         </mat-cell>
                     </ng-container>
 

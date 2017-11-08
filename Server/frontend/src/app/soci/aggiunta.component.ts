@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA } from '@angular/material';
 
 import { MatDialogRef, MatSnackBar } from '@angular/material'
@@ -8,7 +8,8 @@ import { CorsiService } from '../corsi/main.service'
 
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE, LoadingTracker } from '../common'
+import { LoadingTracker } from '../ux'
+import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE } from '../common'
 
 @Component({
     selector: 'aggiunta-socio',
@@ -43,7 +44,7 @@ export class AggiuntaSocioComponent implements OnInit {
             tessere: [new Tessera({ numero: null })],
             carriere: [new Carriera({ matricola: '', studente: false })]
         });
-        this._corsisrv.getCorsi().subscribe(
+        this._corsisrv.getCorsi().first().subscribe(
             (x: Corso[]) => { 
                 this.model.carriere[0].corso = x[0];
                 this.loading.addStep();

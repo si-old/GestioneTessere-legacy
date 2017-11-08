@@ -3,7 +3,7 @@
 </ng-container>
 <mat-form-field *ngIf="flag" [@flyInOut]>
     <mat-select placeholder="Corsi di Laurea" [(ngModel)]="content" selected="content" [required]="inputRequired" matInput>
-        <mat-option *ngFor="let corso of allCorsi" [value]="corso">
+        <mat-option *ngFor="let corso of allCorsi | async" [value]="corso">
             {{corso.nome}}
         </mat-option>
     </mat-select>
