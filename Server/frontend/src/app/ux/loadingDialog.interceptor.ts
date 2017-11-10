@@ -37,7 +37,7 @@ export class LoadingDialogInterceptor implements HttpInterceptor {
             LoadingDialogInterceptor.opened = null;
         }
         if (LoadingDialogInterceptor.openedDialog) {
-            this.dialog.getDialogById('loading_dialog') && this.dialog.getDialogById('loading_dialog').close();
+            LoadingDialogInterceptor.openedDialog.close();
             LoadingDialogInterceptor.openedDialog = null;
         }
     }
