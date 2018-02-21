@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 
-import { MatDialog, MatDialogRef } from '@angular/material'
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
 
 import { Tesseramento } from '../model'
 import { TesseramentiService } from './main.service'
@@ -27,7 +27,8 @@ export class TesseramentiComponent implements OnInit {
 
     constructor(private _tessService: TesseramentiService,
         private changeDetector: ChangeDetectorRef,
-        private dialog: MatDialog) {
+        private dialog: MatDialog,
+        private snackBar: MatSnackBar) {
 
     }
 
@@ -47,7 +48,7 @@ export class TesseramentiComponent implements OnInit {
         this.changeDetector.detectChanges();
     }
 
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.tessSubscription.unsubscribe();
     }
 
@@ -71,10 +72,16 @@ export class TesseramentiComponent implements OnInit {
     }
 
     commitChanges(t: Tesseramento) {
-        if (t.anno && t.anno != this.oldValues[t.id]) {
-            this._tessService.modificaTesseramento(t);
+        if (t.anno) {
+            if (t.anno && t.anno != this.oldValues[t.id]) {
+                this._tessService.modificaTesseramento(t);
+            }
+            this.editing[t.id] = false;
+        } else {
+            this.snackBar.open("Tutti i campi sono obbligatori", "Chiudi", {
+                duration: 1500
+            })
         }
-        this.editing[t.id] = false;
     }
 
     revertChanges(t: Tesseramento) {
@@ -82,12 +89,12 @@ export class TesseramentiComponent implements OnInit {
         this.editing[t.id] = false;
     }
 
-    tessereCallback(t: Tesseramento){
+    tessereCallback(t: Tesseramento) {
         this.dialog.open(MessageDialog, {
             data: {
-                message: "Le tessere assegnate sono: "+ t.tessere
-                                                        .sort((a,b) => {return a - b})
-                                                        .join(', ')
+                message: "Le tessere assegnate sono: " + t.tessere
+                    .sort((a, b) => { return a - b })
+                    .join(', ')
             }
         })
     }
