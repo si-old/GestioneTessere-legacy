@@ -71,7 +71,7 @@ export class TesseramentiComponent implements OnInit {
     }
 
     commitChanges(t: Tesseramento) {
-        if (t.anno != this.oldValues[t.id]) {
+        if (t.anno && t.anno != this.oldValues[t.id]) {
             this._tessService.modificaTesseramento(t);
         }
         this.editing[t.id] = false;

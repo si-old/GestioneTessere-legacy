@@ -70,8 +70,8 @@ export class DirettivoComponent implements OnInit, OnDestroy {
   }
 
   commitChanges(m: MembroDirettivo) {
-    if (this.initValuesPass[m.id_direttivo] != m.password ||
-        this.initValuesUser[m.id_direttivo] != m.user) {
+    if ( (m.password && this.initValuesPass[m.id_direttivo] != m.password) ||
+        (m.user && this.initValuesUser[m.id_direttivo] != m.user)) {
       this._dirsrv.changeMembro(m);
     }
     this.editing[m.id_direttivo] = false;
