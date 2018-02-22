@@ -89,12 +89,27 @@ export class TesseramentiComponent implements OnInit {
         this.editing[t.id] = false;
     }
 
-    tessereCallback(t: Tesseramento) {
+    showTessereAssegnate(t: Tesseramento) {
+        let spazioNumero = 6;
+        let dimensioneRiga = 10;
+
+        let tesserePositiveOrdinate: number[] = t.tessere.filter((a) => { return a > 0 })
+            .sort((a, b) => { return a - b });
+        let maxTessera = Math.max(...tesserePositiveOrdinate);
+        let parti = Array(maxTessera).fill(' '.repeat(spazioNumero));
+        tesserePositiveOrdinate.forEach(
+            (index) => {
+                parti[index - 1] = index.toString().padStart(spazioNumero - 1, ' ') + ',';
+            }
+        );
+        let messaggio: string = 
+        Array.from({length: Math.ceil(maxTessera / dimensioneRiga) + 1}, (value, key) => key)
+            .map((x, i) => parti.slice(i * dimensioneRiga, (i + 1) * dimensioneRiga))
+            .map((x) => x.join(''))
+            .reduce((acc, val) => acc + '\n' + val);
         this.dialog.open(MessageDialog, {
             data: {
-                message: "Le tessere assegnate sono: " + t.tessere
-                    .sort((a, b) => { return a - b })
-                    .join(', ')
+                message: "Le tessere assegnate sono: \n" + messaggio
             }
         })
     }
