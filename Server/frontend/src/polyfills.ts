@@ -55,8 +55,7 @@ import 'core-js/es7/reflect';
  */
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 
-import 'pad-start/index.js' // padStart 
-
+import 'core-js/es7/string';
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
