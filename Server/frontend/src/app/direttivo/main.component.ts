@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'
 
-import { MatDialog } from '@angular/material'
+import { MatDialog, MatSnackBar } from '@angular/material'
 
 import { ConfirmDialog } from '../dialogs/confirm.dialog'
 import { AggiuntaDirettivoComponent } from './aggiunta.component'
@@ -34,7 +34,8 @@ export class DirettivoComponent implements OnInit, OnDestroy {
 
   constructor(private _dirsrv: DirettivoService,
     private _changeref: ChangeDetectorRef,
-    private _dialog: MatDialog) {
+    private _dialog: MatDialog,
+    private snackBar: MatSnackBar) {
 
   }
 
@@ -53,7 +54,7 @@ export class DirettivoComponent implements OnInit, OnDestroy {
     this._changeref.detectChanges();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.updateSubscription.unsubscribe();
   }
 
@@ -70,16 +71,22 @@ export class DirettivoComponent implements OnInit, OnDestroy {
   }
 
   commitChanges(m: MembroDirettivo) {
-    if (this.initValuesPass[m.id_direttivo] != m.password ||
+    if (m.user || m.password) {
+      if (this.initValuesPass[m.id_direttivo] != m.password ||
         this.initValuesUser[m.id_direttivo] != m.user) {
-      this._dirsrv.changeMembro(m);
+        this._dirsrv.changeMembro(m);
+      }
+      this.editing[m.id_direttivo] = false;
+    } else {
+      this.snackBar.open("Tutti i campi sono obbligatori", "Chiudi", {
+        duration: 1500
+      })
     }
-    this.editing[m.id_direttivo] = false;
   }
 
   revertChanges(m: MembroDirettivo) {
     if (this.initValuesPass[m.id_direttivo] != m.password ||
-        this.initValuesUser[m.id_direttivo] != m.user) {      
+      this.initValuesUser[m.id_direttivo] != m.user) {
       m.user = this.initValuesUser[m.id_direttivo];
       m.password = this.initValuesPass[m.id_direttivo];
     }
