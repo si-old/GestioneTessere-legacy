@@ -15,7 +15,7 @@ class Mail extends RESTItem
 											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
 									FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID ';
 
-    private $EMAIL_OPTIONS = array('TITLE' => 'StudentIngegneria', 'URL' => 'http://www.Studentingegneria.it', 'FROM' => 'info@studentingegneria.it', 'CHARSET' => 'utf-8', 'TYPE' => 'text/html');
+    private $EMAIL_OPTIONS = array('TITLE' => 'StudentIngegneria', 'URL' => 'http://www.Studentingegneria.it', 'FROM' => 'info@studentingegneria.it', 'CHARSET_UTF8' => 'utf-8', 'TYPE' => 'text/html', 'MULTIPART_TYPE' => 'multipart/mixed');
         
     protected function do_get()
     {
@@ -38,7 +38,8 @@ class Mail extends RESTItem
 		$valid = $valid && isset($data['blacklist']) && isset($data['tutti']) && isset($data['lavoratori']);
 		$valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
         if ($valid) {
-            $user_header = $this->create_header();
+        	$uid = md5(uniqid(time()));
+            $user_header = $this->create_header(false);
             $subject_tmp = $data['oggetto'];
             $subject = str_replace("\\", "", $subject_tmp);
             $email_body_tmp = nl2br($data['corpo']);
@@ -70,12 +71,59 @@ class Mail extends RESTItem
         return $this->session->is_valid();
     }
 
-    private function create_header()
+    private function create_header($withAttachment, $uid = "")
     {
         $user_header = "Return-Path: ".$this->EMAIL_OPTIONS['TITLE']." <".$this->EMAIL_OPTIONS['FROM'].">\r\n";
         $user_header .= "From: ".$this->EMAIL_OPTIONS['TITLE']." <".$this->EMAIL_OPTIONS['FROM'].">\r\n";
-        $user_header .= "Content-Type: ".$this->EMAIL_OPTIONS['TYPE']."; charset=".$this->EMAIL_OPTIONS['CHARSET'].";\n\n\r\n";
+        if ($withAttachment) {
+        	$user_header .= "Content-Type: ".$this->EMAIL_OPTIONS['MULTIPART_TYPE']."; boundary = $uid\r\n\r\n";
+        } else {
+        	$user_header .= "Content-Type: ".$this->EMAIL_OPTIONS['TYPE']."; charset=".$this->EMAIL_OPTIONS['CHARSET_UTF8'].";\n\n\r\n";
+        }
         return $user_header;
+    }
+
+    private function create_body_for_attachment($message, $filepath, $uid)
+    {
+    	$ftype = file_type($filepath);	
+        $data = file_get_contents($filepath);
+        // split the file into chunks for attaching
+        $content = chunk_split(base64_encode($data));
+    	$body = "--$uid\r\n";
+        $body .= "Content-Type: ".$this->EMAIL_OPTIONS['TYPE']."; charset=".$this->EMAIL_OPTIONS['CHARSET_UTF8']."\r\n";
+        $body .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+        $body .= chunk_split($message)."\r\n\r\n";
+        $body .= "--$uid\r\n";
+        $body .= "Content-Type: ".$ftype."; name=\"".basename($filepath)."\"\r\n";
+        $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
+        $body .= "Content-Disposition: attachment; filename=\"".basename($filepath)."\"\r\n";    
+        $body .= $content."\r\n\r\n";
+        return $body;
+    }
+
+    private function file_type($file) 
+    {
+    	$ext = strrchr( $file , '.');
+        $ftype = "";
+        if ($ext == ".doc") {
+        	$ftype = "application/msword";
+        }
+        if ($ext == ".jpg") {
+        	$ftype = "image/jpeg";
+        }
+        if ($ext == ".gif") {
+        	$ftype = "image/gif";
+        }
+        if ($ext == ".zip") {
+        	$ftype = "application/zip";
+        }
+        if ($ext == ".pdf") {
+        	$ftype = "application/pdf";
+        }
+        if ($ftype=="") {
+        	$ftype = "application/octet-stream";
+        }
+        return $ftype;
     }
 
 	// usiamo solo cdl, perchè farci passare tutto?
