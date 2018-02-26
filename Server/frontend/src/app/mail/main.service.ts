@@ -18,6 +18,8 @@ export class MailService{
     }
 
     sendEmail(req: MailRequest): Observable<MailResponse>{
-        return this.http.post<MailResponse>(RPC_ENDPOINT, req)
+        let form: FormData = new FormData();
+        form.append("content", JSON.stringify(req));
+        return this.http.post<MailResponse>(RPC_ENDPOINT, form)
     }
 }
