@@ -51,7 +51,6 @@ class Mail extends RESTItem
      */
     protected function do_post($data)
     {
-        print_r($data);
         $valid = isset($data['oggetto']) && isset($data['corpo']) && isset($data['email_feedback']);
         $valid = $valid && isset($data['blacklist']) && isset($data['tutti']) && isset($data['lavoratori']);
         $valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
@@ -102,7 +101,6 @@ class Mail extends RESTItem
                 if (!file_exists($this->TMP_ATTACH_DIR)) {
                     mkdir($this->TMP_ATTACH_DIR);
                 }
-                print_r($_FILES);
                 $files = json_decode($_POST['files'], true);
                 foreach ($files as $index => $file) {
                     $new_path = $this->TMP_ATTACH_DIR . '/' . $_FILES[$file]['name'];
