@@ -32,6 +32,8 @@ class Mail extends RESTItem
         ".pdf" => "application/pdf",
     );
 
+    private $TMP_ATTACH_DIR = './tmp_attachments';
+
     protected function do_get()
     {
         throw new RESTException(HttpStatusCode::$METHOD_NOT_ALLOWED);
@@ -49,6 +51,7 @@ class Mail extends RESTItem
      */
     protected function do_post($data)
     {
+        print_r($data);
         $valid = isset($data['oggetto']) && isset($data['corpo']) && isset($data['email_feedback']);
         $valid = $valid && isset($data['blacklist']) && isset($data['tutti']) && isset($data['lavoratori']);
         $valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
@@ -70,7 +73,9 @@ class Mail extends RESTItem
             }
             $this->log_info("Invio e-mail con i parametri: oggetto->" . $data['oggetto'] . ", blacklist->" . $data['blacklist'] . ", tutti->" . $data['tutti'] . ", lavoratori->" . $data['lavoratori'] . ".");
             $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi, $data['lavoratori']);
-            return $this->send_mails($users, $subject, $email_body, $user_header);
+            $return_value = $this->send_mails($users, $subject, $email_body, $user_header);
+            $this->clear_tmp_dir();
+            return $return_value;
         } else {
             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "Request JSON object is missing or has a wrong format");
         }
@@ -93,10 +98,33 @@ class Mail extends RESTItem
         $content = [];
         if (isset($headers['Content-Type']) && strcmp($content_type, 'multipart/form-data') == 0) {
             $content = json_decode($_POST['content'], true);
+            if (isset($_POST['files'])) {
+                if (!file_exists($this->TMP_ATTACH_DIR)) {
+                    mkdir($this->TMP_ATTACH_DIR);
+                }
+                print_r($_FILES);
+                $files = json_decode($_POST['files'], true);
+                foreach ($files as $index => $file) {
+                    $new_path = $this->TMP_ATTACH_DIR . '/' . $_FILES[$file]['name'];
+                    move_uploaded_file($_FILES[$file]['tmp_name'], $new_path);
+                    $content['files'][$index]['name'] = $_FILES[$file]['name'];
+                    $content['files'][$index]['path'] = $new_path;
+                }
+            }
         } else {
             $content = json_decode(file_get_contents('php://input'), true);
         }
         return $content;
+    }
+
+    private function clear_tmp_dir()
+    {
+        $files = glob($this->TMP_ATTACH_DIR.'/*'); // get all file names
+        foreach ($files as $file) { // iterate files
+            if (is_file($file)) {
+                unlink($file);
+            }// delete file
+        }
     }
 
     private function create_header($withAttachment, $uid = "")
@@ -133,7 +161,7 @@ class Mail extends RESTItem
     {
         $ext = strrchr($file, '.');
         $ftype = "application/octet-stream";
-        if (array_key_exists($ext, $this->SUPPORTED_FILE_TYPES)) {
+        if (array_index_exists($ext, $this->SUPPORTED_FILE_TYPES)) {
             $ftype = $this->SUPPORTED_FILE_TYPES[$ext];
         }
         return $ftype;
