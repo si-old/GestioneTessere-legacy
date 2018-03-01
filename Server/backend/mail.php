@@ -56,11 +56,18 @@ class Mail extends RESTItem
         $valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
         if ($valid) {
             $uid = md5(uniqid(time()));
-            $user_header = $this->create_header(false);
+            if (isset($data['files'])) {
+            		$user_header = $this->create_header(true, $uid);
+            		$email_body_tmp = nl2br($data['corpo']);
+            		$email_body = str_replace("\\", "", $email_body_tmp);
+            		$email_body = $this->create_body_for_attachment($email_body, $data['files'], $uid);
+            	} else {
+            		$user_header = $this->create_header(false);
+            		$email_body_tmp = nl2br($data['corpo']);
+            		$email_body = str_replace("\\", "", $email_body_tmp);
+            	}
             $subject_tmp = $data['oggetto'];
             $subject = str_replace("\\", "", $subject_tmp);
-            $email_body_tmp = nl2br($data['corpo']);
-            $email_body = str_replace("\\", "", $email_body_tmp);
             $admin_mail = $data['email_feedback'];
             $admin_subject = "[admin] " . $subject;
             mail($admin_mail, $admin_subject, $email_body, $user_header);
@@ -137,21 +144,25 @@ class Mail extends RESTItem
         return $user_header;
     }
 
-    private function create_body_for_attachment($message, $filepath, $uid)
+    private function create_body_for_attachment($message, $files, $uid)
     {
-        $ftype = file_type($filepath);
-        $data = file_get_contents($filepath);
-        // split the file into chunks for attaching
-        $content = chunk_split(base64_encode($data));
         $body = "--$uid\r\n";
         $body .= "Content-Type: " . $this->EMAIL_OPTIONS['TYPE'] . "; charset=" . $this->EMAIL_OPTIONS['CHARSET_UTF8'] . "\r\n";
         $body .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
         $body .= chunk_split($message) . "\r\n\r\n";
         $body .= "--$uid\r\n";
-        $body .= "Content-Type: " . $ftype . "; name=\"" . basename($filepath) . "\"\r\n";
-        $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
-        $body .= "Content-Disposition: attachment; filename=\"" . basename($filepath) . "\"\r\n";
-        $body .= $content . "\r\n\r\n";
+        foreach ($files as $file) {
+        	$filepath = $file['path'];
+	        $ftype = $this->file_type($filepath);
+	        $data = file_get_contents($filepath);
+	        // split the file into chunks for attaching
+	        $content = chunk_split(base64_encode($data));
+	        $body .= "Content-Type: " . $ftype . "; name=\"" . basename($filepath) . "\"\r\n";
+	        $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
+	        $body .= "Content-Disposition: attachment; filename=\"" . basename($filepath) . "\"\r\n";
+	        $body .= $content . "\r\n\r\n";
+	        $body .= "--$uid\r\n";
+	    }
         return $body;
     }
 
@@ -159,7 +170,7 @@ class Mail extends RESTItem
     {
         $ext = strrchr($file, '.');
         $ftype = "application/octet-stream";
-        if (array_index_exists($ext, $this->SUPPORTED_FILE_TYPES)) {
+        if (array_key_exists($ext, $this->SUPPORTED_FILE_TYPES)) {
             $ftype = $this->SUPPORTED_FILE_TYPES[$ext];
         }
         return $ftype;
