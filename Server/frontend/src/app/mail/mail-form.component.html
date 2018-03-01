@@ -66,6 +66,11 @@
                     </mat-error>
                 </mat-form-field>
             </div>
+            <div fxLayout="column" class="height-fit" fxLayoutAlign="start center">
+                    <input *ngFor="let n of [].constructor(numeroFile)" type="file" 
+                        (change)="addFileCallback($event.target.files[0], n)"/>
+                <button (click)="numeroFile=numeroFile+1">Aggiungi file</button>
+            </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="3">
             <button mat-raised-button color="primary" (click)="sendEmail(form)" [disabled]="form.invalid">

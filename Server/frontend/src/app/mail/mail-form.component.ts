@@ -24,11 +24,13 @@ export class MailFormComponent implements OnInit {
 
     blacklist: boolean = false;
     tutti: boolean = false;
-
     lavoratori: boolean = false;
 
     corsi_checked: boolean[] = [];
     corsi_disabled: boolean[] = [];
+
+    _numeroFile: number = 0;
+    files: File[] = [];
 
     constructor(private corsisrv: CorsiService,
         private dialog: MatDialog,
@@ -59,14 +61,15 @@ export class MailFormComponent implements OnInit {
 
     sendEmail(form) {
         if (!form.invalid) {
-            let mailReq: MailRequest = {
+            let mailReq: MailRequest = new MailRequest({
                 oggetto: this.oggetto,
                 corpo: this.corpo,
                 email_feedback: this.email_feedback,
                 blacklist: this.blacklist,
                 lavoratori: this.lavoratori,
                 tutti: this.tutti,
-            }
+                files: this.files.filter((file) => file != null)
+            });
             if (!this.tutti) {
                 mailReq.corsi = [];
                 this.corsi_checked.forEach(
@@ -95,5 +98,19 @@ export class MailFormComponent implements OnInit {
                 }
             });
         }
+    }
+
+    set numeroFile(value: number) {
+        this._numeroFile = this._numeroFile + 1;
+        //this.files.push(null);
+    }
+
+    get numeroFile() {
+        return this._numeroFile;
+    }
+
+    addFileCallback(file: File, index: number) {
+        console.log(file);
+        this.files.push(file);
     }
 }
