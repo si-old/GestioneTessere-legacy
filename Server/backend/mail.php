@@ -159,7 +159,6 @@ class Mail extends RESTItem
 	        $content = chunk_split(base64_encode($data));
 	        $body .= "Content-Type: " . $ftype . "; name=\"" . basename($filepath) . "\"\r\n";
 	        $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
-	        $body .= "Content-Disposition: attachment; filename=\"" . basename($filepath) . "\"\r\n";
 	        $body .= $content . "\r\n\r\n";
 	        $body .= "--$uid\r\n";
 	    }
