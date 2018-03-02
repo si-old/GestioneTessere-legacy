@@ -61,7 +61,7 @@ export class LoginService {
                 this._router.navigate(['/login']);
                 this._dialog.open(MessageDialog, {
                     data: {
-                        message: "La sessione è scaduta, effetua di nuovo il login!",
+                        message: "La sessione è scaduta, effettua di nuovo il login!",
                     }
                 });
                 this.resetSession();
