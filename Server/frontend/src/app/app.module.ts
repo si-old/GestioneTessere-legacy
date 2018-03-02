@@ -53,7 +53,7 @@ import { TitleBarComponent } from './titlebar.component'
 import { DialogErrorHandler, LoadingPlaceholderComponent, LoadingDialogInterceptor } from './ux'
 
 import {
-  EqualFieldsValidatorDirective, CheckboxGroupValidatorDirective, NotInArrayValidatorDirective
+  EqualFieldsValidatorDirective, CheckboxGroupValidatorDirective, NotInArrayValidatorDirective,
 } from './common'
 
 @NgModule({

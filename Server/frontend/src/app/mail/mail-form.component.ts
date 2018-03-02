@@ -24,20 +24,22 @@ export class MailFormComponent implements OnInit {
 
     blacklist: boolean = false;
     tutti: boolean = false;
-
     lavoratori: boolean = false;
 
     corsi_checked: boolean[] = [];
     corsi_disabled: boolean[] = [];
 
+    _numeroFile: number = 0;
+    files: File[] = [];
+
     constructor(private corsisrv: CorsiService,
-                private dialog: MatDialog,
-                private mailsrv: MailService) {
+        private dialog: MatDialog,
+        private mailsrv: MailService) {
     }
 
     ngOnInit() {
         this.corsisrv.getCorsi().first().subscribe(
-            (in_corsi: Corso[]) => { 
+            (in_corsi: Corso[]) => {
                 in_corsi.forEach(
                     (corso: Corso) => {
                         this.corsi_checked[corso.id] = false;
@@ -49,7 +51,7 @@ export class MailFormComponent implements OnInit {
         )
     }
 
-    tuttiCallback(){
+    tuttiCallback() {
         this.corsi_disabled.forEach(
             (val: boolean, i: number) => {
                 this.corsi_disabled[i] = this.tutti;
@@ -57,21 +59,22 @@ export class MailFormComponent implements OnInit {
         )
     }
 
-    sendEmail(form){
-        if(!form.invalid){
-            let mailReq: MailRequest = {
+    sendEmail(form) {
+        if (!form.invalid) {
+            let mailReq: MailRequest = new MailRequest({
                 oggetto: this.oggetto,
                 corpo: this.corpo,
                 email_feedback: this.email_feedback,
                 blacklist: this.blacklist,
                 lavoratori: this.lavoratori,
                 tutti: this.tutti,
-            }
-            if(!this.tutti){
+                files: this.files.filter((file) => file != null)
+            });
+            if (!this.tutti) {
                 mailReq.corsi = [];
                 this.corsi_checked.forEach(
-                    (val: boolean, index: number) => { 
-                        if(val) mailReq.corsi.push(index);
+                    (val: boolean, index: number) => {
+                        if (val) mailReq.corsi.push(index);
                     }
                 )
             }
@@ -79,18 +82,21 @@ export class MailFormComponent implements OnInit {
             loadRef = this.dialog.open(LoadingDialog, {
                 disableClose: true
             });
-            this.mailsrv.sendEmail(mailReq).subscribe(
-                (res: MailResponse) => {
+            this.mailsrv.sendEmail(mailReq).subscribe({
+                next: (res: MailResponse) => {
                     loadRef.close();
                     this.dialog.open(MessageDialog, {
                         data: {
-                            message: `
-                                Su un totale di ${res.ok+res.nok} email, ${res.ok} sono state inviate con successo. 
-                            `
+                            message: `Su un totale di ${res.ok + res.nok} email,`
+                                + ` ${res.ok} sono state inviate con successo.`
                         }
                     })
+                },
+                error: (err: any) => {
+                    loadRef.close();
+                    throw err;
                 }
-            )
+            });
         }
     }
 }

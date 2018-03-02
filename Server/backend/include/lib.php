@@ -47,7 +47,7 @@ abstract class RESTItem
                         $res = $this->do_get();
                         break;
                     case 'POST':
-                        $body = json_decode(file_get_contents('php://input'), true);
+                        $body = $this->get_post_request_body();
                         if (is_null($body)) {
                             throw new RESTException(HttpStatusCode::$BAD_REQUEST, "The body must be valid JSON data, error: ".json_last_error_msg());
                         }
@@ -125,6 +125,10 @@ abstract class RESTItem
     abstract protected function do_del();
 
     abstract protected function is_session_authorized();
+
+    protected function get_post_request_body(){
+        return json_decode(file_get_contents('php://input'), true);
+    }
 
     protected function log_info($message)
     {

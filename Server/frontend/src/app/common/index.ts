@@ -9,4 +9,6 @@ export * from './datasources'
 export * from './pagination'
 export * from './ordering'
 
+export * from './file-size-format.pipe'
+
 
