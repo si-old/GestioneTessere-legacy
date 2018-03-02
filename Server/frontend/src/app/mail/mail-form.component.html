@@ -66,10 +66,10 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div fxLayout="column" class="height-fit" fxLayoutAlign="start center">
-                    <input *ngFor="let n of [].constructor(numeroFile)" type="file" 
-                        (change)="addFileCallback($event.target.files[0], n)"/>
-                <button (click)="numeroFile=numeroFile+1">Aggiungi file</button>
+            <div fxLayout="row" class="height-fit" fxLayoutAlign="start center">
+                <label fxFlex="25%" fxFlexAlign="start" for="allegati">Allegati:</label>
+                <file-upload fxFlex="0 0 75%" [(ngModel)]="files" name="allegati" [show-size]="false">
+                </file-upload>
             </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="3">

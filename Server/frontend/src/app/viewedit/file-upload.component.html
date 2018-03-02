@@ -1,0 +1,18 @@
+<div fxLayout="row" fxLayoutGap="1vw">
+    <button mat-fab color="primary" (click)="fileInput.click()" [disabled]="disabledState">
+        <mat-icon>add</mat-icon>
+    </button>
+    <div fxLayout="column" fxLayoutGap="1vw" style="width: fit-content">
+        <ng-container *ngFor="let file of content; let i = index">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1vw">
+                <mat-icon>attach_file</mat-icon>
+                <span>{{file.name}}</span>
+                <span *ngIf="showSize">{{file.size | fileSizeFormat}}</span>
+                <button mat-icon-button (click)="remove_file(i)" class="mini-icon">
+                    <mat-icon>remove_circle</mat-icon>
+                </button>
+            </div>
+        </ng-container>
+        <input type="file" #fileInput hidden (change)="add_file($event.target.files[0])" [required]="inputRequired" />
+    </div>
+</div>

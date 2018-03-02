@@ -2,34 +2,43 @@ import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { FormsModule } from '@angular/forms'
 
-import { MatInputModule, MatIconModule, MatSlideToggleModule, MatSelectModule } from '@angular/material'
+import { MatInputModule, MatIconModule, MatSlideToggleModule, 
+         MatSelectModule, MatButtonModule } from '@angular/material'
+
+import { FlexLayoutModule } from '@angular/flex-layout'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { FileSizeFormatPipe } from '../common'
 
 
 import { TextVieweditComponent } from './text.component'
 import { BoolVieweditComponent } from './bool.component'
 import { CorsiVieweditComponent } from './corsi.component'
 import { CarrieraVieweditComponent } from './carriera.component'
+import { FileUploadComponent } from './file-upload.component'
 
 
 const EXPORTED_COMPONENTS: any = [
     TextVieweditComponent,
     BoolVieweditComponent,
     CorsiVieweditComponent,
-    CarrieraVieweditComponent
+    CarrieraVieweditComponent,
+    FileUploadComponent
 ]
 
 @NgModule({
-    declarations: EXPORTED_COMPONENTS,
+    declarations: [...EXPORTED_COMPONENTS, FileSizeFormatPipe ],
     imports: [
         FormsModule,
+        MatButtonModule,
         BrowserModule,
         MatInputModule,
         MatIconModule,
         MatSlideToggleModule,
         MatSelectModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        FlexLayoutModule
     ],
     exports: EXPORTED_COMPONENTS,
     providers: [

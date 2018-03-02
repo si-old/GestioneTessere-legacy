@@ -99,18 +99,4 @@ export class MailFormComponent implements OnInit {
             });
         }
     }
-
-    set numeroFile(value: number) {
-        this._numeroFile = this._numeroFile + 1;
-        //this.files.push(null);
-    }
-
-    get numeroFile() {
-        return this._numeroFile;
-    }
-
-    addFileCallback(file: File, index: number) {
-        console.log(file);
-        this.files.push(file);
-    }
 }
