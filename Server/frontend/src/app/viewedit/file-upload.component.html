@@ -2,7 +2,7 @@
     <button mat-fab color="primary" (click)="fileInput.click()" [disabled]="disabledState">
         <mat-icon>add</mat-icon>
     </button>
-    <div fxLayout="column" fxLayoutGap="1vw" style="width: fit-content">
+    <div fxLayout="column">
         <ng-container *ngFor="let file of content; let i = index">
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1vw">
                 <mat-icon>attach_file</mat-icon>

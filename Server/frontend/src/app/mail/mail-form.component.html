@@ -59,7 +59,7 @@
             <div fxLayout="row" class="height-fit" fxLayoutAlign="start center">
                 <label fxFlex="25%" fxFlexAlign="start" for="contenuto">Contenuto:</label>
                 <mat-form-field fxFlex="75%">
-                    <textarea matInput name="contenuto" rows="10" [(ngModel)]="corpo" required #inputCorpo="ngModel">
+                    <textarea matInput name="contenuto" rows="7" [(ngModel)]="corpo" required #inputCorpo="ngModel">
                     </textarea>
                     <mat-error *ngIf="inputCorpo.errors && inputCorpo.errors.required">
                         Il campo è obbligatorio!
