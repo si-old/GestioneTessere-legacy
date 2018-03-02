@@ -36,7 +36,7 @@ export class DialogErrorHandler extends ErrorHandler {
                 }
                 if (localError instanceof HttpErrorResponse) {
                     let errorDesc = 'Request to ' + localError.url + "\n" + localError.status +
-                        " " + localError.statusText + ": " + localError.error;
+                        " " + localError.statusText + ": " + JSON.stringify(localError.error);
                     switch (localError.status) {
                         case 403:
                             finalMessage = "La sessione è scaduta, ripeti il login.";
