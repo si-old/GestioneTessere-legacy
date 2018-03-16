@@ -186,8 +186,9 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
         )
     }
 
-    deleteCarriera(ind: number) {
-        this.model.carriere.splice(ind, 1);
+    deleteCarriera(id: number) {
+        let index = this.model.carriere.findIndex(x => x.id == id);
+        this.model.carriere.splice(index, 1);
         this.carriereSource.update(this.model.carriere);
     }
 
