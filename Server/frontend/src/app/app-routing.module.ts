@@ -36,11 +36,6 @@ const routes: Routes = [
     canActivate: [LoggedinGuard]
   },
   {
-    path: "soci/:id",
-    component: DettagliSocioComponent,
-    canActivate: [LoggedinGuard]
-  },
-  {
     path: "soci",
     component: SociComponent,
     canActivate: [LoggedinGuard]
