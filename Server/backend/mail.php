@@ -2,6 +2,10 @@
 require_once 'include/config.php';
 require_once 'include/lib.php';
 require_once 'include/utils.php';
+require_once ('include/PHPMailer/src/PHPMailer.php');
+require_once ('include/PHPMailer/src/Exception.php');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class Mail extends RESTItem
 {
@@ -55,22 +59,26 @@ class Mail extends RESTItem
         $valid = $valid && isset($data['blacklist']) && isset($data['tutti']) && isset($data['lavoratori']);
         $valid = ($valid && $data['tutti']) || ($valid && !$data['tutti'] && isset($data['corsi']));
         if ($valid) {
-            $uid = md5(uniqid(time()));
+            $mail = new PHPMailer(true); 
+            $mail->setFrom($this->EMAIL_OPTIONS['FROM'], $this->EMAIL_OPTIONS['TITLE']);
             if (isset($data['files'])) {
-            		$user_header = $this->create_header(true, $uid);
-            		$email_body_tmp = nl2br($data['corpo']);
-            		$email_body = str_replace("\\", "", $email_body_tmp);
-            		$email_body = $this->create_body_for_attachment($email_body, $data['files'], $uid);
-            	} else {
-            		$user_header = $this->create_header(false);
-            		$email_body_tmp = nl2br($data['corpo']);
-            		$email_body = str_replace("\\", "", $email_body_tmp);
-            	}
+                $this->addAttachment($mail, $data['files']);		
+            }
             $subject_tmp = $data['oggetto'];
             $subject = str_replace("\\", "", $subject_tmp);
             $admin_mail = $data['email_feedback'];
+            $mail->addAddress($admin_mail, 'Admin mail');
             $admin_subject = "[admin] " . $subject;
-            mail($admin_mail, $admin_subject, $email_body, $user_header);
+            $mail->Subject = $admin_subject;
+            $email_body_tmp = nl2br($data['corpo']);
+            $email_body = str_replace("\\", "", $email_body_tmp);
+            $mail->Body = $email_body;
+            try {
+                $mail->send();
+                $mail->clearAddresses();
+            } catch (Exception $e) {
+                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $mail->ErrorInfo);
+            }
             $this->log_info("Invio e-mail all'indirizzo di feedback.");
             if (isset($data['corsi'])) {
                 $corsi = $data['corsi'];
@@ -79,7 +87,7 @@ class Mail extends RESTItem
             }
             $this->log_info("Invio e-mail con i parametri: oggetto->" . $data['oggetto'] . ", blacklist->" . $data['blacklist'] . ", tutti->" . $data['tutti'] . ", lavoratori->" . $data['lavoratori'] . ".");
             $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi, $data['lavoratori']);
-            $return_value = $this->send_mails($users, $subject, $email_body, $user_header);
+            $return_value = $this->send_mails($users, $subject, $mail);
             $this->clear_tmp_dir();
             return $return_value;
         } else {
@@ -132,47 +140,12 @@ class Mail extends RESTItem
         }
     }
 
-    private function create_header($withAttachment, $uid = "")
+    private function addAttachment($mail, $files)
     {
-        $user_header = "Return-Path: " . $this->EMAIL_OPTIONS['TITLE'] . " <" . $this->EMAIL_OPTIONS['FROM'] . ">\r\n";
-        $user_header .= "From: " . $this->EMAIL_OPTIONS['TITLE'] . " <" . $this->EMAIL_OPTIONS['FROM'] . ">\r\n";
-        if ($withAttachment) {
-            $user_header .= "Content-Type: " . $this->EMAIL_OPTIONS['MULTIPART_TYPE'] . "; boundary = $uid\r\n\r\n";
-        } else {
-            $user_header .= "Content-Type: " . $this->EMAIL_OPTIONS['TYPE'] . "; charset=" . $this->EMAIL_OPTIONS['CHARSET_UTF8'] . ";\n\n\r\n";
-        }
-        return $user_header;
-    }
-
-    private function create_body_for_attachment($message, $files, $uid)
-    {
-        $body = "--$uid\r\n";
-        $body .= "Content-Type: " . $this->EMAIL_OPTIONS['TYPE'] . "; charset=" . $this->EMAIL_OPTIONS['CHARSET_UTF8'] . "\r\n";
-        $body .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-        $body .= chunk_split($message) . "\r\n\r\n";
-        $body .= "--$uid\r\n";
         foreach ($files as $file) {
         	$filepath = $file['path'];
-	        $ftype = $this->file_type($filepath);
-	        $data = file_get_contents($filepath);
-	        // split the file into chunks for attaching
-	        $content = chunk_split(base64_encode($data));
-	        $body .= "Content-Type: " . $ftype . "; name=\"" . basename($filepath) . "\"\r\n";
-	        $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
-	        $body .= $content . "\r\n\r\n";
-	        $body .= "--$uid\r\n";
+	        $mail->addAttachment($filepath, basename($filepath));
 	    }
-        return $body;
-    }
-
-    private function file_type($file)
-    {
-        $ext = strrchr($file, '.');
-        $ftype = "application/octet-stream";
-        if (array_key_exists($ext, $this->SUPPORTED_FILE_TYPES)) {
-            $ftype = $this->SUPPORTED_FILE_TYPES[$ext];
-        }
-        return $ftype;
     }
 
     private function get_users($blacklist, $all, $cdl_whitelist, $workers)
@@ -217,16 +190,24 @@ class Mail extends RESTItem
         return $corsi_ids;
     }
 
-    private function send_mails($users, $subject, $email_body, $user_header)
+    private function send_mails($users, $subject, $mail)
     {
         $count_ok = 0;
         $count_nok = 0;
+        $mail->Subject = $subject;
         foreach ($users as $user) {
-            if (mail($user['s_email'], $subject, $email_body, $user_header)) {
-                $count_ok = $count_ok + 1;
-            } else {
+            try {
+                $mail->addAddress($user['s_email']);
+                if ($mail->send()) {
+                    $count_ok = $count_ok + 1;
+                } else {
+                    $count_nok = $count_nok + 1;
+                }
+                $mail->clearAddresses();
+            } catch (Exception $e) {
                 $count_nok = $count_nok + 1;
             }
+
         }
         $this->log_info("Inviata e-mail a $count_ok soci.");
         return array('ok' => $count_ok, 'nok' => $count_nok);
