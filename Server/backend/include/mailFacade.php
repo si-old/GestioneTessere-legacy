@@ -3,6 +3,13 @@
 require_once 'PHPMailer/src/PHPMailer.php';
 require_once 'PHPMailer/src/Exception.php';
 
+if (!file_exists('is_iterable')) {
+	function is_iterable($obj)
+	{
+		return is_array($obj) || $obj instanceof \Traversable;
+	}
+} 
+
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -21,7 +28,7 @@ class MailFacade
     public function __construct()
     {
         $this->mailer = new PHPMailer(true);
-        $mail->setFrom($this->EMAIL_OPTIONS['FROM'], $this->EMAIL_OPTIONS['TITLE']);
+        $this->mailer->setFrom($this->EMAIL_OPTIONS['FROM'], $this->EMAIL_OPTIONS['TITLE']);
     }
 
     public function set_body($body)
@@ -43,7 +50,7 @@ class MailFacade
     public function set_subject($subject)
     {
         $subject_tmp = str_replace("\\", "", $subject);
-        $this->mailer->subject = $subject_tmp;
+        $this->mailer->Subject = $subject_tmp;
     }
 
     public function send_one($to, $display_name = null)

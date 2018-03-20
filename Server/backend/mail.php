@@ -43,7 +43,7 @@ class Mail extends RESTItem
 
             $mail->set_body($data["corpo"]);
             if (isset($data['files'])) {
-                $mail->add_attachment($data['files']);
+                $mail->add_attachments($data['files']);
             }
             
             $mail->set_subject("[admin] " . $data['oggetto']);
@@ -66,7 +66,6 @@ class Mail extends RESTItem
                             ", lavoratori->" . $data['lavoratori']
                         );
             $users = $this->get_users($data['blacklist'], $data['tutti'], $corsi, $data['lavoratori']);
-            
             $mail->set_subject($data['oggetto']);
             $return_value = $mail->send_list($users);
 
@@ -152,13 +151,13 @@ class Mail extends RESTItem
         }
         $results = fetch_results($stmt);
         return array_map(function ($user) {
-                            return $user['s_mail'];
+                            return $user['s_email'];
                         }, $results);
     }
 
     private function get_list($corsi)
     {
-        $corsi_int = array_map(function ($corso){
+        $corsi_int = array_map(function ($corso) {
             return intval($corso);
         }, $corsi);
         return implode(', ', $corsi_int);
