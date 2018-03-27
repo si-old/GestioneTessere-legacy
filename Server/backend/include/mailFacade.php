@@ -29,6 +29,8 @@ class MailFacade
     {
         $this->mailer = new PHPMailer(true);
         $this->mailer->setFrom($this->EMAIL_OPTIONS['FROM'], $this->EMAIL_OPTIONS['TITLE']);
+        $this->mailer->IsHTML(true);
+        $this->mailer->CharSet = "UTF-8";
     }
 
     public function set_body($body)
