@@ -1,7 +1,8 @@
 <mat-toolbar color="primary">
     <h2 style="width: 100%"> Login </h2>
 </mat-toolbar>
-<form #form="ngForm" fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="1em" class="padded-side">
+<div style="height: 100%" fxLayout="column" fxLayoutAlign="space-between center">
+<form #form="ngForm" fxFlex="100%" fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="1em" class="padded-side">
     <div fxFlex="100%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
         <label fxFlex="35%" for="user">Username: </label>
         <mat-form-field fxFlex="calc(80% - 1.5em)">
@@ -42,3 +43,6 @@
         </button>
     </div>
 </form>
+<div fxFlexFill>prova</div>
+<div fxFlex="100%" style="margin-top: auto">prova2</div>
+</div>

@@ -9,6 +9,8 @@ import { LoadingDialog, MessageDialog } from '../dialogs'
 
 import { Corso, MailRequest, MailResponse } from '../model'
 
+import { first } from 'rxjs/operators'
+
 @Component({
     selector: 'mail-form',
     templateUrl: './mail-form.component.html',
@@ -38,7 +40,7 @@ export class MailFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.corsisrv.getCorsi().first().subscribe(
+        this.corsisrv.getCorsi().pipe(first()).subscribe(
             (in_corsi: Corso[]) => {
                 in_corsi.forEach(
                     (corso: Corso) => {

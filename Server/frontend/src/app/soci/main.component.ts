@@ -9,8 +9,8 @@ import { DettagliSocioComponent } from './dettagli.component'
 
 import { MatSort, MatDialog, MatDialogRef, PageEvent, MatAnchor } from '@angular/material'
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription, fromEvent } from 'rxjs';
+import { map } from 'rxjs/operators'
 
 @Component({
   selector: 'soci',
@@ -50,8 +50,9 @@ export class SociComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.socisrv.paginate = true;
-    let filterObs = Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .map(() => this.filter.nativeElement.value)
+    let filterObs = fromEvent(this.filter.nativeElement, 'keyup').pipe(
+      map(() => this.filter.nativeElement.value)
+    )
     this.sociSource = new FilteredSortedDataSource(this.socisrv.getSoci(), this.sorter.sortChange, filterObs)
     this.changeDetector.detectChanges();
     this.updateColumns();

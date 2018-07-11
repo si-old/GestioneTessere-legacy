@@ -5,7 +5,7 @@ import { trigger, state, style, animate, transition, group } from '@angular/anim
 import { Corso } from '../model'
 import { CorsiService } from '../corsi/main.service'
 
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 

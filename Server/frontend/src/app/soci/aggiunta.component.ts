@@ -11,6 +11,8 @@ import { TesseramentiService } from '../tesseramenti/main.service'
 import { LoadingTracker } from '../ux'
 import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE } from '../common'
 
+import { first } from 'rxjs/operators'
+
 @Component({
     selector: 'aggiunta-socio',
     templateUrl: './aggiunta.component.html',
@@ -44,7 +46,7 @@ export class AggiuntaSocioComponent implements OnInit {
             tessere: [new Tessera({ numero: null })],
             carriere: [new Carriera({ matricola: '', studente: false })]
         });
-        this._corsisrv.getCorsi().first().subscribe(
+        this._corsisrv.getCorsi().pipe(first()).subscribe(
             (x: Corso[]) => { 
                 this.model.carriere[0].corso = x[0];
                 this.loading.addStep();

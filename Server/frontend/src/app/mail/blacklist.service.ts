@@ -3,9 +3,7 @@ import { HttpClient } from '@angular/common/http'
 
 import { BlacklistMember } from '../model'
 
-import { Observable } from 'rxjs/Observable'
-import { NextObserver, ErrorObserver } from 'rxjs/Observer'
-import { Subject } from 'rxjs/Subject'
+import { Observable, NextObserver, ErrorObserver, Subject } from 'rxjs'
 
 import { BACKEND_SERVER, HTTP_GLOBAL_OPTIONS } from '../common'
 
