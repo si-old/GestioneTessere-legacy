@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
 import { ObservableMedia } from '@angular/flex-layout'
+import { Sort } from '@angular/material'
 
 import { Socio } from '../model'
 import { FilteredSortedDataSource } from '../common'
@@ -9,8 +10,9 @@ import { DettagliSocioComponent } from './dettagli.component'
 
 import { MatSort, MatDialog, MatDialogRef, PageEvent, MatAnchor } from '@angular/material'
 
-import { Observable, Subscription, fromEvent } from 'rxjs';
+import { Observable, Subscription, fromEvent, of } from 'rxjs';
 import { map } from 'rxjs/operators'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'soci',
@@ -53,7 +55,22 @@ export class SociComponent implements OnInit, OnDestroy {
     let filterObs = fromEvent(this.filter.nativeElement, 'keyup').pipe(
       map(() => this.filter.nativeElement.value)
     )
-    this.sociSource = new FilteredSortedDataSource(this.socisrv.getSoci(), this.sorter.sortChange, filterObs)
+    /*
+      // this code allows to use server-side ordering, faster, but doesn't work well with pagination
+      let dummySort: Sort = {active: "", direction: ""};
+      let dummySortObs: Observable<Sort> = of(dummySort);
+      this.sociSource = new FilteredSortedDataSource(this.socisrv.getSoci(), dummySortObs, filterObs)
+      this.sorter.sortChange.subscribe(
+      (sortInfo: Sort) => {
+          this.socisrv.orderasc = sortInfo.direction == "asc";
+          this.socisrv.orderby = sortInfo.active;
+          this.socisrv.getSoci();
+        }
+    )
+    */
+   
+    this.sociSource = new FilteredSortedDataSource(this.socisrv.getSoci(), this.sorter.sortChange, filterObs);
+
     this.changeDetector.detectChanges();
     this.updateColumns();
     this.mediaSubscription = this.media.asObservable().subscribe(() => { this.updateColumns(); });

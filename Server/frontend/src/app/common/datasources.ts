@@ -5,11 +5,6 @@ import { debounceTime, distinctUntilChanged, startWith, tap, map } from 'rxjs/op
 
 import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs'
 
-export interface TableChangeData<T> {
-    data: T
-    filter: string
-    sort: Sort
-}
 export class ObservableDataSource<T> implements DataSource<T>{
 
     constructor(private _obs: Observable<T[]>) { }
@@ -35,19 +30,14 @@ export class SubjectDataSource<T> implements DataSource<T>{
 export class FilteredSortedDataSource<T extends Searchable & Comparable<T>> extends DataSource<T>{
 
     _filter: Observable<string>;
-    _filterChange = new BehaviorSubject('');
-    set filter(filter: string) { this._filterChange.next(filter); }
-
     _sort: Observable<Sort>;
-    _sortChange = new BehaviorSubject<Sort>({ active: '', direction: '' }); //aliased observable to assure a first emission. sortChange doesn't do that
-    set sort(next: Sort) { this._sortChange.next(next); }
 
     constructor(private _data: Observable<T[]>, _sort: Observable<Sort>, _filter: Observable<string>) {
         super();
         this._sort = _sort.pipe(startWith<Sort>({ active: '', direction: '' }));
         this._filter = _filter.pipe(startWith<string>(''), debounceTime(150), distinctUntilChanged());
     }
-    //filter: string,  sort: Sort, data: T[])
+
     connect(cv: CollectionViewer): Observable<T[]> {
         return combineLatest( this._filter, this._sort, this._data).pipe(
             map(
@@ -55,9 +45,11 @@ export class FilteredSortedDataSource<T extends Searchable & Comparable<T>> exte
                     let filter = a[0];
                     let sort = a[1];
                     let dataIn = a[2];
+
                     let data = dataIn.slice().filter((item: T) => {
                         return item.contains(filter.toLowerCase());
                     })
+                    
                     if (!sort.active || sort.direction == '') {
                         return data;
                     } else {
