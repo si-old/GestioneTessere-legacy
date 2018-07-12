@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  backend: 'http://bracco23.altervista.org/socisi/backend/'  
+  backend: 'http://bracco23.altervista.org/socisi/backend/',
+  version: require('../../package.json').version
 };
