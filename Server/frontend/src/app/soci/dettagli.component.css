@@ -39,7 +39,7 @@ div{
 .mat-column-dettagli, .mat-column-anno{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .mat-column-studente, .mat-column-numero{
