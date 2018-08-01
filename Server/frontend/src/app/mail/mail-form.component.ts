@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { NgForm } from '@angular/forms'
 
 import { CorsiService } from '../corsi/main.service'
 import { MailService } from './main.service'
@@ -61,7 +62,7 @@ export class MailFormComponent implements OnInit {
         )
     }
 
-    sendEmail(form) {
+    sendEmail(form: NgForm) {
         if (!form.invalid) {
             let mailReq: MailRequest = new MailRequest({
                 oggetto: this.oggetto,
@@ -90,8 +91,11 @@ export class MailFormComponent implements OnInit {
                     this.dialog.open(MessageDialog, {
                         data: {
                             message: `Su un totale di ${res.ok + res.nok} email,`
-                                + ` ${res.ok} sono state inviate con successo.`
-                        }
+                                + ` ${res.ok} sono state inviate con successo.`,
+                            callback: () => {
+                                form.resetForm();
+                            }
+                        },
                     })
                 },
                 error: (err: any) => {
