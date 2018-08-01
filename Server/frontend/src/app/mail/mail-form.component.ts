@@ -6,7 +6,7 @@ import { MailService } from './main.service'
 
 import { MatDialog, MatDialogRef } from '@angular/material'
 
-import { LoadingDialog, MessageDialog } from '../dialogs'
+import { MessageDialog } from '../dialogs'
 
 import { Corso, MailRequest, MailResponse } from '../model'
 
@@ -81,13 +81,8 @@ export class MailFormComponent implements OnInit {
                     }
                 )
             }
-            let loadRef: MatDialogRef<LoadingDialog>;
-            loadRef = this.dialog.open(LoadingDialog, {
-                disableClose: true
-            });
             this.mailsrv.sendEmail(mailReq).subscribe({
                 next: (res: MailResponse) => {
-                    loadRef.close();
                     this.dialog.open(MessageDialog, {
                         data: {
                             message: `Su un totale di ${res.ok + res.nok} email,`
@@ -99,7 +94,6 @@ export class MailFormComponent implements OnInit {
                     })
                 },
                 error: (err: any) => {
-                    loadRef.close();
                     throw err;
                 }
             });
