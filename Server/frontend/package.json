@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build-dev": "ng build --base-href=/socisi/",
-    "build-prod": "ng build --prod --env=prod --base-href=/socisi/ --aot"
+    "build-prod": "ng build --prod --base-href=/socisi/ --aot"
   },
   "private": true,
   "dependencies": {
