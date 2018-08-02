@@ -1,11 +1,12 @@
-import {  Component, OnInit, OnDestroy, 
-          ViewChild, ElementRef, ChangeDetectorRef
-        } from '@angular/core'
+import {
+  Component, OnInit, OnDestroy,
+  ViewChild, ElementRef, ChangeDetectorRef
+} from '@angular/core'
 
 import { MatSort, MatSnackBar, MatDialog } from '@angular/material'
 
-import { Subscription } from 'rxjs/Subscription'
-import { Observable } from 'rxjs/Observable';
+import { Subscription, Observable, fromEvent } from 'rxjs'
+import { tap, map } from 'rxjs/operators'
 
 import { Corso, Carriera } from '../model'
 import { FilteredSortedDataSource } from '../common'
@@ -55,13 +56,14 @@ export class CorsiComponent implements OnInit, OnDestroy {
         );
       }
     );
-    let filterObs: Observable<string> = Observable.fromEvent(this.filter.nativeElement, 'keyup')
-                                                  .do( (x: any) => { console.log(x) } )
-                                                  .map( () => { return this.filter.nativeElement.value } );
+    let filterObs: Observable<string> = fromEvent(this.filter.nativeElement, 'keyup').pipe( 
+      tap ((x: any) => { console.log(x) }), 
+      map(() => { return this.filter.nativeElement.value })
+    );
     this.corsiSource = new FilteredSortedDataSource(this._corsisrv.getCorsi(), this.sorter.sortChange, filterObs);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.corsiSubscription.unsubscribe();
   }
 
@@ -78,7 +80,7 @@ export class CorsiComponent implements OnInit, OnDestroy {
       }
     }).afterClosed().subscribe(
       (name) => { if (name) this._corsisrv.addCorso(name) }
-      );
+    );
   }
 
   deleteCorso(corso: Corso) {
@@ -89,7 +91,7 @@ export class CorsiComponent implements OnInit, OnDestroy {
       }
     }).afterClosed().subscribe(
       (sostituto) => { if (sostituto) this._corsisrv.deleteCorso(corso, sostituto); }
-      )
+    )
   }
 
   updateCorso(corso: Corso) {

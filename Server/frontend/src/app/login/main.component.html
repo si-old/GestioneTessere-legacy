@@ -1,44 +1,49 @@
-<mat-toolbar color="primary">
-    <h2 style="width: 100%"> Login </h2>
-</mat-toolbar>
-<form #form="ngForm" fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="1em" class="padded-side">
-    <div fxFlex="100%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
-        <label fxFlex="35%" for="user">Username: </label>
-        <mat-form-field fxFlex="calc(80% - 1.5em)">
-            <input type="text" matInput name="user" required #inputUser="ngModel" [(ngModel)]="user" [pattern]="PATTERN_USER" />
-            <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
-                Il campo è obbligatorio!
-            </mat-error>
-            <mat-error *ngIf="inputUser.errors && inputUser.errors.pattern">
-                L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
-            </mat-error>
-            <mat-hint *ngIf="inputUser.untouched || inputUser.valid">
-                L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
-            </mat-hint>
-        </mat-form-field>
-    </div>
-    <div fxFlex="100%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
-        <label fxFlex="35%" for="password">Password: </label>
-        <mat-form-field fxFlex="calc(80% - 1.5em)">
-            <input [type]="hidden ? 'password' : 'text' " matInput name="password" required #inputPass="ngModel" [(ngModel)]="password"
-                [pattern]="PATTERN_PASSWORD" />
-            <mat-error *ngIf="inputPass.errors && inputPass.errors.required">
-                Il campo è obbligatorio!
-            </mat-error>
-            <mat-error *ngIf="inputPass.errors && inputPass.errors.pattern">
-                La password deve contenere almeno 6 caratteri. Non può contenere spazi.
-            </mat-error>
-            <mat-hint *ngIf="inputPass.untouched || inputPass.valid">
-                La password deve contenere almeno 6 caratteri. Non può contenere spazi.
-            </mat-hint>
-            <button type="button" matSuffix mat-icon-button (click)="hidden=!hidden">
-                <mat-icon [matTooltip]="(hidden ? 'Mostra' : 'Nascondi') + ' password'" matTooltipPosition="after">{{hidden ? 'visibility' : 'visibility_off'}}</mat-icon>
+<div style="min-height: 100vh; margin: 0" fxLayout="column" fxLayoutAlign="start center">
+    <mat-toolbar fxFlex="0 0 auto" color="primary">
+        <h2 style="width: 100%"> Login </h2>
+    </mat-toolbar>
+    <form #form="ngForm" fxFlex="100%" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="1em" class="padded-side">
+        <div fxFlex="0 0 100%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
+            <label fxFlex="35%" for="user">Username: </label>
+            <mat-form-field fxFlex="calc(80% - 1.5em)">
+                <input type="text" matInput name="user" required #inputUser="ngModel" [(ngModel)]="user" [pattern]="PATTERN_USER" />
+                <mat-error *ngIf="inputUser.errors && inputUser.errors.required">
+                    Il campo è obbligatorio!
+                </mat-error>
+                <mat-error *ngIf="inputUser.errors && inputUser.errors.pattern">
+                    L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
+                </mat-error>
+                <mat-hint *ngIf="inputUser.untouched || inputUser.valid">
+                    L'username deve contenere almeno 3 caratteri. Non può contenere spazi.
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        <div fxFlex="0 0 100%" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1.5em">
+            <label fxFlex="35%" for="password">Password: </label>
+            <mat-form-field fxFlex="calc(80% - 1.5em)">
+                <input [type]="hidden ? 'password' : 'text' " matInput name="password" required #inputPass="ngModel" [(ngModel)]="password"
+                    [pattern]="PATTERN_PASSWORD" />
+                <mat-error *ngIf="inputPass.errors && inputPass.errors.required">
+                    Il campo è obbligatorio!
+                </mat-error>
+                <mat-error *ngIf="inputPass.errors && inputPass.errors.pattern">
+                    La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+                </mat-error>
+                <mat-hint *ngIf="inputPass.untouched || inputPass.valid">
+                    La password deve contenere almeno 6 caratteri. Non può contenere spazi.
+                </mat-hint>
+                <button type="button" matSuffix mat-icon-button (click)="hidden=!hidden">
+                    <mat-icon [matTooltip]="(hidden ? 'Mostra' : 'Nascondi') + ' password'" matTooltipPosition="after">{{hidden ? 'visibility' : 'visibility_off'}}</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
+            <button type="submit" mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
+                Login
             </button>
-        </mat-form-field>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1em">
-        <button type="submit" mat-raised-button color="primary" type="submit" name="login" (click)="login(form)" [disabled]="form.invalid">
-            Login
-        </button>
-    </div>
-</form>
+        </div>
+    </form>
+    <a mat-raised-button fxFlexFill (click)="easterEgg()">
+        App version {{VERSION}}, made by cdigruttola &amp; bracco23, more info on <a href="https://github.com/cdigruttola/GestioneTessere/">Github</a>
+    </a>
+</div>

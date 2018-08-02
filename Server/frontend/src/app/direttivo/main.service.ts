@@ -6,9 +6,7 @@ import { MembroDirettivo, Carriera, Tessera } from '../model'
 
 import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
-import { Observable } from 'rxjs/Observable';
-import { NextObserver, ErrorObserver } from 'rxjs/Observer'
-import { Subject } from 'rxjs/Subject';
+import { Observable, NextObserver, ErrorObserver, Subject } from 'rxjs';
 
 
 const REST_ENDPOINT: string = BACKEND_SERVER + "direttivo.php";

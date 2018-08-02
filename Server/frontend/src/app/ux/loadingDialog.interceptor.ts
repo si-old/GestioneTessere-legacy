@@ -7,7 +7,8 @@ import { MatDialog, MatDialogRef } from '@angular/material'
 
 import { LoadingDialog } from '../dialogs'
 
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
+import { tap } from 'rxjs/operators'
 
 const DIALOG_DELAY: number = 300;
 
@@ -47,12 +48,12 @@ export class LoadingDialogInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         this.openDialog();
-        return next.handle(req).do(
-            {
+        return next.handle(req).pipe(
+        tap({
                 next: (ev: HttpEvent<any>) => { if (ev instanceof HttpResponse) this.closeDialog(); },
                 error: (err: any) => { if (err instanceof HttpErrorResponse) this.closeDialog(); },
                 complete: () => { this.closeDialog(); }
-            }
+            })
         )
     }
 }

@@ -9,9 +9,8 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { Observable } from 'rxjs/Observable';
-import { NextObserver, ErrorObserver } from 'rxjs/Observer'
-import { Subject } from 'rxjs/Subject';
+import { Observable, NextObserver, ErrorObserver, Subject } from 'rxjs';
+import { map } from 'rxjs/operators'
 
 const REST_ENDPOINT: string = BACKEND_SERVER + "socio.php";
 
@@ -116,12 +115,13 @@ export class SociService extends OrderingPaginableService {
       observe: 'response',
       headers: headers,
       responseType: 'arraybuffer'
-    }).map(
-      (res: HttpResponse<ArrayBuffer>) => {
-        let disposition = res.headers.get('Content-Disposition');
-        let filename = disposition.substr(disposition.search('=')+1);
-        var file = new File([res.body], filename);
-        return file;
-      })
+    }).pipe(
+      map((res: HttpResponse<ArrayBuffer>) => {
+          let disposition = res.headers.get('Content-Disposition');
+          let filename = disposition.substr(disposition.search('=')+1);
+          var file = new File([res.body], filename);
+          return file;
+        })
+    )
   }
 }

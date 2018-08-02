@@ -7,6 +7,8 @@ import { MembroDirettivo, Socio } from '../model'
 
 import { PATTERN_PASSWORD, PATTERN_USER } from '../common'
 
+import { first } from 'rxjs/operators'
+
 @Component({
     selector: 'aggiunta-direttivo',
     templateUrl: './aggiunta.component.html',
@@ -34,7 +36,7 @@ export class AggiuntaDirettivoComponent implements OnInit {
     ngOnInit() {
         let old_paginate = this._socisrv.paginate;
         this._socisrv.paginate = false;
-        this._socisrv.getSoci().first().subscribe(
+        this._socisrv.getSoci().pipe(first()).subscribe(
             (s: Socio[]) => {
                 this.allSoci = s.sort((a: Socio, b: Socio) => {
                     return (a.nome + ' ' + a.cognome).localeCompare(b.nome + ' ' + b.cognome)

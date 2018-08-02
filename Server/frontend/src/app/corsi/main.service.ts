@@ -6,8 +6,7 @@ import { Corso } from '../model'
 
 import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
-import { Observable } from 'rxjs/Observable'
-import { Subject } from 'rxjs/Subject'
+import { Observable, Subject } from 'rxjs'
 
 const REST_ENDPOINT: string = BACKEND_SERVER + "corso.php"
 

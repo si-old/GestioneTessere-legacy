@@ -25,3 +25,6 @@ export const HTTP_GLOBAL_OPTIONS = { withCredentials: true };
 
 // url del backend a seconda dell'environment, contiene lo slash finale
 export const BACKEND_SERVER = environment.backend;
+
+// app version number
+export const VERSION = environment.version

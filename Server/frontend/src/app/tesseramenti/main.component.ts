@@ -9,7 +9,7 @@ import { ConfirmDialog, TextInputDialog, MessageDialog } from '../dialogs'
 
 import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource } from '../common'
 
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 
 @Component({
     selector: 'tesseramenti',

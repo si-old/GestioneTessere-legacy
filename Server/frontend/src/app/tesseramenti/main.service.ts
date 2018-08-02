@@ -6,10 +6,8 @@ import { Tesseramento } from '../model'
 import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common'
 
 
-import { Observable } from 'rxjs/Observable';
-import { NextObserver, ErrorObserver } from 'rxjs/Observer'
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/Rx';
+import { Observable, NextObserver, ErrorObserver, Subject } from 'rxjs';
+import { map, first } from 'rxjs/operators'
 
 const REST_ENDPOINT: string = BACKEND_SERVER + "tesseramento.php"
 
@@ -34,15 +32,16 @@ export class TesseramentiService {
     }
 
     getTesseramentoAttivo(): Observable<Tesseramento> {
-        return this.getTesseramenti().first().map(
-            (tArr: Tesseramento[]) => {
+        return this.getTesseramenti().pipe(
+            first(),
+            map( (tArr: Tesseramento[]) => {
                 let filtered = tArr.filter((tes: Tesseramento) => { return tes.aperto });
                 if (filtered.length == 1) {
                     return filtered[0];
                 } else {
                     throw new Error("Nessun tesseramento attivo");
                 }
-            }
+            })
         )
     }
 

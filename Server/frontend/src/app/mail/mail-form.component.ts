@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core'
+import { NgForm } from '@angular/forms'
 
 import { CorsiService } from '../corsi/main.service'
 import { MailService } from './main.service'
 
 import { MatDialog, MatDialogRef } from '@angular/material'
 
-import { LoadingDialog, MessageDialog } from '../dialogs'
+import { MessageDialog } from '../dialogs'
 
 import { Corso, MailRequest, MailResponse } from '../model'
+
+import { first } from 'rxjs/operators'
 
 @Component({
     selector: 'mail-form',
@@ -38,7 +41,7 @@ export class MailFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.corsisrv.getCorsi().first().subscribe(
+        this.corsisrv.getCorsi().pipe(first()).subscribe(
             (in_corsi: Corso[]) => {
                 in_corsi.forEach(
                     (corso: Corso) => {
@@ -59,7 +62,7 @@ export class MailFormComponent implements OnInit {
         )
     }
 
-    sendEmail(form) {
+    sendEmail(form: NgForm) {
         if (!form.invalid) {
             let mailReq: MailRequest = new MailRequest({
                 oggetto: this.oggetto,
@@ -78,22 +81,19 @@ export class MailFormComponent implements OnInit {
                     }
                 )
             }
-            let loadRef: MatDialogRef<LoadingDialog>;
-            loadRef = this.dialog.open(LoadingDialog, {
-                disableClose: true
-            });
             this.mailsrv.sendEmail(mailReq).subscribe({
                 next: (res: MailResponse) => {
-                    loadRef.close();
                     this.dialog.open(MessageDialog, {
                         data: {
                             message: `Su un totale di ${res.ok + res.nok} email,`
-                                + ` ${res.ok} sono state inviate con successo.`
-                        }
+                                + ` ${res.ok} sono state inviate con successo.`,
+                            callback: () => {
+                                form.resetForm();
+                            }
+                        },
                     })
                 },
                 error: (err: any) => {
-                    loadRef.close();
                     throw err;
                 }
             });

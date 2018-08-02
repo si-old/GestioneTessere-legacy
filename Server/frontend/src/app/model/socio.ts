@@ -50,19 +50,19 @@ export class Socio implements Comparable<Socio>, Searchable{
 
 
     switch (prop) {
-      case 'nome':
+      case 's_nome':
         [propertyA, propertyB] = [this.nome, other.nome];
         break;
-      case 'cognome':
+      case 's_cognome':
         [propertyA, propertyB] = [this.cognome, other.cognome];
         break;
-      case 'email':
+      case 's_email':
         [propertyA, propertyB] = [this.email, other.email];
         break;
       case 'studente':
         [propertyA, propertyB] = [this.getCarrieraAttiva().studente, other.getCarrieraAttiva().studente];
         break;
-      case 'matricola':
+      case 'ca_matricola':
         [propertyA, propertyB] = [this.getCarrieraAttiva().studente ? this.getCarrieraAttiva().matricola : '', other.getCarrieraAttiva() ? other.getCarrieraAttiva().matricola : ''];
         break;
       case 'cdl':
@@ -71,13 +71,13 @@ export class Socio implements Comparable<Socio>, Searchable{
       case 'professione':
         [propertyA, propertyB] = [this.getCarrieraAttiva().studente ? '' : this.getCarrieraAttiva().professione, other.getCarrieraAttiva().studente ? '' : other.getCarrieraAttiva().professione];
         break;
-      case 'cellulare':
+      case 's_cellulare':
         [propertyA, propertyB] = [this.cellulare, other.cellulare];
         break;
-      case 'facebook':
+      case 's_facebook':
         [propertyA, propertyB] = [this.facebook, other.facebook];
         break;
-      case 'id':
+      case 's_id':
         [propertyA, propertyB] = [this.id, other.id];
         break;
     }
