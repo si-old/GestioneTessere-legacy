@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http'
 
 import { MatDialog } from '@angular/material'
 
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 import { HTTP_GLOBAL_OPTIONS, BACKEND_SERVER } from '../common/costants'
 
@@ -38,18 +39,17 @@ export class LoginService {
         return this.http.post<LoginAnswer>(
             REST_ENDPOINT,
             { user: user, password: password },
-            HTTP_GLOBAL_OPTIONS)
-            .map(
-            (body) => {
-                if (body.login) {
-                    localStorage.setItem(LSItemKey_admin, JSON.stringify(body.admin));
-                    localStorage.setItem(LSItemKey_user, JSON.stringify(user));
-                    localStorage.setItem(LSItemKey_expiration, JSON.stringify(Date.now()));
-                    this.refreshTimeout();
+            HTTP_GLOBAL_OPTIONS).pipe(
+            map((body) => {
+                    if (body.login) {
+                        localStorage.setItem(LSItemKey_admin, JSON.stringify(body.admin));
+                        localStorage.setItem(LSItemKey_user, JSON.stringify(user));
+                        localStorage.setItem(LSItemKey_expiration, JSON.stringify(Date.now()));
+                        this.refreshTimeout();
+                    }
+                    return body.login
                 }
-                return body.login
-            }
-            )
+            ))
     }
 
     refreshTimeout() {

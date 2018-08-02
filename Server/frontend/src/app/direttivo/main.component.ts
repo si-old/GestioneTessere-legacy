@@ -10,7 +10,7 @@ import { ObservableDataSource, PATTERN_USER, PATTERN_PASSWORD } from '../common'
 
 import { DirettivoService } from './main.service'
 
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'direttivo',

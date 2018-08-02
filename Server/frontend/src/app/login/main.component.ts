@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core'
 
 import { Router, ActivatedRoute } from '@angular/router'
 
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar, MatDialog } from '@angular/material'
 
 import { LoginService } from './main.service'
+import { MessageDialog } from '../dialogs'
 
-import { PATTERN_PASSWORD, PATTERN_USER } from '../common'
+import { PATTERN_PASSWORD, PATTERN_USER, VERSION } from '../common'
 
 @Component({
     selector: 'login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
     // fix: only import doesn't show in view, must define local variable
     public PATTERN_PASSWORD = PATTERN_PASSWORD;
     public PATTERN_USER = PATTERN_USER;
+    public VERSION = VERSION;
 
     user: string
     password: string
@@ -27,10 +29,13 @@ export class LoginComponent implements OnInit {
 
     hidden: boolean = true;
 
+    countEasterEgg: number = 0;
+
     constructor(private snack: MatSnackBar,
         private _loginsrv: LoginService,
         private _router: Router,
-        private _route: ActivatedRoute) {
+        private _route: ActivatedRoute,
+        private dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -62,6 +67,19 @@ export class LoginComponent implements OnInit {
             )
         }
         return false;
+    }
+
+    easterEgg(){
+        if(this.countEasterEgg < 7){
+            this.countEasterEgg++
+        }else{
+            this.dialog.open(MessageDialog, {
+                data: {
+                    message: "Il presidente è fighissimo!",
+                }
+            });
+            this.countEasterEgg = 0;
+        }
     }
 
 }

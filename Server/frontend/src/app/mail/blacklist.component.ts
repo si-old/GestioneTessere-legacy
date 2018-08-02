@@ -6,7 +6,7 @@ import { BlacklistMember } from '../model'
 
 import { BlacklistService, BlacklistResponse } from './blacklist.service'
 
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 
 @Component({
     selector: 'blacklist',

@@ -10,8 +10,7 @@ import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, PATTERN_MATRICOLA, SubjectDa
 import { SociService } from './main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { CreateCarrieraDialog, CreateTesseraDialog, MessageDialog } from '../dialogs'
 
