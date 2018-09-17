@@ -1,11 +1,11 @@
 ﻿<div class="main-container">
-    <div mat-dialog-title>
+    <div >
         Aggiungi nuovo socio
     </div>
     <ng-container *ngIf="loading.isLoaded()">
         <ng-container *ngIf="!error">
             <form #form="ngForm">
-                <div mat-dialog-content>
+                <div>
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
                         <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                             <label fxFlex="31%" for="numero">Numero Tessera:</label>
@@ -138,11 +138,11 @@
                         </div>
                     </ng-container>
                 </div>
-                <div mat-dialog-actions style="display: block">
+                <div style="display: block">
                     <button type="submit" class="to_right" mat-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
                 <mat-icon matTooltip="Conferma" matTooltipPosition="right">check</mat-icon>
             </button>
-                    <button class="to_right" mat-dialog-close mat-icon-button (click)="revertForm(form)">
+                    <button class="to_right" mat-icon-button (click)="revertForm(form)">
                 <mat-icon matTooltip="Annulla" matTooltipPosition="right">close</mat-icon>
             </button>
                 </div>

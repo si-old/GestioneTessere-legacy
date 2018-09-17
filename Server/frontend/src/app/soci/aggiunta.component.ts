@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import { MAT_DIALOG_DATA } from '@angular/material';
-
-import { MatDialogRef, MatSnackBar } from '@angular/material'
+import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+import { Location } from '@angular/common'
 
 import { Socio, Tessera, Carriera, Corso, Tesseramento } from '../model'
 import { CorsiService } from '../corsi/main.service'
@@ -9,6 +8,7 @@ import { CorsiService } from '../corsi/main.service'
 import { TesseramentiService } from '../tesseramenti/main.service'
 
 import { LoadingTracker } from '../ux'
+import { MessageDialog } from '../dialogs'
 import { PATTERN_NUMERO_TESSERA, PATTERN_MATRICOLA, PATTERN_CELLULARE } from '../common'
 
 import { first } from 'rxjs/operators'
@@ -37,7 +37,8 @@ export class AggiuntaSocioComponent implements OnInit {
     constructor(private _corsisrv: CorsiService,
         private _tessserv: TesseramentiService,
         private _snackbar: MatSnackBar,
-        private _diagref: MatDialogRef<AggiuntaSocioComponent>) {
+        private _diag: MatDialog,
+        private _location: Location) {
     }
 
     ngOnInit() {
@@ -69,7 +70,11 @@ export class AggiuntaSocioComponent implements OnInit {
 
     submitForm(form: any) {
         if (!form.invalid) {
-            this._diagref.close(this.model);
+            this._diag.open(MessageDialog, {
+                data: {
+                    message: "Dati inseriti non validi!"
+                }
+            });
         } else {
             this._snackbar.open("Tutti i campi sono obbligatori", "Ok", {
                 duration: 1500
@@ -79,7 +84,7 @@ export class AggiuntaSocioComponent implements OnInit {
     }
 
     revertForm(form: any) {
-        this._diagref.close(null);
+        this._location.back();
         return false; //to prevent Edge from reloading
     }
 }

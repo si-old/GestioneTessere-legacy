@@ -13,6 +13,7 @@ import { LogComponent } from './log/main.component'
 import { LoggedinGuard, AdminGuard } from './login/main.service'
 
 import { DettagliSocioComponent } from './soci/dettagli.component'
+import { AggiuntaSocioComponent } from './soci/aggiunta.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,16 @@ const routes: Routes = [
   {
     path: "soci",
     component: SociComponent,
+    canActivate: [LoggedinGuard]
+  },
+  {
+    path: "tessere/new",
+    component: AggiuntaSocioComponent,
+    canActivate: [LoggedinGuard]
+  },
+  {
+    path: "tessere/:id",
+    component: AggiuntaSocioComponent,
     canActivate: [LoggedinGuard]
   },
   {

@@ -1,18 +1,17 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core'
+import { Router } from '@angular/router'
 import { ObservableMedia } from '@angular/flex-layout'
 import { Sort } from '@angular/material'
 
 import { Socio } from '../model'
 import { FilteredSortedDataSource } from '../common'
 import { SociService } from './main.service'
-import { AggiuntaSocioComponent } from './aggiunta.component'
 import { DettagliSocioComponent } from './dettagli.component'
 
 import { MatSort, MatDialog, MatDialogRef, PageEvent, MatAnchor } from '@angular/material'
 
-import { Observable, Subscription, fromEvent, of } from 'rxjs';
+import { Subscription, fromEvent, of } from 'rxjs';
 import { map } from 'rxjs/operators'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'soci',
@@ -37,7 +36,8 @@ export class SociComponent implements OnInit, OnDestroy {
   constructor(public socisrv: SociService,
     private dialog: MatDialog,
     private changeDetector: ChangeDetectorRef,
-    private media: ObservableMedia) {
+    private media: ObservableMedia,
+    private router: Router) {
   }
 
   updateColumns() {
@@ -81,12 +81,7 @@ export class SociComponent implements OnInit, OnDestroy {
   }
 
   addSocio() {
-    let diagopened: MatDialogRef<AggiuntaSocioComponent> = this.dialog.open(AggiuntaSocioComponent, {
-      width: "80vw"
-    });
-    diagopened.afterClosed().subscribe(
-      newSocio => { if (newSocio) { this.socisrv.addSocio(newSocio); } }
-    )
+    this.router.navigate(['tessere/new']);
   }
 
   editSocio(selected: Socio) {
