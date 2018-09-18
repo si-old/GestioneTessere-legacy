@@ -84,4 +84,8 @@ export class CorsiVieweditComponent implements OnInit, ControlValueAccessor {
     registerOnTouched(fn: any) {
         this.onTouchedCallback = fn;
     }
+
+    compareFn(o1: Corso, o2: Corso){
+        return o1.id == o2.id;
+    }
 }
