@@ -4,3 +4,7 @@ label{
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-weight: 600;    
 }
+
+form{
+    margin-right: 3vw;
+}

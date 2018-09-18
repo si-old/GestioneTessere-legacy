@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject, Optional } from '@angular/core'
-
+import { Router } from '@angular/router'
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material'
 
 import { Socio, Tessera, Carriera, Corso } from '../model'
@@ -53,6 +53,7 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
         private _socisrv: SociService,
         private _tesssrv: TesseramentiService,
         private _dialog: MatDialog,
+        private _router: Router,
         @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
         @Optional() private diagref: MatDialogRef<DettagliSocioComponent>
     ) {
@@ -192,14 +193,8 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
     }
 
     addTessera() {
-        this._dialog.open(CreateTesseraDialog).afterClosed().subscribe(
-            (new_tessera: Tessera) => {
-                if (new_tessera) {
-                    this.model.tessere.unshift(new_tessera);
-                    this.tessereSource.update(this.model.tessere);
-                }
-            }
-        )
+        this.diagref.close();
+        this._router.navigate(['tessere', this.model.id]);
     }
 
 }
