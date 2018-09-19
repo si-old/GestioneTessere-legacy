@@ -79,6 +79,9 @@
         <button mat-icon-button (click)="editSocio(row)">
           <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
         </button>
+        <a *ngIf="!row.getTessera().id" mat-icon-button [routerLink]="['/tessere/', row.id]" routerLinkActive="router-link-active">
+          <mat-icon matTooltip="Nuova Tessera" matTooltipPosition="above">add</mat-icon>    
+        </a>
       </mat-cell>
     </ng-container>
 

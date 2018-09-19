@@ -30,6 +30,7 @@ export class AggiuntaSocioComponent implements OnInit {
 
     error: boolean | string = false;
     loading: LoadingTracker = new LoadingTracker(2);
+    
 
     model: Socio;
     allCorsi: Corso[];
@@ -99,12 +100,17 @@ export class AggiuntaSocioComponent implements OnInit {
         if (!form.invalid) {
             this._diag.open(ConfirmDialog).afterClosed().subscribe(
                 () => {
-                    this._socisrv.addSocio(this.model);
+                    if(this.model.id){
+                        this._socisrv.updateSocio(this.model);
+                    }else{
+                        this._socisrv.addSocio(this.model);
+                    }
                     this._diag.open(MessageDialog, {
                         data: {
                             message: "Richiesta inviata correttamente!"
                         }
-                    })
+                    });
+                    this._location.back();
                 }
             )
         } else {
