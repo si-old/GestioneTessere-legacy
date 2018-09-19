@@ -57,7 +57,7 @@ class Socio extends RESTItem
             $stmt->bind_param('ii', $limit, $offset);
         }
         if (! $stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $results = fetch_results($stmt);
         $users = array();
@@ -96,7 +96,7 @@ class Socio extends RESTItem
         $stmt_socio = $this->db->prepare($query_socio);
         $stmt_socio->bind_param('i', $id);
         if (! $stmt_socio->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $res_socio = fetch_results($stmt_socio);
 
@@ -109,14 +109,14 @@ class Socio extends RESTItem
         $stmt_tessere = $this->db->prepare($query_tessere_socio);
         $stmt_tessere->bind_param('i', $id);
         if (! $stmt_tessere->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $res_tessere = fetch_results($stmt_tessere);
             
         $stmt_carriere = $this->db->prepare($query_carriere_socio);
         $stmt_carriere->bind_param('i', $id);
         if (! $stmt_carriere->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $res_carriere = fetch_results($stmt_carriere);
 
@@ -184,7 +184,7 @@ class Socio extends RESTItem
         $stmt_socio->bind_param('sssss', $new_socio['nome'], $new_socio['cognome'], $new_socio['email'], $new_socio['cellulare'], $new_socio['email']);
         if (! $stmt_socio->execute()) {
             $this->db->rollback();
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $socio_id = $this->db->insert_id;
             
@@ -193,7 +193,7 @@ class Socio extends RESTItem
         $stmt_tessera->bind_param('iii', $socio_id, $tessera['anno']['id'], $tessera['numero']);
         if (! $stmt_tessera->execute()) {
             $this->db->rollback();
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $carriera = $new_socio['carriere'][0];
@@ -201,7 +201,7 @@ class Socio extends RESTItem
         $stmt_carriera->bind_param('iisis', $socio_id, $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola']);
         if (! $stmt_carriera->execute()) {
             $this->db->rollback();
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $this->log_info( "Aggiunta di un nuovo socio con id $socio_id.");
         $this->db->commit();
@@ -216,7 +216,7 @@ class Socio extends RESTItem
                                           $new_socio['cellulare'], $new_socio['facebook'], $new_socio['id']);
         if (! $stmt_socio->execute()) {
             $this->db->rollback();
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $carriere_ids = '';
@@ -227,14 +227,14 @@ class Socio extends RESTItem
                 $stmt_carriera_upd->bind_param('isisii', $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola'], $carriera['attiva'], $carriera['id']);
                 if (! $stmt_carriera_upd->execute()) {
                     $this->db->rollback();
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $carriere_ids = $carriere_ids.intval($carriera['id']).', ';
             } else {
                 $stmt_carriera_ins->bind_param('isisii', $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola'], $carriera['attiva'], $new_socio['id']);
                 if (! $stmt_carriera_ins->execute()) {
                     $this->db->rollback();
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $carriere_ids = $carriere_ids.$this->db->insert_id.', ';
             }
@@ -244,7 +244,7 @@ class Socio extends RESTItem
         $stmt_carriere_del->bind_param('i', $new_socio['id']);
         if (! $stmt_carriere_del->execute()) {
             $this->db->rollback();
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $tessere_ids = '';
@@ -255,14 +255,14 @@ class Socio extends RESTItem
                 $stmt_tessera_upd->bind_param('iii', $tessera['anno']['id'], $tessera['numero'], $tessera['id']);
                 if (! $stmt_tessera_upd->execute()) {
                     $this->db->rollback();
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $tessere_ids = $tessere_ids.intval($tessera['id']).', ';
             } else {
                 $stmt_tessera_ins->bind_param('iii', $tessera['anno']['id'], $tessera['numero'], $new_socio['id']);
                 if (! $stmt_tessera_ins->execute()) {
                     $this->db->rollback();
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $tessere_ids = $tessere_ids.$this->db->insert_id.', ';
             }
@@ -272,7 +272,7 @@ class Socio extends RESTItem
         $stmt_tessere_del->bind_param('i', $new_socio['id']);
         if (! $stmt_tessere_del->execute()) {
             $this->db->rollback();
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $this->log_info( "Modifica socio con id ".$new_socio['id'].".");
         $this->db->commit();

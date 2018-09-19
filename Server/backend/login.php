@@ -23,7 +23,7 @@ class Login extends RESTItem
         $stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE User=? and Password=? ');
         $stmt->bind_param('ss', $user, $password);
         if (! $stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($idr, $user, $pass, $socio);
         if ($stmt->fetch()) {

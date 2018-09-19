@@ -15,7 +15,7 @@ class Corso extends RESTItem
     {
         $stmt = $this->db->prepare('SELECT * FROM Corso ORDER BY ID ASC');
         if (! $stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($id, $nome);
         $res = array();
@@ -45,7 +45,7 @@ class Corso extends RESTItem
                 $stmt->bind_param('s', $data['nome']);
             }
             if (! $stmt->execute()) {
-                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
             }
             $this->log_info( 'Aggiornato/Aggiunto Corso di Laurea.');
             return $this->do_get();
@@ -60,12 +60,12 @@ class Corso extends RESTItem
             $stmt = $this->db->prepare('UPDATE Carriera SET Corso = ? WHERE Corso = ?');
             $stmt->bind_param('ii', $this->sostituto, $this->id);
             if (! $stmt->execute()) {
-                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
             }
             $stmt = $this->db->prepare('DELETE FROM Corso WHERE ID=?');
             $stmt->bind_param('i', $this->id);
             if (! $stmt->execute()) {
-                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
             }
             $this->log_info("Rimosso $this->id e sostituito con $this->sostituto.");
             return $this->do_get();

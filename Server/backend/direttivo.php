@@ -12,7 +12,7 @@ class Direttivo extends RESTItem
         $stmt = $this->db->prepare('SELECT * FROM Direttivo WHERE ID=?');
         $stmt->bind_param('i', $id);
         if (! $stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($idr, $user, $pass, $socio);
         if ($stmt->fetch()) {
@@ -26,7 +26,7 @@ class Direttivo extends RESTItem
     {
         $stmt = $this->db->prepare('SELECT * FROM Direttivo');
         if (! $stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($idr, $user, $pass, $socio);
         $res = array();
@@ -65,7 +65,7 @@ class Direttivo extends RESTItem
                 $stmt->bind_param('ssi', $new_data['user'], $new_data['password'], $new_data['id']);
             }
             if (! $stmt->execute()) {
-                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
             }
             $this->log_info( 'Aggiornato/aggiunto membro del direttivo.');
             return $this->do_get();
@@ -80,7 +80,7 @@ class Direttivo extends RESTItem
             $stmt = $this->db->prepare('DELETE FROM Direttivo WHERE ID=?');
             $stmt->bind_param('i', $this->id );
             if (! $stmt->execute()) {
-                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
             }
             $this->log_info("Rimosso membro del direttivo con id $this->id.");
             return $this->do_get();

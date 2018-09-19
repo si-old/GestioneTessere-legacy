@@ -16,7 +16,7 @@ class Log extends RESTItem {
         
     protected function do_del() {
     	if(!$this->logger->clear_log()) {
-    		throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+    		throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
     	}
     	$this->log_info('Eliminazione di tutti i log più vecchi di tre mesi.');
     	return $this->do_get();
