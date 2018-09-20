@@ -143,6 +143,23 @@
                         </div>
                     </div>
 
+                    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
+                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <label fxFlex="31%" for="facebook">Quota:</label>
+                            <mat-form-field fxFlex="100%">
+                                <input type="text" name="quota" [(ngModel)]="model.tessere[0].quota" matInput 
+                                    required pattern="\d+" #inputQuota="ngModel" />
+                                <mat-error *ngIf="inputQuota.errors && inputQuota.errors.required">
+                                    Il campo è obbligatorio!
+                                </mat-error>
+                                <mat-error *ngIf="inputQuota.errors && inputQuota.errors.pattern">
+                                    Devi inserire un numero valido.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
                 </div>
                 <div style="display: block">
                     <button type="submit" class="to_right" mat-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
