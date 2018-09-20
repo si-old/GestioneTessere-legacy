@@ -159,7 +159,7 @@ class Socio extends RESTItem
             
         $valid_tessere = isset($new_socio['tessere']) && count($new_socio['tessere']) > 0;
         $valid_tesseramento =  $valid_tessere && isset($new_socio['tessere'][0]['anno']) && isset($new_socio['tessere'][0]['anno']['id']);
-        $valid_tessera = $valid_tesseramento && isset($new_socio['tessere'][0]['numero']);
+        $valid_tessera = $valid_tesseramento && isset($new_socio['tessere'][0]['numero']) && isset($new_socio['tessere'][0]['quota']);
 
         $valid_carriere = isset($new_socio['carriere']) && count($new_socio['carriere']) > 0;
         $valid_carriera_base = $valid_carriere && isset($new_socio['carriere'][0]['studente']);
@@ -180,7 +180,7 @@ class Socio extends RESTItem
     {
         $this->db->begin_transaction();
 
-        $stmt_socio = $this->db->prepare('INSERT INTO Socio(Nome, Cognome, Email, Cellulare, Facebook) VALUES (?, ?, ?, ?, ?)');
+        $stmt_socio = $this->db->prepare('INSERT INTO Socio(Nome, Cognome, Email, Cellulare, Facebook, Blacklist) VALUES (?, ?, ?, ?, ?, false)');
         $stmt_socio->bind_param('sssss', $new_socio['nome'], $new_socio['cognome'], $new_socio['email'], $new_socio['cellulare'], $new_socio['email']);
         if (! $stmt_socio->execute()) {
             $this->db->rollback();
@@ -195,6 +195,7 @@ class Socio extends RESTItem
             $this->db->rollback();
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
+        $id_tessera = $this->db->insert_id;
 
         $carriera = $new_socio['carriere'][0];
         $stmt_carriera = $this->db->prepare('INSERT INTO Carriera(Socio, Studente, Professione, Corso, Matricola, Attiva) VALUES (?, ?, ?, ?, ?, 1)');
@@ -203,6 +204,15 @@ class Socio extends RESTItem
             $this->db->rollback();
             throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
+        $id_carriera = $this->db->insert_id;
+
+        $stmt_statino = $this->db->prepare('INSERT INTO Statino (Tessera, Nome, Cognome, Email, Cellulare, Quota, Data, Carriera) VALUES (?, ?, ?, ?, ?, ?, curdate(), ?)');
+        $stmt_statino->bind_param('issssii', $id_tessera, $new_socio['nome'], $new_socio['cognome'], $new_socio['email'], $new_socio['cellulare'], $tessera['quota'], $id_carriera);
+        if (! $stmt_statino->execute()) {
+            $this->db->rollback();
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
+        }
+
         $this->log_info( "Aggiunta di un nuovo socio con id $socio_id.");
         $this->db->commit();
     }
@@ -223,6 +233,9 @@ class Socio extends RESTItem
         $stmt_carriera_upd = $this->db->prepare('UPDATE Carriera SET Studente=?,Professione=?,Corso=?,Matricola=?,Attiva=? WHERE ID=?');
         $stmt_carriera_ins = $this->db->prepare('INSERT INTO Carriera (Studente, Professione, Corso, Matricola, Attiva, Socio) VALUES (?, ?, ?, ?, ?, ?)');
         foreach ($new_socio['carriere'] as $carriera) {
+            if($carriera['attiva']){
+               $id_carriera_attiva = intval($carriera['id']);
+            }
             if (isset($carriera['id'])) {
                 $stmt_carriera_upd->bind_param('isisii', $carriera['studente'], $carriera['professione'], $carriera['corso']['id'], $carriera['matricola'], $carriera['attiva'], $carriera['id']);
                 if (! $stmt_carriera_upd->execute()) {
@@ -250,6 +263,7 @@ class Socio extends RESTItem
         $tessere_ids = '';
         $stmt_tessera_upd = $this->db->prepare('UPDATE Tessera SET Anno=?,Numero=? WHERE ID=?');
         $stmt_tessera_ins = $this->db->prepare('INSERT INTO Tessera (Anno, Numero, Socio) VALUES (?, ?, ?)');
+        $stmt_statino = $this->db->prepare('INSERT INTO Statino (Tessera, Nome, Cognome, Email, Cellulare, Quota, Data, Carriera) VALUES (?, ?, ?, ?, ?, ?, curdate(), ?)');
         foreach ($new_socio['tessere'] as $tessera) {
             if (isset($tessera['id'])) {
                 $stmt_tessera_upd->bind_param('iii', $tessera['anno']['id'], $tessera['numero'], $tessera['id']);
@@ -264,7 +278,15 @@ class Socio extends RESTItem
                     $this->db->rollback();
                     throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
-                $tessere_ids = $tessere_ids.$this->db->insert_id.', ';
+                $id_tessera = $this->db->insert_id;
+                $tessere_ids = $tessere_ids.$id_tessera.', ';
+                
+                // aggiunta statino
+                $stmt_statino->bind_param('issssii', $id_tessera, $new_socio['nome'], $new_socio['cognome'], $new_socio['email'], $new_socio['cellulare'], $tessera['quota'], $id_carriera_attiva);
+                if(! $stmt_statino->execute() ){
+                    $this->db->rollback();
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
+                }
             }
         }
         $tessere_ids = substr($tessere_ids, 0, -2);
@@ -291,6 +313,8 @@ class Socio extends RESTItem
                     id: numero, id del tessermento a cui si riferisce la tessera
                 }
                 numero: numero della tessera
+                quota: numero
+                id_statino: numero
             }
         carriere: array con almeno un elemento di
             {
