@@ -20,8 +20,10 @@ class Socio extends RESTItem
 									FROM Carriera as ca LEFT JOIN Corso as c on c.ID = ca.Corso ';
         
     private $query_tessere = '	SELECT	t.Socio as t_socio, t.ID as t_id, t.Numero as t_numero, 
-											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto
-									FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID ';
+											a.ID as a_id, a.Anno as a_anno, a.Aperto as a_aperto,
+                                            st.ID as st_id, st.Quota as st_quota
+                                    FROM Tessera as t JOIN Tesseramento as a on t.Anno = a.ID 
+                                                    LEFT JOIN Statino as st on st.Tessera = t.ID ';
 
     private function get_list($paginate = false, $offset = 0, $limit = 10)
     {
@@ -30,7 +32,7 @@ class Socio extends RESTItem
         $select_data = '	SELECT	s.ID as s_id, s.Nome as s_nome, s.Cognome as s_cognome, 
 								s.Email as s_email, s.Cellulare as s_cellulare, s.Facebook as s_facebook,
 								ca_id, ca_studente, ca_professione, ca_matricola, ca_attiva, c_id, 
-								c_nome, t_id, t_numero, a_id, a_anno, a_aperto';
+								c_nome, t_id, t_numero, a_id, a_anno, a_aperto, st_id, st_quota';
         $from_where =" FROM Socio as s	LEFT JOIN ( $query_carriere_attive ) as c on ca_socio = s.ID
 										LEFT JOIN ( $query_tessere_attive ) as t on t_socio = s.ID";
         if ($this->has_tesserati) {
@@ -63,7 +65,7 @@ class Socio extends RESTItem
         $users = array();
         foreach ($results as $user) {
             $tesseramento = array('id' => $user['a_id'], 'anno' => $user['a_anno'], 'aperto' => $user['a_aperto']);
-            $tessera = array('id' => $user['t_id'], 'anno' => $tesseramento, 'numero' => $user['t_numero']);
+            $tessera = array('id' => $user['t_id'], 'anno' => $tesseramento, 'numero' => $user['t_numero'], 'quota' => $user['st_quota'], 'id_statino' => $user['st_id']);
             $corso = array('id' => $user['c_id'], 'nome' => $user['c_nome']);
             $carriera = array('id' => $user['ca_id'], 'studente' => $user['ca_studente'], 'professione' => $user['ca_professione'],
                                                 'matricola' => $user['ca_matricola'], 'corso' => $corso, 'attiva' => $user['ca_attiva']);
@@ -130,7 +132,7 @@ class Socio extends RESTItem
         $tessere = [];
         foreach ($res_tessere as $tessera) {
             $tesseramento = array('id' => $tessera['a_id'], 'anno' => $tessera['a_anno'], 'aperto' => $tessera['a_aperto']);
-            $tessere[] = array('id' => $tessera['t_id'], 'anno' => $tesseramento, 'numero' => $tessera['t_numero']);
+            $tessere[] = array('id' => $tessera['t_id'], 'anno' => $tesseramento, 'numero' => $tessera['t_numero'], 'quota' => $tessera['st_quota'], 'id_statino' => $tessera['st_id']);
         }
         $user = $res_socio[0];
         $toReturn = array(  'id' => $user['ID'], 'nome' => $user['Nome'], 'cognome' => $user['Cognome'],

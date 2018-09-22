@@ -9,6 +9,7 @@ export class Tessera implements Searchable{
     anno: Tesseramento;
 
     quota ?: number;
+    id_statino ?: number;
 
     constructor(fields?: Partial<Tessera>){
         if(fields) {
