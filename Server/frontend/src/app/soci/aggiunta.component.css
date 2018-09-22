@@ -7,4 +7,16 @@ label{
 
 form{
     padding-right: 3vw;
+<<<<<<< HEAD
+=======
+}
+
+/* 
+    colore di background dal tema, letto dal bottone.
+    Se si trova un modo di usare direttamente quello del tema modificare.
+*/
+.darker-bg{
+    background-color: #b0bec54d;
+    width: 100vw
+>>>>>>> a27ef8c2654663b802ed57978cd641cd53323f33
 }
