@@ -33,6 +33,7 @@ export class AggiuntaSocioComponent implements OnInit {
     
 
     model: Socio;
+    authAccept: boolean
     allCorsi: Corso[];
 
     tessAttivo: Tesseramento;
@@ -76,7 +77,11 @@ export class AggiuntaSocioComponent implements OnInit {
     }
 
     isNewCarriera(){
-        return Boolean(this.model.carriere[0].id);
+        return !Boolean(this.model.carriere[0].id);
+    }
+
+    addCarriera(){
+        this.model.carriere.unshift(new Carriera());
     }
 
     createTessera() {

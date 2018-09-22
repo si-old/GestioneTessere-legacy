@@ -7,7 +7,7 @@
             <form #form="ngForm">
                 <div>
 
-                    <div fxLayout="row">
+                    <div fxLayout="row" >
                         <h3 fxFlex="space-around">Socio</h3>
                     </div>
 
@@ -71,33 +71,30 @@
                         </div>
                     </div>
 
-                    <div fxLayout="row">
+                    <div fxLayout="row" fxLayoutAlign="center center">
                         <h3 fxFlex="space-around">
                             Carriera
-                            <button *ngIf="isNewCarriera()" mat-icon-button (click)="addCarriera()">
-                                <mat-icon matTooltip="Aggiungi carriera" matTooltipPosition="above">add</mat-icon>
-                            </button>
                         </h3>
+                        <button *ngIf="!isNewCarriera()" mat-icon-button (click)="addCarriera()">
+                            <mat-icon matTooltip="Aggiungi carriera" matTooltipPosition="above">add</mat-icon>
+                        </button>
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
                         <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                             <label fxFlex="31%" for="studente">Studente:</label>
-                            <mat-slide-toggle fxFlex="100%" [(ngModel)]="model.carriere[0].studente" name="studente"
-                                color="primary">
-                            </mat-slide-toggle>
+                            <bool-viewedit [(ngModel)]="model.carriere[0].studente" name="studente" [flag]="isNewCarriera()">
+                            </bool-viewedit>
                         </div>
                     </div>
 
                     <ng-container *ngIf="model.carriere[0].studente">
                         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
                             <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
-
                                 <label fxFlex="31%" for="matricola">Matricola:</label>
-                                <mat-form-field fxFlex="100%">
-                                    <input type="text" name="matricola" [(ngModel)]="model.carriere[0].matricola"
-                                        matInput [required]="model.carriere[0].studente" [pattern]="PATTERN_MATRICOLA"
-                                        #inputMatricola="ngModel" />
+                                <text-viewedit name="matricola" [(ngModel)]="model.carriere[0].matricola" [required]="model.carriere[0].studente"
+                                    [pattern]="PATTERN_MATRICOLA" #inputMatricola="ngModel" [flag]="isNewCarriera()"
+                                    mat-form-fiel>
                                     <mat-error *ngIf="inputMatricola.errors && inputMatricola.errors.required">
                                         Il campo è obbligatorio!
                                     </mat-error>
@@ -107,13 +104,13 @@
                                     <mat-hint *ngIf="inputMatricola.untouched || !inputMatricola.value">
                                         La matricola è di 10 cifre, di cui lo zero iniziale può essere omesso.
                                     </mat-hint>
-                                </mat-form-field>
+                                </text-viewedit>
                             </div>
                             <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                                 <label fxFlex="31%" for="corso">Corso di laurea:</label>
                                 <div class="mat-form-field" fxFlex="100%">
-                                    <corsi-viewedit [(ngModel)]="model.carriere[0].corso" [flag]="true" [required]="model.carriere[0].studente"
-                                        name="corso"></corsi-viewedit>
+                                    <corsi-viewedit [(ngModel)]="model.carriere[0].corso" [flag]="isNewCarriera()"
+                                        [required]="model.carriere[0].studente" name="corso"></corsi-viewedit>
                                 </div>
                             </div>
                         </div>
@@ -123,13 +120,12 @@
                         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
                             <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                                 <label fxFlex="31%" for="professione">Professione:</label>
-                                <mat-form-field fxFlex="100%">
-                                    <input type="text" name="professione" [(ngModel)]="model.carriere[0].professione"
-                                        matInput [required]="!model.carriere[0].studente" #inputProfessione="ngModel" />
+                                <text-viewedit [flag]="isNewCarriera()" name="professione" [(ngModel)]="model.carriere[0].professione"
+                                    matInput [required]="!model.carriere[0].studente" #inputProfessione="ngModel">
                                     <mat-error *ngIf="inputProfessione.errors && inputProfessione.errors.required">
                                         Il campo è obbligatorio!
                                     </mat-error>
-                                </mat-form-field>
+                                </text-viewedit>
                             </div>
                         </div>
                     </ng-container>
@@ -168,8 +164,8 @@
                         <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                             <label fxFlex="31%" for="facebook">Quota:</label>
                             <mat-form-field fxFlex="100%">
-                                <input type="text" name="quota" [(ngModel)]="model.tessere[0].quota" matInput 
-                                    required pattern="\d+" #inputQuota="ngModel" />
+                                <input type="text" name="quota" [(ngModel)]="model.tessere[0].quota" matInput required
+                                    pattern="\d+" #inputQuota="ngModel" />
                                 <mat-error *ngIf="inputQuota.errors && inputQuota.errors.required">
                                     Il campo è obbligatorio!
                                 </mat-error>
@@ -180,13 +176,36 @@
                         </div>
                     </div>
 
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5em">
+                        <div fxFlex="15.5%" fxFlex.lt-md="31%" fxLayout="row" fxLayoutAlign="end center">
+                            <mat-checkbox [(ngModel)]="authAccept" required name="auth" #authCheck="ngModel">
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                            <p fxFlex="0 0 100%">
+                                Autorizzo il trattamento dei miei dati personali ai sensi del Dlgs 196 del 30
+                                giugno
+                                2003 e dell’art. 13 GDPR (Regolamento UE 2016/679) all'uso per fini statistici.
+                                Autorizzo inoltre a
+                                ricevere comunicazioni inerenti attività promosse dall'associazione
+                                tramite i contatti qui forniti.
+                            </p>
+                            <div fxFlex="0 0 100%">
+                                <mat-error *ngIf="form.touched && authCheck.touched && !authAccept">
+                                    E&#768; necessario autorizzare il trattamento dei dati.
+                                </mat-error>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div style="display: block">
                     <button class="to_right" mat-raised-button (click)="revertForm(form)">
                         Annulla
                         <mat-icon>close</mat-icon>
                     </button>
-                    <button color="primary" type="submit" class="to_right" mat-raised-button (click)="submitForm(form)" [disabled]="form.invalid">
+                    <button color="primary" type="submit" class="to_right" mat-raised-button (click)="submitForm(form)"
+                        [disabled]="form.invalid">
                         Conferma
                         <mat-icon>check</mat-icon>
                     </button>
