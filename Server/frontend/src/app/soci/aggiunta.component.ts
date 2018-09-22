@@ -75,6 +75,10 @@ export class AggiuntaSocioComponent implements OnInit {
         )
     }
 
+    isNewCarriera(){
+        return Boolean(this.model.carriere[0].id);
+    }
+
     createTessera() {
         this._tessserv.getTesseramentoAttivo().subscribe(
             (x: Tesseramento) => {

@@ -6,6 +6,11 @@
         <ng-container *ngIf="!error">
             <form #form="ngForm">
                 <div>
+
+                    <div fxLayout="row">
+                        <h3 fxFlex="space-around">Socio</h3>
+                    </div>
+
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
                         <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                             <label fxFlex="31%" for="nome">Nome:</label>
@@ -58,13 +63,25 @@
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
-                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                             <label fxFlex="31%" for="facebook">Facebook:</label>
                             <mat-form-field fxFlex="100%">
                                 <input type="text" name="facebook" [(ngModel)]="model.facebook" matInput />
                             </mat-form-field>
                         </div>
-                        <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+                    </div>
+
+                    <div fxLayout="row">
+                        <h3 fxFlex="space-around">
+                            Carriera
+                            <button *ngIf="isNewCarriera()" mat-icon-button (click)="addCarriera()">
+                                <mat-icon matTooltip="Aggiungi carriera" matTooltipPosition="above">add</mat-icon>
+                            </button>
+                        </h3>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
+                        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                             <label fxFlex="31%" for="studente">Studente:</label>
                             <mat-slide-toggle fxFlex="100%" [(ngModel)]="model.carriere[0].studente" name="studente"
                                 color="primary">
@@ -117,6 +134,10 @@
                         </div>
                     </ng-container>
 
+                    <div fxLayout="row">
+                        <h3 fxFlex="space-around">Tessera</h3>
+                    </div>
+
                     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="1em">
                         <div fxFlex="100%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5em">
                             <label fxFlex="31%" for="numero">Numero Tessera:</label>
@@ -159,14 +180,15 @@
                         </div>
                     </div>
 
-
                 </div>
                 <div style="display: block">
-                    <button type="submit" class="to_right" mat-icon-button (click)="submitForm(form)" [disabled]="form.invalid">
-                        <mat-icon matTooltip="Conferma" matTooltipPosition="right">check</mat-icon>
+                    <button class="to_right" mat-raised-button (click)="revertForm(form)">
+                        Annulla
+                        <mat-icon>close</mat-icon>
                     </button>
-                    <button class="to_right" mat-icon-button (click)="revertForm(form)">
-                        <mat-icon matTooltip="Annulla" matTooltipPosition="right">close</mat-icon>
+                    <button color="primary" type="submit" class="to_right" mat-raised-button (click)="submitForm(form)" [disabled]="form.invalid">
+                        Conferma
+                        <mat-icon>check</mat-icon>
                     </button>
                 </div>
             </form>
