@@ -44,7 +44,7 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
 
     //properties for tessere table
     tessereSource: SubjectDataSource<Tessera> = new SubjectDataSource<Tessera>();
-    tessereColumns: string[] = ['numero', 'anno'];  // showed columns
+    tessereColumns: string[] = ['numero', 'anno', 'azioni'];  // showed columns
     tessereEditing = {}; // obj to enable editing of a single row
 
 
@@ -128,7 +128,6 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
     enableEditing() {
         this.editing = true;
         this.carriereColumns.push('azioni');
-        this.tessereColumns.push('azioni');
     }
 
     disableEditing() {
@@ -140,7 +139,6 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
         );
         this.editing = false;
         this.carriereColumns.pop();
-        this.tessereColumns.pop();
     }
 
     /**
