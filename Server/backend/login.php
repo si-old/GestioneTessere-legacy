@@ -1,10 +1,9 @@
 
 <?php
-    require_once('include/config.php');
-    
-    //contiene RESTItem, base per le richieste
-    require_once('include/lib.php');
-    
+
+require_once('include/include.php');
+
+
 class Login extends RESTItem
 {
 

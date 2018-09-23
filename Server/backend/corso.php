@@ -1,7 +1,7 @@
 <?php
-    require_once('include/config.php');
-    require_once('include/lib.php');
-    
+ 
+require_once('include/include.php');
+
 class Corso extends RESTItem
 {
 
