@@ -3,7 +3,7 @@
     <a mat-icon-button [href]="fileurl" (click)="downloadCsv()" #downloadAnchor [download]="filename" target="_self">
       <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>
     </a>
-    <a mat-icon-button href="/backend/statino.php">
+    <a mat-icon-button [href]="BACKEND_SERVER+'statino.php'">
       <mat-icon matTooltip="Scarica Statini PDF" matTooltipPosition="above">attach_file</mat-icon>
     </a>
   </div>

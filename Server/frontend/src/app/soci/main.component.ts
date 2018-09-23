@@ -4,7 +4,7 @@ import { ObservableMedia } from '@angular/flex-layout'
 import { Sort } from '@angular/material'
 
 import { Socio } from '../model'
-import { FilteredSortedDataSource } from '../common'
+import { FilteredSortedDataSource, BACKEND_SERVER } from '../common'
 import { SociService } from './main.service'
 import { DettagliSocioComponent } from './dettagli.component'
 
@@ -19,6 +19,8 @@ import { map } from 'rxjs/operators'
   styleUrls: ['../common/style.css', '../common/mainroutes.style.css', './main.component.css'],
 })
 export class SociComponent implements OnInit, OnDestroy {
+
+  private BACKEND_SERVER = BACKEND_SERVER;
 
   displayedColumns = [];
   sociSource: FilteredSortedDataSource<Socio>;

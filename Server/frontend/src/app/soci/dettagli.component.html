@@ -176,7 +176,7 @@
                             <button *ngIf="editing && row.anno.aperto" mat-icon-button (click)="tessereEditing[row.id] = !tessereEditing[row.id]">
                                 <mat-icon matTooltip="Modifica" matTooltipPosition="left">edit</mat-icon>
                             </button>
-                            <a *ngIf="row.id_statino" mat-icon-button [href]="'/backend/statino.php/'+row.id_statino">
+                            <a *ngIf="row.id_statino" mat-icon-button [href]="BACKEND_SERVER+'statino.php/'+row.id_statino">
                                 <mat-icon matTooltip="Scarica Statino PDF" matTooltipPosition="above">attach_file</mat-icon>
                             </a>
                         </mat-cell>

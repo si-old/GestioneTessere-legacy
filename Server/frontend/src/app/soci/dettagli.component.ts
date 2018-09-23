@@ -4,7 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material'
 
 import { Socio, Tessera, Carriera, Corso } from '../model'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, PATTERN_MATRICOLA, SubjectDataSource } from '../common'
+import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, PATTERN_MATRICOLA, 
+            SubjectDataSource, BACKEND_SERVER } from '../common'
 
 
 import { SociService } from './main.service'
@@ -26,6 +27,7 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
     private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
     private PATTERN_CELLULARE = PATTERN_CELLULARE;
     private PATTERN_MATRICOLA = PATTERN_MATRICOLA;
+    private BACKEND_SERVER = BACKEND_SERVER;
 
     public loaded = false;
 
