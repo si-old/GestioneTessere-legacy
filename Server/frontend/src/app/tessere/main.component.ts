@@ -130,7 +130,7 @@ export class AggiuntaTesseraComponent implements OnInit {
     }
 
     revertForm(form: any) {
-        form.reset();
+        window.location.reload();
         return false; //to prevent Edge from reloading
     }
 }
