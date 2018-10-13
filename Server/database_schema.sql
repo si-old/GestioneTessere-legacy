@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `Statino` (
   `Cellulare` varchar(10) DEFAULT NULL,
   `Quota` int(11) NOT NULL,
   `Data` date NOT NULL,
-  'Carriera' int(11) NOT NULL,
+  `Carriera` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
