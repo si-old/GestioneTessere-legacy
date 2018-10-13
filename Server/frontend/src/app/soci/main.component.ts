@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators'
 })
 export class SociComponent implements OnInit, OnDestroy {
 
-  private BACKEND_SERVER = BACKEND_SERVER;
+  BACKEND_SERVER = BACKEND_SERVER;
 
   displayedColumns = [];
   sociSource: FilteredSortedDataSource<Socio>;
