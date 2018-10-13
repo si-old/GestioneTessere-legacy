@@ -9,5 +9,7 @@
     </mat-hint>
 </mat-form-field>
 <ng-container [@flyInOut]="'in'" *ngIf="!flag">
-        <p class="full_cell">{{content}}</p>
+        <p *ngIf="url == email" class="full_cell">{{content}}</p>
+        <a *ngIf="url && !email" class="full_cell" [href]="content" target="_blank">{{content}}</a>
+        <a *ngIf="email && !url" class="full_cell" [href]="'mailto:'+content" >{{content}}</a>
 </ng-container>
