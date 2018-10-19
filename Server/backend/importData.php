@@ -76,7 +76,7 @@ class ImportData extends RESTItem {
         $stmt_socio->bind_param('s', $email);
         if (! $stmt_socio->execute()) {
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt_socio->bind_result($id);
         $res_socio = array();
@@ -103,7 +103,7 @@ class ImportData extends RESTItem {
         if (! $stmt_socio->execute()) {
             $this->db->rollback();
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $carriere_ids = '';
@@ -115,7 +115,7 @@ class ImportData extends RESTItem {
                 if (! $stmt_carriera_upd->execute()) {
                     $this->db->rollback();
         
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $carriere_ids = $carriere_ids.intval($carriera['id']).', ';
             } else {
@@ -123,7 +123,7 @@ class ImportData extends RESTItem {
                 if (! $stmt_carriera_ins->execute()) {
                     $this->db->rollback();
         
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $carriere_ids = $carriere_ids.$this->db->insert_id.', ';
             }
@@ -134,7 +134,7 @@ class ImportData extends RESTItem {
         if (! $stmt_carriere_del->execute()) {
             $this->db->rollback();
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $tessere_ids = '';
@@ -146,7 +146,7 @@ class ImportData extends RESTItem {
                 if (! $stmt_tessera_upd->execute()) {
                     $this->db->rollback();
         
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $tessere_ids = $tessere_ids.intval($tessera['id']).', ';
             } else {
@@ -154,7 +154,7 @@ class ImportData extends RESTItem {
                 if (! $stmt_tessera_ins->execute()) {
                     $this->db->rollback();
         
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $tessere_ids = $tessere_ids.$this->db->insert_id.', ';
             }
@@ -165,7 +165,7 @@ class ImportData extends RESTItem {
         if (! $stmt_tessere_del->execute()) {
             $this->db->rollback();
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $this->db->commit();
@@ -180,7 +180,7 @@ class ImportData extends RESTItem {
         if (! $stmt_socio->execute()) {
             $this->db->rollback();
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $socio_id = $this->db->insert_id;
             
@@ -190,7 +190,7 @@ class ImportData extends RESTItem {
         if (! $stmt_tessera->execute()) {
             $this->db->rollback();
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $carriera = $new_socio['carriere'][0];
@@ -199,7 +199,7 @@ class ImportData extends RESTItem {
         if (! $stmt_carriera->execute()) {
             $this->db->rollback();
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
 
         $this->db->commit();
@@ -210,7 +210,7 @@ class ImportData extends RESTItem {
         $stmt->bind_param('s', $anno);
         if (! $stmt->execute()) {
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($id);
         $res = array();
@@ -225,7 +225,7 @@ class ImportData extends RESTItem {
         $stmt->bind_param('s',$nome);
         if (! $stmt->execute()) {
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($id);
         $res = array();
@@ -245,7 +245,7 @@ class ImportData extends RESTItem {
         $stmt_socio->bind_param('i', $id);
         if (! $stmt_socio->execute()) {
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $res_socio = fetch_results($stmt_socio);
         if (count($res_socio) > 1) {
@@ -260,7 +260,7 @@ class ImportData extends RESTItem {
         $stmt_tessere->bind_param('i', $id);
         if (! $stmt_tessere->execute()) {
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $res_tessere = fetch_results($stmt_tessere);
             
@@ -268,7 +268,7 @@ class ImportData extends RESTItem {
         $stmt_carriere->bind_param('i', $id);
         if (! $stmt_carriere->execute()) {
 
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $res_carriere = fetch_results($stmt_carriere);
 

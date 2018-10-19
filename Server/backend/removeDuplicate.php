@@ -21,7 +21,7 @@ class RemoveDuplicate extends RESTItem {
         $query_duplicati = 'SELECT Nome, Cognome, GROUP_CONCAT( CONVERT( ID, CHAR ) ) AS IDs FROM  Socio GROUP BY Nome, Cognome HAVING COUNT( * ) >1';
         $stmt_duplicati = $this->db->prepare($query_duplicati);
         if (! $stmt_duplicati->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt_duplicati->bind_result($nome, $cognome, $ids);
         $res_duplicati = array();
@@ -51,7 +51,7 @@ class RemoveDuplicate extends RESTItem {
                 $stmt_tessera->bind_param('ii', $new_id, $id);
                 if (! $stmt_tessera->execute()) {
                     $this->db->rollback();
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
             }
         }
@@ -68,7 +68,7 @@ class RemoveDuplicate extends RESTItem {
                 $stmt_carriere->bind_param('ii', $new_id, $id);
                 if (! $stmt_carriere->execute()) {
                     $this->db->rollback();
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
             }
         }
@@ -85,7 +85,7 @@ class RemoveDuplicate extends RESTItem {
                 $stmt_socio->bind_param('i', $id);
                 if (! $stmt_socio->execute()) {
                     $this->db->rollback();
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
             }
         }

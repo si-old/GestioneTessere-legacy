@@ -12,9 +12,8 @@
 
         <ng-container cdkColumnDef="anno">
             <mat-header-cell *cdkHeaderCellDef> Anno </mat-header-cell>
-            <mat-cell *cdkCellDef="let row"> 
-                <text-viewedit  [(ngModel)]="row.anno" required nome="anno"
-                                [flag]="editing[row.id]" #inputAnno="ngModel">
+            <mat-cell *cdkCellDef="let row">
+                <text-viewedit [(ngModel)]="row.anno" required nome="anno" [flag]="editing[row.id]" #inputAnno="ngModel">
                     <mat-error *ngIf="inputAnno.errors && inputAnno.errors.required">
                         Il campo è obbligatorio!
                     </mat-error>
@@ -45,6 +44,9 @@
                 <button *ngIf="row.aperto" mat-icon-button (click)="showTessereAssegnate(row)">
                     <mat-icon matTooltip="Info tessere" matTooltipPosition="right">more</mat-icon>
                 </button>
+                <a mat-icon-button [href]="BACKEND_SERVER+'statino.php?anno='+row.id">
+                    <mat-icon matTooltip="Scarica Statini PDF" matTooltipPosition="above">attach_file</mat-icon>
+                </a>
             </mat-cell>
         </ng-container>
 

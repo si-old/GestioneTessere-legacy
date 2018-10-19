@@ -8,6 +8,9 @@ export class Tessera implements Searchable{
     numero: number;
     anno: Tesseramento;
 
+    quota ?: number;
+    id_statino ?: number;
+
     constructor(fields?: Partial<Tessera>){
         if(fields) {
             Object.assign(this, fields);

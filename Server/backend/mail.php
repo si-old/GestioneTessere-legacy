@@ -1,8 +1,7 @@
 <?php
-require_once 'include/config.php';
-require_once 'include/lib.php';
-require_once 'include/utils.php';
-require_once 'include/mailFacade.php';
+
+require_once('include/include.php');
+
 
 class Mail extends RESTItem
 {
@@ -147,7 +146,7 @@ class Mail extends RESTItem
         $query = $query . $conditions;
         $stmt = $this->db->prepare($query);
         if (!$stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $results = fetch_results($stmt);
         return array_map(function ($user) {

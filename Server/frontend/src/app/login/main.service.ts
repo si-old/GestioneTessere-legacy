@@ -16,7 +16,7 @@ const REST_ENDPOINT: string = BACKEND_SERVER + "login.php"
 const LSItemKey_admin: string = 'admin';
 const LSItemKey_user: string = 'username';
 const LSItemKey_expiration: string = 'admin_expiration';
-const duration: number = 20 * 60 * 1000 // 20m * 60s * 1000ms
+const duration: number = 20 * 60 * 1000 ;// 20m * 60s * 1000ms
 
 
 interface LoginAnswer {
@@ -58,6 +58,7 @@ export class LoginService {
         }
         this.timeout = window.setTimeout(
             () => {
+                this._dialog.closeAll();
                 this._router.navigate(['/login']);
                 this._dialog.open(MessageDialog, {
                     data: {

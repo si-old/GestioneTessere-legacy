@@ -1,4 +1,4 @@
-﻿import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, forwardRef } from '@angular/core';
 
 import { CommonModule } from '@angular/common'
@@ -16,9 +16,10 @@ import { MaterialModule } from './material.module'
 
 
 import { SociComponent } from './soci/main.component'
-import { AggiuntaSocioComponent } from './soci/aggiunta.component'
 import { SociService } from './soci/main.service'
 import { DettagliSocioComponent } from './soci/dettagli.component'
+
+import { AggiuntaTesseraComponent } from './tessere/main.component'
 
 import { DirettivoComponent } from './direttivo/main.component'
 import { DirettivoService } from './direttivo/main.service'
@@ -62,7 +63,7 @@ import {
     SociComponent,
     DirettivoComponent,
     CorsiComponent,
-    AggiuntaSocioComponent,
+    AggiuntaTesseraComponent,
     DettagliSocioComponent,
     TesseramentiComponent,
     ConfirmDialog,
@@ -112,7 +113,6 @@ import {
     { provide: HTTP_INTERCEPTORS, useExisting: LoadingDialogInterceptor, multi: true}
   ],
   entryComponents: [
-    AggiuntaSocioComponent,
     DettagliSocioComponent,
     ConfirmDialog,
     CreateCarrieraDialog,
