@@ -2,7 +2,7 @@
     {{content.nome}}
 </ng-container>
 <mat-form-field *ngIf="flag" [@flyInOut]>
-    <mat-select placeholder="Corsi di Laurea" [(ngModel)]="content" selected="content" [required]="inputRequired" matInput>
+    <mat-select [compareWith]="compareFn" placeholder="Corsi di Laurea" [(ngModel)]="content" [required]="inputRequired" matInput>
         <mat-option *ngFor="let corso of allCorsi | async" [value]="corso">
             {{corso.nome}}
         </mat-option>

@@ -1,6 +1,6 @@
 <?php
-    require_once('include/config.php');
-    require_once('include/lib.php');
+
+require_once('include/include.php');
     
 class Tesseramento extends RESTItem
 {
@@ -9,7 +9,7 @@ class Tesseramento extends RESTItem
     {
         $stmt = $this->db->prepare('SELECT * FROM Tesseramento');
         if (! $stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($id, $anno, $aperto);
         $res = array();
@@ -23,7 +23,7 @@ class Tesseramento extends RESTItem
         $stmt = $this->db->prepare('SELECT Numero FROM Tessera WHERE Anno = ?');
         $stmt->bind_param('i',$id_aperto);
         if (! $stmt->execute()) {
-            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+            throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
         }
         $stmt->bind_result($numero);
         $tessere = array();
@@ -53,20 +53,20 @@ class Tesseramento extends RESTItem
                 $stmt = $this->db->prepare('UPDATE Tesseramento SET Anno = ? WHERE ID = ?');
                 $stmt->bind_param('si', $data['anno'], $data['id']);
                 if (! $stmt->execute()) {
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $this->log_info( "Modifica anno tesseramento con id ".$data['id'].".");
             } else {
                 $stmt = $this->db->prepare('UPDATE Tesseramento SET Aperto = 0 WHERE Aperto = 1');
                 if (! $stmt->execute()) {
-                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                    throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                 }
                 $this->log_info( 'Chiusura tesseramenti.');
                 if ($valid_open) {
                     $stmt3 = $this->db->prepare("INSERT INTO Tesseramento(Anno, Aperto) VALUES ( ?, 1)");
                     $stmt3->bind_param('s', $data['anno']);
                     if (! $stmt3->execute()) {
-                        throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, $this->db->error);
+                        throw new RESTException(HttpStatusCode::$INTERNAL_SERVER_ERROR, __FILE__.':'.__LINE__.'-'.$this->db->error);
                     }
                     $this->log_info( "Aperto tesseramento anno ".$data['anno'].".");
                 }

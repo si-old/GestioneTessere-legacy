@@ -7,7 +7,7 @@ import { TesseramentiService } from './main.service'
 
 import { ConfirmDialog, TextInputDialog, MessageDialog } from '../dialogs'
 
-import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource } from '../common'
+import { PATTERN_ANNO_TESSERAMENTO, ObservableDataSource, BACKEND_SERVER } from '../common'
 
 import { Subscription } from 'rxjs'
 
@@ -17,6 +17,8 @@ import { Subscription } from 'rxjs'
     styleUrls: ['../common/style.css', '../common/mainroutes.style.css']
 })
 export class TesseramentiComponent implements OnInit {
+
+    private BACKEND_SERVER = BACKEND_SERVER;
 
     displayedColumns: string[] = ['anno', 'aperto', 'azioni'];
     tessSource: ObservableDataSource<Tesseramento>;

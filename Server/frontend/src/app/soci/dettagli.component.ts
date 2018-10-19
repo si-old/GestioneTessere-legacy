@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, Inject, Optional } from '@angular/core'
-
+import { Router } from '@angular/router'
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material'
 
 import { Socio, Tessera, Carriera, Corso } from '../model'
 
-import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, PATTERN_MATRICOLA, SubjectDataSource } from '../common'
+import { PATTERN_NUMERO_TESSERA, PATTERN_CELLULARE, PATTERN_MATRICOLA, 
+            SubjectDataSource, BACKEND_SERVER } from '../common'
 
 
 import { SociService } from './main.service'
@@ -26,6 +27,7 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
     private PATTERN_NUMERO_TESSERA = PATTERN_NUMERO_TESSERA;
     private PATTERN_CELLULARE = PATTERN_CELLULARE;
     private PATTERN_MATRICOLA = PATTERN_MATRICOLA;
+    private BACKEND_SERVER = BACKEND_SERVER;
 
     public loaded = false;
 
@@ -44,7 +46,7 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
 
     //properties for tessere table
     tessereSource: SubjectDataSource<Tessera> = new SubjectDataSource<Tessera>();
-    tessereColumns: string[] = ['numero', 'anno'];  // showed columns
+    tessereColumns: string[] = ['numero', 'anno', 'azioni'];  // showed columns
     tessereEditing = {}; // obj to enable editing of a single row
 
 
@@ -53,6 +55,7 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
         private _socisrv: SociService,
         private _tesssrv: TesseramentiService,
         private _dialog: MatDialog,
+        private _router: Router,
         @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
         @Optional() private diagref: MatDialogRef<DettagliSocioComponent>
     ) {
@@ -127,7 +130,6 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
     enableEditing() {
         this.editing = true;
         this.carriereColumns.push('azioni');
-        this.tessereColumns.push('azioni');
     }
 
     disableEditing() {
@@ -139,7 +141,6 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
         );
         this.editing = false;
         this.carriereColumns.pop();
-        this.tessereColumns.pop();
     }
 
     /**
@@ -192,14 +193,8 @@ export class DettagliSocioComponent implements OnInit, OnDestroy {
     }
 
     addTessera() {
-        this._dialog.open(CreateTesseraDialog).afterClosed().subscribe(
-            (new_tessera: Tessera) => {
-                if (new_tessera) {
-                    this.model.tessere.unshift(new_tessera);
-                    this.tessereSource.update(this.model.tessere);
-                }
-            }
-        )
+        this.diagref.close();
+        this._router.navigate(['tessere', this.model.id]);
     }
 
 }

@@ -1,16 +1,21 @@
 <titlebar>
-  <a left mat-icon-button [href]="fileurl" (click)="downloadCsv()" #downloadAnchor [download]="filename" target="_self">
-    <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>
-  </a>
+  <div left>
+    <a mat-icon-button [href]="fileurl" (click)="downloadCsv()" #downloadAnchor [download]="filename" target="_self">
+      <mat-icon matTooltip="Scarica CSV" matTooltipPosition="above">file_download</mat-icon>
+    </a>
+    <a mat-icon-button [href]="BACKEND_SERVER+'statino.php'">
+      <mat-icon matTooltip="Scarica Statini PDF" matTooltipPosition="above">attach_file</mat-icon>
+    </a>
+  </div>
   <h2 center> Soci </h2>
   <span right fxLayout>
     <mat-form-field floatLabel="never">
       <input matInput #filter placeholder="Ricerca soci">
     </mat-form-field>
     <button mat-icon-button (click)="addSocio()">
-        <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>    
-      </button>
-    </span>
+      <mat-icon matTooltip="Nuovo" matTooltipPosition="above">add</mat-icon>
+    </button>
+  </span>
 </titlebar>
 <div fxLayout fxLayout.lt-sm="column" fxLayoutAlign="space-between center">
   <div style="width: max-content" fxFlexOrder.lt-sm="2" fxFlexAlign.lt-sm="start">
@@ -21,8 +26,7 @@
     </nav>
   </div>
   <div style="margin: auto 1em;" fxFlexOrder.lt-sm="1" fxFlexAlign="end">
-    <mat-slide-toggle [checked]="!socisrv.paginate" labelPosition="before"
-      (change)="togglePagination()" color="primary">
+    <mat-slide-toggle [checked]="!socisrv.paginate" labelPosition="before" (change)="togglePagination()" color="primary">
       Mostra tutti
     </mat-slide-toggle>
   </div>
@@ -55,7 +59,9 @@
 
     <ng-container cdkColumnDef="email">
       <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_email"> Email </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.email}} </mat-cell>
+      <mat-cell *cdkCellDef="let row"> 
+        <text-viewedit [(ngModel)]="row.email" name="email" [flag]="false"></text-viewedit>
+      </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="carriera">
@@ -65,7 +71,9 @@
 
     <ng-container cdkColumnDef="facebook">
       <mat-header-cell *cdkHeaderCellDef mat-sort-header="s_facebook"> Facebook </mat-header-cell>
-      <mat-cell *cdkCellDef="let row">{{row.facebook}}</mat-cell>
+      <mat-cell *cdkCellDef="let row">
+        <text-viewedit [(ngModel)]="row.facebook" name="facebook" [flag]="false"></text-viewedit>
+      </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="cellulare">
@@ -79,12 +87,15 @@
         <button mat-icon-button (click)="editSocio(row)">
           <mat-icon matTooltip="Dettagli" matTooltipPosition="left">info_outline</mat-icon>
         </button>
+        <a *ngIf="!row.getTessera().id" mat-icon-button [routerLink]="['/tessere/', row.id]" routerLinkActive="router-link-active">
+          <mat-icon matTooltip="Nuova Tessera" matTooltipPosition="above">add</mat-icon>
+        </a>
       </mat-cell>
     </ng-container>
 
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-  <mat-paginator #paginator [length]="socisrv.length" [pageIndex]="socisrv.index" [pageSize]="socisrv.limit" [pageSizeOptions]="[5, 10, 25, 100]"
-    (page)="pageChange($event)" *ngIf="socisrv.paginate"></mat-paginator>
+  <mat-paginator #paginator [length]="socisrv.length" [pageIndex]="socisrv.index" [pageSize]="socisrv.limit"
+    [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageChange($event)" *ngIf="socisrv.paginate"></mat-paginator>
 </div>
